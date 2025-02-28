@@ -44,6 +44,6 @@ public class TicketDto {
 	private Timestamp ticket_date; 			// 등록일
 	
     @ManyToOne
-    @JoinColumn(name = "artist_group_name")  // 외래키로 artist와 연결
-    private ArtistDto ticket_group_name;
+    @JoinColumn(name = "artist_no")  // 외래키로 artist와 연결
+    private ArtistDto artistDto;
 }

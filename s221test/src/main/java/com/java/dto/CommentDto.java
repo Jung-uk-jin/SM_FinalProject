@@ -39,5 +39,11 @@ public class CommentDto {
 		
 	    @ManyToOne
 	    @JoinColumn(name = "community_no")  // 외래키로 community와 연결
-	    private CommunityDto community_no;
+	    private CommunityDto communityDto;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "member_nickname")  // 외래키로 Member와 연결
+	    private MemberDto memberDto;
+	    
+
 }

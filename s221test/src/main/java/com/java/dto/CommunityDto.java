@@ -1,9 +1,8 @@
 package com.java.dto;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,13 +36,18 @@ public class CommunityDto {
 	private String community_content; 		// 내용
 	@UpdateTimestamp
 	private Timestamp community_date; 		// 등록일
-	@Column(length=100)
-	private String community_file; 			// 이미지
+	@Column(nullable = true, length=100)
+	private String community_image; 		// 이미지
+	@ColumnDefault("0")
+	private int community_like;				// 좋아요
 	
-	@OneToMany(mappedBy = "community_no")  
-	private List<CommentDto> comment;  
+	
+	
+//	@OneToMany(mappedBy = "community_no", cascade = CascadeType.ALL)
+//	private List<CommentDto> comment;
 	
     @ManyToOne
     @JoinColumn(name = "member_nickname")  // 외래키로 Member와 연결
-    private MemberDto community_name;
+    private MemberDto memberDto;
+
 }

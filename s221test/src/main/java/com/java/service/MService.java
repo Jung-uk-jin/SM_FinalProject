@@ -6,14 +6,14 @@ import com.java.dto.MemberDto;
 
 public interface MService {
 
-//	void save(MemberDto mdto);
-//
-//	List<MemberDto> findAll();
-//
-//	MemberDto findById(String id);
-//
-//	void deleteById(String id);
-//
+	List<MemberDto> findAll();
+
+	MemberDto findByNickname(String nickname);
+
+	void save(MemberDto mdto);
+
+	void deleteByMemberNickname(String member_nickname);
+
 //	MemberDto findByIdAndPw(String id, String pw);
 
 }

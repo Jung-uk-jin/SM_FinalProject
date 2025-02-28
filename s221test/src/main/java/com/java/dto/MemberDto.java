@@ -2,17 +2,16 @@ package com.java.dto;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,12 +56,8 @@ public class MemberDto {
 	private String member_notification_enabled;
 	
 	@Column(length=10)
-	private int boardCnt;
+	private int communityCnt;
 	@Column(length=10)
 	private int commentCnt;
-	
-	// community의 작성자와 연결
-	@OneToMany(mappedBy = "community_name")  
-	private List<CommunityDto> community;  
 	
 }
