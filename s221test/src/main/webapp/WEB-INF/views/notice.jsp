@@ -17,7 +17,7 @@
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>회원관리</title>
+    <title>공지관리</title>
     <!-- Favicon icon 
     <link
       rel="icon"
@@ -162,7 +162,7 @@
                   href="/shop"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">굿즈샵관리</span></a
+                  ><span class="hide-menu">상품관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -211,13 +211,13 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">회원관리</h4>
+              <h4 class="page-title">공지</h4>
               <div class="ms-auto text-end">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">메인페이지</a></li>
-                    <li class="breadcrumb-item active" aria-current="/admin">
-                      회원관리
+                    <li class="breadcrumb-item active" aria-current="/notice">
+                      공지관리
                     </li>
                   </ol>
                 </nav>
@@ -239,7 +239,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">회원전체 리스트</h5>
+                  <h5 class="card-title">공지 리스트</h5>
                   <div class="table-responsive">
                     <table
                       id="zero_config"
@@ -247,38 +247,38 @@
                     >
                       <thead>
                         <tr>
-                          <th>아이디</th>
-                          <th>닉네임</th>
-                          <th>가입일</th>
-                          <th>게시글 수</th>
-                          <th>댓글 수</th>
+                          <th>No</th>
+                          <th>제목</th>
+                          <th>내용</th>
+                          <th>등록일</th>
+                          <th>아티스트명</th>
                         </tr>
                       </thead>
                       <tbody>
                       <c:if test="${not empty list}">
-						 <c:forEach items="${list}" var="mdto">
+						 <c:forEach items="${list}" var="ndto">
 					       <tr>
-					         <td>${mdto.member_id}</td>
-					         <td><a href="/memInfo?nickname=${mdto.member_nickname}">${mdto.member_nickname}</a></td>
-					         <td>${mdto.member_date }</td>
-					         <td><a href="/communityInfo?nickname=${mdto.member_nickname}">${mdto.communityCnt}</a></td>
-					         <td><a href="/commentInfo?nickname=${mdto.member_nickname}">${mdto.commentCnt}</a></td>
+					         <td>${ndto.notice_no}</td>
+					         <td><a href="/noticeInfo?notice_no=${ndto.notice_no}">${ndto.notice_title}</a></td>
+					         <td>${ndto.notice_content }</td>
+					         <td>${ndto.notice_date}</a></td>
+					         <td>${ndto.artistDto.artist_no}</a></td>
 					       </tr>
 					     </c:forEach>
                          </c:if>
                          <c:if test="${empty list }">
                            <tr>
-                      	     <td colspan="5" style="text-align: center;">회원 정보가 없습니다.</td>
+                      	     <td colspan="5" style="text-align: center;">게시글이 없습니다.</td>
                            </tr>
                          </c:if>
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>아이디</th>
-                          <th>닉네임</th>
-                          <th>가입일</th>
-                          <th>게시글 수</th>
-                          <th>댓글 수</th>
+                     	  <th>No</th>
+                          <th>제목</th>
+                          <th>내용</th>
+                          <th>등록일</th>
+                          <th>아티스트명</th>
                         </tr>
                       </tfoot>
                     </table>

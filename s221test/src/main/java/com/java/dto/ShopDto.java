@@ -48,6 +48,7 @@ public class ShopDto {
 	private Timestamp shop_date; 		// 등록일
 	
 	
+	
     @ManyToOne
     @JoinColumn(name = "artist_no")  // 외래키로 artist와 연결
     private ArtistDto artistDto;

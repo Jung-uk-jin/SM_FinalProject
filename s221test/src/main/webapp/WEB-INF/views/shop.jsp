@@ -165,6 +165,33 @@
                   ><span class="hide-menu">상품관리</span></a
                 >
               </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/ticket"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">티켓샵관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/notice"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">공지관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/event"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">이벤트관리</span></a
+                >
+              </li>
             </ul>
           </nav>
           <!-- End Sidebar navigation -->

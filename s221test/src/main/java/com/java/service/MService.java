@@ -14,6 +14,8 @@ public interface MService {
 
 	void deleteByMemberNickname(String member_nickname);
 
-//	MemberDto findByIdAndPw(String id, String pw);
+	MemberDto findByIdAndPw(String id, String pw);
+
+	MemberDto findByMemberId(String sessionId);
 
 }

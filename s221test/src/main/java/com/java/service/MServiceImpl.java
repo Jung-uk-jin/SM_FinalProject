@@ -21,13 +21,6 @@ public class MServiceImpl implements MService{
 	@Autowired CRepository cRepository;
 	@Autowired CMRepository cmRepository;
 
-//
-//	@Override
-//	public MemberDto findByIdAndPw(String id, String pw) {
-//		
-//		MemberDto memberDto = mRepository.findByIdAndPw(id,pw);
-//		return memberDto;
-//	}
 
 	// 전체 회원정보 출력
 	@Override
@@ -37,7 +30,8 @@ public class MServiceImpl implements MService{
 	    for (MemberDto member : list) {
 	        long communityCount = cRepository.countCommunityByMemberNickname(member.getMember_nickname());
 	        long commentCount = cmRepository.countCommentByMemberNickname(member.getMember_nickname());
-
+	        
+	        
 	        member.setCommunityCnt((int) communityCount);
 	        member.setCommentCnt((int) commentCount);
 	    }
@@ -78,8 +72,29 @@ public class MServiceImpl implements MService{
 	        // 3. 멤버 삭제
 	        mRepository.delete(member);
 	    } else {
-	        throw new RuntimeException("해당 멤버를 찾을 수 없습니다.");
+	        throw new RuntimeException("해당 회원을 찾을 수 없습니다.");
 	    }    
+	}
+	
+	// 로그인
+	@Override
+	public MemberDto findByIdAndPw(String id, String pw) {
+		
+		MemberDto mdto = mRepository.findByIdAndPw(id,pw)
+				.orElseThrow(() -> {
+					return new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."); 
+				});
+		return mdto;
+	}
+
+	@Override
+	public MemberDto findByMemberId(String sessionId) {
+		
+		MemberDto mdto = mRepository.findById(sessionId)
+				.orElseThrow(() -> {
+					return new IllegalArgumentException("아이디가 없습니다.");
+				});
+		return mdto;
 	}
 
 }

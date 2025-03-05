@@ -1,5 +1,7 @@
 package com.java.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +20,11 @@ public interface MRepository extends JpaRepository<MemberDto, String>{
     @Transactional
     @Query(value = "DELETE FROM memberdto WHERE member_nickname=?", nativeQuery = true)
     void deleteByMemberNickname(String member_nickname);
+	
+	// 로그인
+	@Query(value = "select * from memberdto where member_id=? and member_pw=?", nativeQuery = true)
+	Optional<MemberDto> findByIdAndPw(String id, String pw);
 
+	@Query(value = "select * from memberdto where member_id=?", nativeQuery = true)
+	Optional<MemberDto> findById(String sessionId);
 }
