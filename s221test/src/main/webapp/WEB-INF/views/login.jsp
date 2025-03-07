@@ -33,6 +33,7 @@
             
             <button type="submit">로그인</button>
             <p class="forgot-password"><a href="#">비밀번호를 잊어버리셨나요?</a></p>
+            <p class="forgot-password" style="text-align: right;"><a href="/memberTerms">회원가입</a></p>
         </form>
         <div class="social-login">
             <button class="social-btn kakao"></button>

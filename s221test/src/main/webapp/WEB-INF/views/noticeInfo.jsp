@@ -17,7 +17,7 @@
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>회원정보</title>
+    <title>공지정보</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Favicon icon 
     <link
@@ -46,14 +46,14 @@
     <![endif]-->
 	<script>
 		const deleteBtn = () =>{
-			if(confirm("${mdto.member_nickname}님을 삭제하시겠습니까?")){
+			if(confirm("${ndto.notice_no}번 글을 삭제하시겠습니까?")){
 				$.ajax({
-					url:"/memdelete",
+					url:"/noticedelete",
 					type:"post",	
-					data:{"member_nickname":"${mdto.member_nickname}"},
+					data:{"notice_no":"${ndto.notice_no}"},
 					success:function(data){
-						alert("회원정보를 삭제했습니다.");
-						location.href="/admin"
+						alert("공지를 삭제했습니다.");
+						location.href="/notice"
 						console.log(data);
 					},
 					error:function(){
@@ -62,6 +62,18 @@
 				}); // ajax
 			}
 		}
+		
+	  	const readUrl = (input) => {
+	  		if(input.files && input.files[0]){
+	  			var reader = new FileReader();
+	  			reader.onload = function(e){
+	  				document.getElementById("preview").src = e.target.result;
+	  			}
+	  			reader.readAsDataURL(input.files[0]);
+	  		}else{
+	  				document.getElementById("preview").src = "";
+	  		}
+	  	}
 	</script>
     <style>
     	.register-button {
@@ -255,13 +267,13 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">회원관리</h4>
+              <h4 class="page-title">공지관리</h4>
               <div class="ms-auto text-end">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">메인페이지</a></li>
-                    <li class="breadcrumb-item active" aria-current="/admin">
-                      회원관리
+                    <li class="breadcrumb-item active" aria-current="/notice">
+                      공지관리
                     </li>
                   </ol>
                 </nav>
@@ -283,9 +295,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">회원정보</h5>
+                  <h5 class="card-title">공지수정</h5>
                   <div class="table-responsive">
-                  	<form action="/memupdate" method="post">
+                  	<form action="/noticeupdate" method="post" enctype="multipart/form-data">
                     <table
                       id="zero_config"
                       class="table table-striped table-bordered"
@@ -295,54 +307,52 @@
 						  <col width="70%">
 					  </colgroup>	
                       <tbody>
+                      	<input type="hidden" name="notice_no" value="${ndto.notice_no}">
 						<tr>
-							<th>아이디</th>
-							<td>${mdto.member_id}</td>
+							<th>아티스트명</th>
+							<td>
+								<select name="artistDto.artist_no">
+								    <c:forEach var="artist" items="${alist}">
+								         <option value="${artist.artist_no}"
+								         <c:if test="${artist.artist_no == edto.artistDto.artist_no}">selected="selected"</c:if>>
+								         ${artist.artist_group_name}</option>
+								    </c:forEach>
+								</select>
+							</td>
 						</tr>
 						<tr>
-							<th>패스워드</th>
-							<td><input type="password" name="member_pw" value="${mdto.member_pw}"></td>
-						</tr>
-						<tr>
-							<th>이름</th>
-							<td><input type="text" name="member_name" value="${mdto.member_name}"></td>
-						</tr>
-						<tr>
-							<th>닉네임</th>
-							<td><input type="text" name="member_nickname" value="${mdto.member_nickname}" readonly /></td>
-						</tr>
-						<tr>
-							<th>이메일</th>
-							<td><input type="email" name="member_email" value="${mdto.member_email}"></td>
-						</tr>
-						<tr>
-							<th>생년월일</th>
-							<td>${mdto.member_birth}</td>
-						</tr>
-						<tr>
-							<th>전화번호</th>
-							<td>${mdto.member_phone}</td>
-						</tr>
-						<tr>
-							<th>주소</th>
-							<td><input type="text" name="member_address" value="${mdto.member_address}"></td>
-						</tr>
-						<tr>
-							<th>국가/지역</th>
-							<td><input type="text" name="member_country" value="${mdto.member_country}"></td>
-						</tr>
-						<tr>
-							<th>멤버십 등급</th>
-							<td><input type="text" name="member_membership" value="${mdto.member_membership}"></td>
+							<th>제목</th>
+							<td><input type="text" name="notice_title" value="${ndto.notice_title}" style="width:500px; height:30px;"></td>
 						</tr>
 						<tr>
 							<th>유형</th>
-							<td><input type="text" name="member_usertype" value="${mdto.member_usertype}"></td>
+							<td><input type="text" name="notice_type" class="type" value="${ndto.notice_type}" style="width:250px; height:30px; display: inline-block;">
+							<h4 style="font-size: 13px; display: inline-block; margin-left:10px;">기본, 굿즈, 티켓 중 택1</h4>
+							</td>
 						</tr>
 						<tr>
-							<th>가입일</th>
-							<td>${mdto.member_date}</td>
+							<th>내용</th>
+							<td><textarea name="notice_content" rows="20" cols="100">${ndto.notice_content}</textarea></td>
 						</tr>
+						<tr>
+							<th>이미지</th>
+							<td>
+								<input type="file" name="files" id="file" onchange="readUrl(this);">
+							</td>
+						</tr>
+			   	        <tr>
+				  	        <th>이미지 보기</th>
+				            <c:if test="${not empty ndto.notice_file}">
+					            <td>
+								    <img id="preview" src="/upload/test/${ndto.notice_file}" alt="현재 이미지" style="width:1000px;">
+					            </td>
+							</c:if>
+				            <c:if test="${empty ndto.notice_file}">
+			                 	<td>
+					            <img id="preview" style="width:1000px">
+					            </td>
+							</c:if>
+				        </tr>
                       </tbody>
                       <tfoot>
 						<button type="submit" class="register-button">수정</button>
@@ -350,7 +360,7 @@
                     </table>
                     </form>
                       	<button onclick="deleteBtn()" class="register-button">삭제</button>
-                      	<a href="/admin"><button class="register-button">취소</button></a>
+                      	<a href="/notice"><button class="register-button">취소</button></a>
                   </div>
                 </div>
               </div>

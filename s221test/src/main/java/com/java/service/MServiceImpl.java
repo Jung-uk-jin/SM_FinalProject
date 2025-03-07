@@ -97,4 +97,11 @@ public class MServiceImpl implements MService{
 		return mdto;
 	}
 
+	// 아이디 중복 확인
+	@Override
+	public boolean existsMemberId(String memberId) {
+		
+		return mRepository.existsByMemberId(memberId);
+	}
+
 }

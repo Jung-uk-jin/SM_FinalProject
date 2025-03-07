@@ -43,6 +43,30 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+    	.register-button {
+    		width: 150px;
+		    display: inline-block;
+		    color: #7460ee;
+		    text-decoration: none;
+		    background-color: #fff;
+		    border: 1px solid #dee2e6;
+		    padding: 8px 16px;
+		    font-size: 14px;
+		    font-weight: bold;
+		    border-radius: 4px;
+		    transition: color 0.15s ease-in-out, 
+		                background-color 0.15s ease-in-out, 
+		                border-color 0.15s ease-in-out, 
+		                box-shadow 0.15s ease-in-out;
+		    cursor: pointer;
+		}
+		
+		.register-button:hover {
+		    background-color: #7460ee;
+		    color: #fff;
+		}
+    </style>
   </head>
 
   <body>
@@ -262,7 +286,7 @@
 					         <td><a href="/noticeInfo?notice_no=${ndto.notice_no}">${ndto.notice_title}</a></td>
 					         <td>${ndto.notice_content }</td>
 					         <td>${ndto.notice_date}</a></td>
-					         <td>${ndto.artistDto.artist_no}</a></td>
+					         <td>${ndto.artistDto.artist_group_name}</a></td>
 					       </tr>
 					     </c:forEach>
                          </c:if>
@@ -282,6 +306,7 @@
                         </tr>
                       </tfoot>
                     </table>
+                    <button type="button" class="register-button" onclick="location.href='/nwrite'">등록</button>
                   </div>
                 </div>
               </div>

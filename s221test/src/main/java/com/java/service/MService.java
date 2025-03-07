@@ -18,4 +18,7 @@ public interface MService {
 
 	MemberDto findByMemberId(String sessionId);
 
+	// 아이디 중복확인
+	boolean existsMemberId(String memberId);
+
 }

@@ -1,9 +1,13 @@
 package com.java.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.java.dto.MemberDto;
 import com.java.service.MService;
@@ -12,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -56,6 +61,36 @@ public class FController {
 	public String logout() {
 		session.invalidate();
 		return "redirect:/?chkLogin=0";
+	}
+	
+	// 약관동의
+	@GetMapping("/memberTerms")
+	public String memberTerms() {
+		return "/memberTerms";
+	}
+	
+	// 회원가입 페이지
+	@GetMapping("/member")
+	public String member() {
+		return "/member";
+	}
+	
+	// 아이디 중복확인
+	@PostMapping("/checkMemberId")
+	@ResponseBody
+	public Map<String, Object> checkMemberId(@RequestParam("memberId") String memberId) {
+	    boolean exists = mService.existsMemberId(memberId); // DB에 존재하는지 확인
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("exists", exists);
+	    return response;
+	}
+	
+	// 회원가입
+	@PostMapping("/memberInput")
+	public String memberInput(@ModelAttribute MemberDto mdto) {
+		
+		mService.save(mdto);
+		return "redirect:/login";
 	}
 	
 	// mypage 호출

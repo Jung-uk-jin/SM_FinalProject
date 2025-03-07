@@ -205,10 +205,10 @@
 					</a></li>
 	                <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope"></i></a></li>
 	                <li><a href="/mypage"><i class="fa-regular fa-user"></i></a></li>
-	                <c:if test="${mdto.member_usertype eq 'admin'}">
+	                <c:if test="${mdto.member_usertype eq 'Admin'}">
 	             	   <li><a href="/admin"><i class="fa-solid fa-gear"></i></a></li>
 	                </c:if>
-	                <c:if test="${mdto.member_usertype ne 'admin'}">
+	                <c:if test="${mdto.member_usertype ne 'Admin'}">
 	             	   <li><a href="/user_setting"><i class="fa-solid fa-gear"></i></a></li>
 	                </c:if>
 	            </c:if>
