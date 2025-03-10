@@ -63,6 +63,30 @@
 			}
 		}
 	</script>
+    <style>
+    	.register-button {
+    		width: 200px;
+		    display: inline-block;
+		    color: #7460ee;
+		    text-decoration: none;
+		    background-color: #fff;
+		    border: 1px solid #dee2e6;
+		    padding: 8px 16px;
+		    font-size: 14px;
+		    font-weight: bold;
+		    border-radius: 4px;
+		    transition: color 0.15s ease-in-out, 
+		                background-color 0.15s ease-in-out, 
+		                border-color 0.15s ease-in-out, 
+		                box-shadow 0.15s ease-in-out;
+		    cursor: pointer;
+		}
+		
+		.register-button:hover {
+		    background-color: #7460ee;
+		    color: #fff;
+		}
+    </style>
   </head>
 
   <body>
@@ -179,10 +203,37 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/admin2"
+                  href="/shop"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">상품관리</span></a
+                  ><span class="hide-menu">굿즈샵관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/ticket"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">티켓샵관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/notice"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">공지관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/event"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-chart-bar"></i
+                  ><span class="hide-menu">이벤트관리</span></a
                 >
               </li>
             </ul>
@@ -259,7 +310,7 @@
 						        <td>${cmdto.comment_no}</td>
 						        <td>${cmdto.comment_content}</td>
 						        <td>${cmdto.comment_date}</td>
-						        <td><button onclick="deleteBtn(${cmdto.comment_no})">삭제</button></td>
+						        <td><button onclick="deleteBtn(${cmdto.comment_no})" class="register-button">삭제</button></td>
 						      </tr>
 						    </c:forEach>
                          </c:if>

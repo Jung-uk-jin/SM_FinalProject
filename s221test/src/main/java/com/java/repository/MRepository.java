@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.java.dto.MemberDto;
 
@@ -27,4 +28,7 @@ public interface MRepository extends JpaRepository<MemberDto, String>{
 
 	@Query(value = "select * from memberdto where member_id=?", nativeQuery = true)
 	Optional<MemberDto> findById(String sessionId);
+
+	@Query("select case when count(m) > 0 then true else false end from MemberDto m where m.member_id = :memberId")
+	boolean existsByMemberId(@Param("memberId") String memberId);
 }

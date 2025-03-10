@@ -20,4 +20,29 @@ public class NServiceImpl implements NService {
 		return list;
 	}
 
+	@Override
+	public void nwrite(NoticeDto ndto) {
+
+		nRepository.save(ndto);
+	}
+
+	@Override
+	public NoticeDto findByNoticeNo(int notice_no) {
+		
+		NoticeDto ndto = nRepository.findByNoticeNo(notice_no);
+		return ndto;
+	}
+
+	@Override
+	public void save(NoticeDto ndto) {
+		nRepository.save(ndto);
+		
+	}
+
+	@Override
+	public void deleteByNoticeNo(int notice_no) {
+		nRepository.deleteById(notice_no);
+		
+	}
+
 }

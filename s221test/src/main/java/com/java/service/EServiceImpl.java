@@ -20,4 +20,30 @@ public class EServiceImpl implements EService {
 		return list;
 	}
 
+	@Override
+	public void ewrite(EventDto edto) {
+		eRepository.save(edto);
+		
+	}
+
+	@Override
+	public EventDto findByEventNo(int event_no) {
+		
+		EventDto edto = eRepository.findByEventNo(event_no);
+		return edto;
+	}
+
+	@Override
+	public void save(EventDto edto) {
+		eRepository.save(edto);
+		
+	}
+
+	@Override
+	public void deleteByEventNo(int event_no) {
+		
+		eRepository.deleteById(event_no);
+		
+	}
+
 }
