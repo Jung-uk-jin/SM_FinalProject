@@ -1,6 +1,5 @@
 package com.java.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -29,7 +28,7 @@ public class MemberDto {
 	@Column(length=30, unique = true)
 	private String member_id;			// 아이디
 	@Column(nullable = false,length=30)
-	private String member_pw;			// 패스워드
+	private String member_pw;			// 패스워드;
 	@Column(nullable = false,length=20)
 	private String member_name;		// 실명
 	@Id // primary key
@@ -54,7 +53,7 @@ public class MemberDto {
 	private String member_usertype;
 	@CreationTimestamp
 	@Column(updatable = false)
-	private LocalDateTime member_date;	// 가입일
+	private LocalDateTime member_date;	// 가입일;
 	private String member_notification_enabled;
 	
 	@Column(length=10)

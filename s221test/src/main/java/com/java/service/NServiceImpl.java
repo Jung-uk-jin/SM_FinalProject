@@ -3,6 +3,8 @@ package com.java.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.java.dto.NoticeDto;
@@ -43,6 +45,12 @@ public class NServiceImpl implements NService {
 	public void deleteByNoticeNo(int notice_no) {
 		nRepository.deleteById(notice_no);
 		
+	}
+
+	@Override
+	public Page<NoticeDto> findbyArtistNo(Pageable pageable, int artistNo) {
+		Page<NoticeDto> list = nRepository.findByArtistNo(pageable,artistNo);
+		return list;
 	}
 
 }

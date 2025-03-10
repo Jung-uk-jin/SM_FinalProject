@@ -30,7 +30,7 @@ public class EController {
 		
 		List<EventDto> list = eService.findAll();
 		model.addAttribute("list",list);
-		return "event";
+		return "/admin/event";
 	} 
 	
 	// 이벤트 작성
@@ -38,7 +38,7 @@ public class EController {
 	public String ewrite(Model model) {
 		List<ArtistDto> list = aService.findAll(); // ArtistDto 목록 조회
 	    model.addAttribute("alist", list);
-		return "ewrite";
+		return "/admin/ewrite";
 	}
 	
 	// 이벤트 작성등록
@@ -76,7 +76,7 @@ public class EController {
 		EventDto eventDto = eService.findByEventNo(event_no);
 		model.addAttribute("alist", list);
 		model.addAttribute("edto",eventDto);
-		return "eventInfo";
+		return "/admin/eventInfo";
 	}
 	
 	// 이벤트 수정

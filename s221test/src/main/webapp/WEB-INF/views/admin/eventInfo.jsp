@@ -326,8 +326,15 @@
 						</tr>
 						<tr>
 							<th>유형</th>
-							<td><input type="text" name="event_type" class="type" value="${edto.event_type}" style="width:250px; height:30px; display: inline-block;">
-							<h4 style="font-size: 13px; display: inline-block; margin-left:10px;">기본, 굿즈, 티켓 중 택1</h4>
+							<td>					
+							 <select name="event_type" class="type" style="width:102px;">
+							     <option value="일반"
+							         <c:if test="${edto.event_type == '일반'}">selected="selected"</c:if>>일반</option>
+							     <option value="굿즈"
+							         <c:if test="${edto.event_type == '굿즈'}">selected="selected"</c:if>>굿즈</option>
+							     <option value="티켓"
+							         <c:if test="${edto.event_type == '티켓'}">selected="selected"</c:if>>티켓</option>
+							 </select>
 							</td>
 						</tr>
 						<tr>

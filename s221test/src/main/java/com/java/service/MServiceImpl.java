@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.dto.CommentDto;
-import com.java.dto.CommunityDto;
+import com.java.dto.FanCommunityDto;
 import com.java.dto.MemberDto;
 import com.java.repository.CMRepository;
 import com.java.repository.CRepository;
@@ -66,7 +66,7 @@ public class MServiceImpl implements MService{
 	        cmRepository.deleteAll(comments);
 
 	        // 2. 멤버가 작성한 커뮤니티 삭제
-	        List<CommunityDto> communities = cRepository.findByNickname(member_nickname);
+	        List<FanCommunityDto> communities = cRepository.findByNickname(member_nickname);
 	        cRepository.deleteAll(communities);
 
 	        // 3. 멤버 삭제

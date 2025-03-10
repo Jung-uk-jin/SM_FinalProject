@@ -27,8 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class EventDto {
 	@Id // primary key
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
-    @SequenceGenerator(name = "event_seq", sequenceName = "event_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int event_no;						// 이벤트 고유번호
 	@Column(nullable = false, length=100)
 	private String event_title;					// 제목

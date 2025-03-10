@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java.dto.CommentDto;
-import com.java.dto.CommunityDto;
+import com.java.dto.FanCommunityDto;
 import com.java.dto.MemberDto;
 import com.java.service.CMService;
 import com.java.service.CService;
@@ -30,7 +30,7 @@ public class AController {
 		
 		List<MemberDto> list = mService.findAll();
 		model.addAttribute("list",list);
-		return "admin";
+		return "/admin/admin";
 	}
 	
 	// 회원정보
@@ -39,7 +39,7 @@ public class AController {
 		
 		MemberDto memberDto = mService.findByNickname(nickname);
 		model.addAttribute("mdto",memberDto);
-		return "memInfo";
+		return "/admin/memInfo";
 	}
 	
 	// 회원정보 수정
@@ -82,9 +82,9 @@ public class AController {
 	@GetMapping("/communityInfo")
 	public String communityInfo(@RequestParam("nickname") String nickname,Model model) {
 		
-		List<CommunityDto> list = cService.findByNickname(nickname);
+		List<FanCommunityDto> list = cService.findByNickname(nickname);
 		model.addAttribute("list",list);
-		return "communityInfo";
+		return "/admin/communityInfo";
 	}
 	
 	// 게시판글 삭제
@@ -103,7 +103,7 @@ public class AController {
 		
 		List<CommentDto> list = cmService.findByNickname(nickname);
 		model.addAttribute("list",list);
-		return "commentInfo";
+		return "/admin/commentInfo";
 	}
 	
 	// 댓글 삭제

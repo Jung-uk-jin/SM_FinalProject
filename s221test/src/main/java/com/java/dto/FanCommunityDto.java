@@ -2,7 +2,6 @@ package com.java.dto;
 
 import java.sql.Timestamp;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,29 +24,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-public class CommunityDto {
+public class FanCommunityDto {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_seq")
-    @SequenceGenerator(name = "community_seq", sequenceName = "community_seq", allocationSize = 1)
-	private int community_no;				// 글 번호
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int f_community_no;				// 글 번호
 	
 	@Column(nullable = false, length=1000)
-	private String community_content; 		// 내용
+	private String f_community_content; 		// 내용
 	@UpdateTimestamp
-	private Timestamp community_date; 		// 등록일
+	private Timestamp f_community_date; 		// 등록일
 	@Column(nullable = true, length=100)
-	private String community_image; 		// 이미지
-	@ColumnDefault("0")
-	private int community_like;				// 좋아요
-	
-	
-	
-//	@OneToMany(mappedBy = "community_no", cascade = CascadeType.ALL)
-//	private List<CommentDto> comment;
-	
+	private String f_community_image; 		// 이미지
+
     @ManyToOne
     @JoinColumn(name = "member_nickname")  // 외래키로 Member와 연결
     private MemberDto memberDto;
+    
+	@ManyToOne
+	@JoinColumn(name="artist_no")
+	private ArtistDto artistDto;
+	
+	@ManyToOne
+	@JoinColumn(name="nickname_name")
+	private NicknameDto nicknameDto;
 
 }

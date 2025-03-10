@@ -27,8 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class NoticeDto {
 	@Id // primary key
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notice_seq")
-    @SequenceGenerator(name = "notice_seq", sequenceName = "notice_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int notice_no;						// 공지사항 번호
 	@Column(nullable = false, length=100)
 	private String notice_title;				// 제목

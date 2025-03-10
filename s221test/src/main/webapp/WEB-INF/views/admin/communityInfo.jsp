@@ -17,7 +17,7 @@
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>공지사항</title>
+    <title>게시글관리</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Favicon icon 
     <link
@@ -44,9 +44,28 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
+		<script>
+			const deleteBtn = (fCommunityNo) =>{
+				if(confirm("게시글을 삭제하시겠습니까?")){
+					$.ajax({
+						url:"/commudelete",
+						type:"post",	
+						data:{"community_no":fCommunityNo},
+						success:function(data){
+							alert("게시글을 삭제했습니다.");
+							location.href="/admin"
+							console.log(data);
+						},
+						error:function(){
+							alert("실패");
+						}
+					}); // ajax
+				}
+			}
+		</script>
+	    <style>
     	.register-button {
-    		width: 100px;
+    		width: 150px;
 		    display: inline-block;
 		    color: #7460ee;
 		    text-decoration: none;
@@ -68,29 +87,6 @@
 		    color: #fff;
 		}
     </style>
-    
-    <script>	  	
-	  	const wbtn = () => {
-	  		if($(".title").val().length<1){
-	  			alert("제목를 입력하세요.")
-	  			$(".title").focus();
-	  			return;
-	  		}
-	  		writeFrm.submit();
-	  	}
-	  	
-	  	const readUrl = (input) => {
-	  		if(input.files && input.files[0]){
-	  			var reader = new FileReader();
-	  			reader.onload = function(e){
-	  				document.getElementById("preview").src = e.target.result;
-	  			}
-	  			reader.readAsDataURL(input.files[0]);
-	  		}else{
-	  				document.getElementById("preview").src = "";
-	  		}
-	  	}
-	 </script>
   </head>
 
   <body>
@@ -259,13 +255,13 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">공지관리</h4>
+              <h4 class="page-title">회원관리</h4>
               <div class="ms-auto text-end">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">메인페이지</a></li>
-                    <li class="breadcrumb-item active" aria-current="/event">
-                      이벤트관리
+                    <li class="breadcrumb-item active" aria-current="/admin">
+                      회원관리
                     </li>
                   </ol>
                 </nav>
@@ -287,65 +283,47 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">이벤트등록</h5>
+                  <h5 class="card-title">작성 게시글</h5>
                   <div class="table-responsive">
-                  	<form action="/ewrite" name="writeFrm" method="post" enctype="multipart/form-data">
                     <table
                       id="zero_config"
                       class="table table-striped table-bordered"
                     >
-                      <colgroup>
-						  <col width="30%">
-						  <col width="70%">
-					  </colgroup>	
+                   	  <colgroup>
+					      <col width="10%">
+					      <col width="40%">
+					      <col width="30%">
+					      <col width="10%">
+					      <col width="10%">
+					  </colgroup>
+                      <thead>
+                   	    <tr>
+					      <th>게시글 번호</th>
+					      <th>내용</th>
+					      <th>작성일</th>
+					      <th>좋아요</th>
+					      <th>삭제여부</th>
+					    </tr>
+                      </thead>
                       <tbody>
-						<tr>
-							<th>아티스트명</th>
-							<td>
-							<select name="artistDto.artist_no">
-							    <c:forEach var="artist" items="${alist}">
-							        <option value="${artist.artist_no}">${artist.artist_group_name}</option>
-							    </c:forEach>
-							</select>
-							</td>
-						</tr>
-						<tr>
-							<th>제목</th>
-							<td><input type="text" name="event_title" class="title" style="width:500px; height:30px;"></td>
-						</tr>
-						<tr>
-							<th>유형</th>
-							<td>       
-							  <select name="event_type" class="type" style="width:102px;">
-						          <option value="기본">기본</option>
-						          <option value="굿즈">굿즈</option>
-						          <option value="티켓">티켓</option>
-						      </select>
-							</td>
-						</tr>
-						<tr>
-							<th>내용</th>
-							<td><textarea name="event_content" rows="20" cols="100"></textarea></td>
-						</tr>
-						<tr>
-							<th>이미지</th>
-							<td>
-								<input type="file" name="files" id="file" onchange="readUrl(this);">
-							</td>
-						</tr>
-			   	        <tr>
-				  	        <th>이미지 보기</th>
-				            <td>
-				            <img id="preview" style="width:1000px">
-				            </td>
-				        </tr>
-                      </tbody>
-                      <tfoot>
-						<button type="button" onclick="wbtn()" class="register-button">등록</button>
+	                      <c:if test="${not empty list}">
+		              	    <c:forEach items="${list}" var="cdto">
+						       <tr>
+						         <td>${cdto.f_community_no}</td>
+						         <td>${cdto.f_community_content}</td>
+						         <td>${cdto.f_community_date}</td>
+						         <td>0</td>
+						         <td><button onclick="deleteBtn(${cdto.f_community_no})" class="register-button">삭제</button></td>
+						       </tr>
+						     </c:forEach>
+					      </c:if>
+					      <c:if test="${empty list }">
+                             <tr>
+                      	       <td colspan="5" style="text-align: center;">회원 정보가 없습니다.</td>
+                             </tr>
+                           </c:if>
                       </tfoot>
                     </table>
-                    </form>
-					<button type="button" onclick="location.href='/event'" class="register-button">취소</button>
                   </div>
                 </div>
               </div>

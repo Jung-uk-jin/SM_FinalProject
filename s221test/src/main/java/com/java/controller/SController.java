@@ -21,6 +21,6 @@ public class SController {
 		
 		List<ShopDto> list = sService.findAll();
 		model.addAttribute("list",list);
-		return "shop";
+		return "/admin/shop";
 	}
 }

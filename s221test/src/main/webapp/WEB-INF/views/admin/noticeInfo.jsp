@@ -17,7 +17,7 @@
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>공지사항</title>
+    <title>공지정보</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Favicon icon 
     <link
@@ -44,6 +44,37 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+	<script>
+		const deleteBtn = () =>{
+			if(confirm("${ndto.notice_no}번 글을 삭제하시겠습니까?")){
+				$.ajax({
+					url:"/noticedelete",
+					type:"post",	
+					data:{"notice_no":"${ndto.notice_no}"},
+					success:function(data){
+						alert("공지를 삭제했습니다.");
+						location.href="/notice"
+						console.log(data);
+					},
+					error:function(){
+						alert("실패");
+					}
+				}); // ajax
+			}
+		}
+		
+	  	const readUrl = (input) => {
+	  		if(input.files && input.files[0]){
+	  			var reader = new FileReader();
+	  			reader.onload = function(e){
+	  				document.getElementById("preview").src = e.target.result;
+	  			}
+	  			reader.readAsDataURL(input.files[0]);
+	  		}else{
+	  				document.getElementById("preview").src = "";
+	  		}
+	  	}
+	</script>
     <style>
     	.register-button {
     		width: 100px;
@@ -68,29 +99,6 @@
 		    color: #fff;
 		}
     </style>
-    
-    <script>	  	
-	  	const wbtn = () => {
-	  		if($(".title").val().length<1){
-	  			alert("제목를 입력하세요.")
-	  			$(".title").focus();
-	  			return;
-	  		}
-	  		writeFrm.submit();
-	  	}
-	  	
-	  	const readUrl = (input) => {
-	  		if(input.files && input.files[0]){
-	  			var reader = new FileReader();
-	  			reader.onload = function(e){
-	  				document.getElementById("preview").src = e.target.result;
-	  			}
-	  			reader.readAsDataURL(input.files[0]);
-	  		}else{
-	  				document.getElementById("preview").src = "";
-	  		}
-	  	}
-	 </script>
   </head>
 
   <body>
@@ -287,9 +295,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">공지등록</h5>
+                  <h5 class="card-title">공지수정</h5>
                   <div class="table-responsive">
-                  	<form action="/nwrite" name="writeFrm" method="post" enctype="multipart/form-data">
+                  	<form action="/noticeupdate" method="post" enctype="multipart/form-data">
                     <table
                       id="zero_config"
                       class="table table-striped table-bordered"
@@ -299,33 +307,39 @@
 						  <col width="70%">
 					  </colgroup>	
                       <tbody>
+                      	<input type="hidden" name="notice_no" value="${ndto.notice_no}">
 						<tr>
 							<th>아티스트명</th>
 							<td>
-							<select name="artistDto.artist_no">
-							    <c:forEach var="artist" items="${alist}">
-							        <option value="${artist.artist_no}">${artist.artist_group_name}</option>
-							    </c:forEach>
-							</select>
+								<select name="artistDto.artist_no">
+								    <c:forEach var="artist" items="${alist}">
+								         <option value="${artist.artist_no}"
+								         <c:if test="${artist.artist_no == edto.artistDto.artist_no}">selected="selected"</c:if>>
+								         ${artist.artist_group_name}</option>
+								    </c:forEach>
+								</select>
 							</td>
 						</tr>
 						<tr>
 							<th>제목</th>
-							<td><input type="text" name="notice_title" class="title" style="width:500px; height:30px;"></td>
+							<td><input type="text" name="notice_title" value="${ndto.notice_title}" style="width:500px; height:30px;"></td>
 						</tr>
 						<tr>
 							<th>유형</th>
-							<td>
-							  <select name="notice_type" class="type" style="width:102px;">
-						          <option value="기본">기본</option>
-						          <option value="굿즈">굿즈</option>
-						          <option value="티켓">티켓</option>
-						      </select>
+							<td>					
+							 <select name="notice_type" class="type" style="width:102px;">
+							     <option value="일반"
+							         <c:if test="${ndto.notice_type == '일반'}">selected="selected"</c:if>>일반</option>
+							     <option value="굿즈"
+							         <c:if test="${ndto.notice_type == '굿즈'}">selected="selected"</c:if>>굿즈</option>
+							     <option value="티켓"
+							         <c:if test="${ndto.notice_type == '티켓'}">selected="selected"</c:if>>티켓</option>
+							 </select>
 							</td>
 						</tr>
 						<tr>
 							<th>내용</th>
-							<td><textarea name="notice_content" rows="20" cols="100"></textarea></td>
+							<td><textarea name="notice_content" rows="20" cols="100">${ndto.notice_content}</textarea></td>
 						</tr>
 						<tr>
 							<th>이미지</th>
@@ -335,17 +349,25 @@
 						</tr>
 			   	        <tr>
 				  	        <th>이미지 보기</th>
-				            <td>
-				            <img id="preview" style="width:1000px">
-				            </td>
+				            <c:if test="${not empty ndto.notice_file}">
+					            <td>
+								    <img id="preview" src="/upload/test/${ndto.notice_file}" alt="현재 이미지" style="width:1000px;">
+					            </td>
+							</c:if>
+				            <c:if test="${empty ndto.notice_file}">
+			                 	<td>
+					            <img id="preview" style="width:1000px">
+					            </td>
+							</c:if>
 				        </tr>
                       </tbody>
                       <tfoot>
-						<button type="button" onclick="wbtn()" class="register-button">등록</button>
+						<button type="submit" class="register-button">수정</button>
                       </tfoot>
                     </table>
                     </form>
-					<button type="button" onclick="location.href='/notice'" class="register-button">취소</button>
+                      	<button onclick="deleteBtn()" class="register-button">삭제</button>
+                      	<a href="/notice"><button class="register-button">취소</button></a>
                   </div>
                 </div>
               </div>

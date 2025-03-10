@@ -13,13 +13,15 @@ public class AServiceImpl implements AService {
 
 	@Autowired ARepository aRepository;
 	
+	// 메인페이지 아티스트 리스트
 	@Override
 	public List<ArtistDto> findAll() {
 		
 		List<ArtistDto> list = aRepository.findAll();
 		return list;
 	}
-
+	
+	// 
 	@Override
 	public ArtistDto findById(int artistNo) {
 		

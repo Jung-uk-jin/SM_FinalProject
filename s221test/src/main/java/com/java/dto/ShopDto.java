@@ -27,8 +27,7 @@ import lombok.NoArgsConstructor;
 public class ShopDto {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shop_seq")
-    @SequenceGenerator(name = "shop_seq", sequenceName = "shop_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int shop_no; 				// 상품고유번호
 	@Column(nullable = false, length=30)
 	private String shop_category; 		// 카테고리

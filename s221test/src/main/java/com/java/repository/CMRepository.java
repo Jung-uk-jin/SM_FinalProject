@@ -8,25 +8,38 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.java.dto.CommentDto;
+import com.java.dto.FanCommunityDto;
 
 import jakarta.transaction.Transactional;
 
 public interface CMRepository extends JpaRepository<CommentDto, Integer>{
 
+	// 관리자페이지 댓글보기
 	@Query(value="SELECT c FROM CommentDto c WHERE c.memberDto.member_nickname = :nickname")
 	List<CommentDto> findByNickname(@Param("nickname") String nickname);
 
+	// 관리자페이지 댓글삭쩨
 	@Modifying
     @Transactional
     @Query(value = "DELETE FROM commentdto WHERE comment_no=?", nativeQuery = true)
 	void deleteByCommunityNo(int comment_no);
 
-	// 댓글 수
+	// 관리자페이지 댓글 수
 	@Query("SELECT COUNT(c) FROM CommentDto c WHERE c.memberDto.member_nickname = :nickname")
 	long countCommentByMemberNickname(@Param("nickname") String nickname);
 
-	@Query("SELECT cm FROM CommentDto cm WHERE cm.communityDto.community_no = :community_no")
+	
+	@Query("SELECT cm FROM CommentDto cm WHERE cm.communityDto.f_community_no = :community_no")
 	List<CommentDto> findByCommunityNo(@Param("community_no") int community_no);
+
+	// 댓글 수
+	long countByCommunityDto(FanCommunityDto communityDto);
+
+	// 댓글삭제
+	
+	@Query("SELECT c FROM CommentDto c WHERE c.comment_no = :commentNo")
+	CommentDto findByCommentNo(@Param("commentNo") int commentNo);
+
 
 //	@Modifying
 //	@Query("DELETE FROM CommentDto c WHERE c.memberDto.member_nickname = :nickname")

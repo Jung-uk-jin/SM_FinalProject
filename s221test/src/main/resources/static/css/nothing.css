@@ -48,7 +48,7 @@ nav ul li:nth-child(2) {
 
 
 #logo img {
-    width: 10%;  /* 부모 요소의 너비에 맞게 확장 */
+    width: 9.5%;  /* 부모 요소의 너비에 맞게 확장 */
     position: relative;
     height: 10%;  /* 부모 요소의 높이에 맞게 확장 */
     margin-left: 20px;
@@ -78,7 +78,7 @@ nav ul li {
   position: relative;
 }
 
-nav ul li:nth-last-child(2) {
+nav ul li:nth-last-child(3) {
   border-right: 1px solid #ccc; /* 회색 실선 */
   padding-right: 15px; /* 아이콘과 선 사이에 여백 추가 */
   margin-right: 15px; /* 아이콘들 간의 여백 */
@@ -307,9 +307,21 @@ footer {
 
 
 .cart a::before {
-    top: 30% !important; 
-    left: 31% !important;
+    top: 20% !important; 
 }
+
+.cart img{
+	position: relative;
+	right: 10px;
+	top: -5px;
+	width: 40px;
+}
+
+.coin a::before {
+    top: -60% !important; 
+    left: 26% !important;
+}
+
 
 /* 추천 아티스트 */
 .fixed-heart {
@@ -434,3 +446,45 @@ footer {
     transition: left 0.3s ease, width 0.3s ease; /* 위치와 너비 변경 시 부드럽게 애니메이션 */
 }
 
+
+
+/* ----------------------------------------------------------- */
+/* 구글번역 */
+
+.goog-te-gadget-simple{
+	width: 96.3%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    font-size: 20px !important;
+}
+
+
+.goog-te-gadget-simple img{
+	display: none;
+}
+
+
+
+.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    width: 0px !important;
+    position: absolute !important;
+    top: -9999px !important;  /* 화면 밖으로 이동 */
+}
+
+.skiptranslate {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    position: absolute !important;
+    top: -9999px !important; /* 화면 밖으로 */
+}

@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <title>Weverse Clone</title>
-    <link rel="stylesheet" href="/css/notice.css">
+    <link rel="stylesheet" href="/css/notice-event.css">
     <script>
     // 1. 로그아웃
     $(document).ready(function() {
@@ -35,41 +37,46 @@
     }; // 2번 끝
     
     // 3. 공지사항 상세보기
-function openModal(title, description, date) {
-    // 모달 열기
-    document.getElementById("noticeModal").style.display = "flex";
-    document.body.classList.add("no-scroll"); // 스크롤 막기
-
-    // 헤더에 modal-open 클래스 추가
-    document.querySelector("header").classList.add("modal-open");
-
-    // 다른 모달이 열려 있다면 닫기
-    document.getElementById("messageModal").style.display = "none";
-
-    // 모달 닫기 버튼 이벤트 리스너
-    document.querySelector(".close-btn").addEventListener("click", function() {
-        // 모달 닫기
-        document.getElementById("noticeModal").style.display = "none";
-        document.body.classList.remove("no-scroll"); // 스크롤 허용
-
-        // 헤더에서 modal-open 클래스 제거
-        document.querySelector("header").classList.remove("modal-open");
-    });
-}
-
-// 공지사항 모달 외부 클릭 시 닫기
-window.addEventListener("click", function(event) {
-    let noticeModal = document.getElementById("noticeModal");
-    if (event.target === noticeModal) {
-        noticeModal.style.display = "none";
-        document.body.classList.remove("no-scroll");
-
-        // 헤더에서 modal-open 클래스 제거
-        document.querySelector("header").classList.remove("modal-open");
-    }
-});
-
-// 3번 끝
+	function openModal(notice_no) {
+	    // 모달 열기
+	    document.getElementById("noticeModal").style.display = "flex";
+	    document.body.classList.add("no-scroll"); // 스크롤 막기
+	
+	    // 헤더에 modal-open 클래스 추가
+	    document.querySelector("header").classList.add("modal-open");
+	
+	    // 다른 모달이 열려 있다면 닫기
+	    document.getElementById("messageModal").style.display = "none";
+	
+	    console.log("공지사항 세부");
+	 	// AJAX 요청 보내기
+	    $.ajax({
+	        url: "/notice_view", // 공지사항 상세 정보를 가져올 URL
+	        method: "GET",
+	        data: { noticeNo: notice_no }, // 공지사항의 notice_no를 쿼리 파라미터로 전달
+	        success: function(response) {
+	            // 서버에서 받은 데이터를 모달에 표시
+	            document.getElementById("notice-title").innerText = response.notice_title;
+	            document.getElementById("notice-date").innerText = new Date(response.notice_date).toLocaleString('ko-KR');
+	            document.getElementById("notice-description").innerText = response.notice_content;
+	            // document.getElementById("notice-file").innerText = response.notice_file;
+	            document.getElementById("notice-file").innerHTML = "<img src='/upload/test/" + response.notice_file + "' alt='게시글 이미지'>";
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Error fetching notice details:", error);
+	        }
+	    });
+	
+	    // 모달 닫기 버튼 이벤트 리스너
+	    document.querySelector(".close-btn").addEventListener("click", function() {
+	        // 모달 닫기
+	        document.getElementById("noticeModal").style.display = "none";
+	        document.body.classList.remove("no-scroll"); // 스크롤 허용
+	
+	        // 헤더에서 modal-open 클래스 제거
+	        document.querySelector("header").classList.remove("modal-open");
+	    });
+	} // 3번 끝
 	 
 	 // 4. 장바구니 클릭시
 	const cartBtn = () => {
@@ -148,12 +155,57 @@ window.addEventListener("click", function(event) {
 	        updateProgressBar(targetIndex);  // 클릭한 탭에 맞춰 업데이트
 	    });
 	}); // 5번 끝
+	
+	// 6. 번역
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'ko',
+            includedLanguages: 'en,ko,zh,ja,fr,de,es,it,pt,ru',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+    // 쿠키에서 번역 언어 가져오는 함수
+    function getTranslateCookie() {
+        let matches = document.cookie.match(/(^| )googtrans=([^;]+)/);
+        return matches ? decodeURIComponent(matches[2]) : null;
+    }
+
+    // 저장된 번역 언어 강제 적용
+    function applySavedTranslation() {
+        let savedLang = getTranslateCookie();
+        if (!savedLang) return;
+
+        let langCode = savedLang.split('/')[2]; // "/auto/ko" → "ko"
+
+        let checkExist = setInterval(function () {
+            let selectBox = document.querySelector('.goog-te-combo');
+            if (selectBox) {
+                clearInterval(checkExist);
+                selectBox.value = langCode;
+                selectBox.dispatchEvent(new Event('change')); // 번역 실행
+                console.log("번역 적용됨:", langCode);
+            }
+        }, 500);
+    }
+
+    // 페이지 로드 시 번역 유지
+    window.addEventListener("load", function () {
+        googleTranslateElementInit(); // 구글 번역 위젯 초기화
+        setTimeout(function () {
+            let banner = document.querySelector(".goog-te-banner-frame");
+            if (banner) {
+                banner.style.display = "none";
+            }
+            document.body.style.top = "0px"; // 혹시 top margin이 생기면 제거
+        }, 800); // 번역 적용될 시간 고려
+    }); // 6번 끝
     </script>
 </head>
 <body>
     <header>
         <div id="logo">
-            <a href="/"><img src="/images/index_login/logo.png" alt="Logo"></a>
+            <a href="/"><img src="/images/index_login/logo-removebg.png" alt="Logo"></a>
         </div>
         <!-- nav_bar -->
         <nav>
@@ -161,7 +213,7 @@ window.addEventListener("click", function(event) {
             <c:if test="${session_id==null}">
                 <li><button type="button" class="sign_in">Sign in</button></li>
             </c:if>
-            <c:if test="${session_id!=null}">
+			<c:if test="${session_id!=null}">
                 <li><a onclick="searchBtn()">
 				    <i class="fa-solid fa-magnifying-glass"></i>
 				    <div id="searchBox" style="display: none;">
@@ -171,8 +223,13 @@ window.addEventListener("click", function(event) {
                 <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope"></i></a></li>
                 <li><a href="/mypage"><i class="fa-regular fa-user"></i></a></li>
                 <li><a href="/user_setting"><i class="fa-solid fa-gear"></i></a></li>
+                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+                <li class="cart" style="position: relative; top:-1px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
             </c:if>
-                <li class="cart"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <c:if test="${session_id==null}">
+                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+                <li class="cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            </c:if>
             </ul>
         </nav>
     </header>
@@ -184,39 +241,68 @@ window.addEventListener("click", function(event) {
     </section>
 
     <!-- 공지사항 -->
-    <section class="notice-board">
-        <h2>공지사항</h2>
-        <a onclick="openModal()">
-		    <div class="notice-item">
-		        <h3><span class="new-badge">new</span>2025년 팬지 쇼케이스 안내</h3>
-		        <p>2025년 팬지 쇼케이스 &lt; Chase Our Hearts &gt;에 대한 자세한 정보가 공개되었습니다.</p>
-		        <span class="date">2025.02.27</span>
-		    </div>
-		</a>
+	<section class="notice-board">
+	    <h2>공지사항</h2>
+	    <c:set var="now" value="<%= new java.util.Date() %>" />
+	    
+	    <c:forEach var="n" items="${nlist}">
+	        <a onclick="openModal(${n.notice_no})">
+	            <div class="notice-item">
+	                <h3>
+	                    <!-- new 배지 표시 조건 -->
+	                    <c:set var="noticeDate" value="${n.notice_date}" />
+	                    
+	                    <!-- 날짜 차이 계산 (현재 날짜와 공지사항 날짜 차이) -->
+	                    <c:set var="diffInMillis" value="${now.time - noticeDate.time}" />
+	                    
+	                    <!-- 밀리초를 일 수로 변환 -->
+	                    <c:set var="daysDiff" value="${diffInMillis / (1000 * 60 * 60 * 24)}" />
+	                    
+	                    <!-- 3일 이내라면 'new' 배지 표시 -->
+	                    <c:if test="${daysDiff <= 3}">
+	                        <span class="new-badge">new</span>
+	                    </c:if>
+	                    ${n.notice_title}
+	                </h3>
+	                <span class="date"><fmt:formatDate value="${n.notice_date}" pattern="yyyy.MM.dd. HH:mm:ss"/></span>
+	            </div>
+	        </a>
+	    </c:forEach>
 
-        <div class="notice-item">
-            <h3><a href="/notice/2">2025 팬지 컨 페스티벌</a></h3>
-            <p>2025년 팬지 컨 페스티벌에 대한 모든 정보가 업데이트되었습니다.</p>
-            <span class="date">2025.02.20</span>
-        </div>
-        <div class="notice-item">
-            <h3><a href="/notice/3">회원 정보 변경 안내</a></h3>
-            <p>회원님들께서 이용하실 수 있는 새로운 서비스가 오픈되었습니다. 서비스 변경 안내를 확인해 주세요.</p>
-            <span class="date">2025.02.15</span>
-        </div>
-        <div class="notice-item">
-            <h3><a href="/notice/4">시스템 점검 공지</a></h3>
-            <p>시스템 점검으로 인한 일시적인 서비스 중단에 대해 안내드립니다.</p>
-            <span class="date">2025.02.10</span>
-        </div>
         <!-- 페이지 네비게이션 (넘버링) -->
 		<div class="pagination">
-		    <a href="/notices?page=1" class="page-link"><i class="fa-solid fa-angle-left"></i></a>
-		    <a href="/notices?page=1" class="page-link">1</a>
-		    <a href="/notices?page=2" class="page-link">2</a>
-		    <a href="/notices?page=3" class="page-link">3</a>
-		    <a href="/notices?page=4" class="page-link">4</a>
-		    <a href="/notices?page=5" class="page-link"><i class="fa-solid fa-angle-right"></i></a>
+		    <!-- 이전 페이지 버튼 -->
+		    <c:if test="${nowpage-1 <= startpage}">
+		        <span class="page-link">
+		            <i class="fa-solid fa-angle-left"></i>
+		        </span>
+		    </c:if>
+		    <c:if test="${nowpage-1 > startpage}">
+		        <a href="/notice?page=${nowpage-2}&artistNo=0" class="page-link">
+		            <i class="fa-solid fa-angle-left"></i>
+		        </a>
+		    </c:if>
+		
+		    <!-- 페이지 번호 반복 -->
+		    <c:forEach var="i" begin="${startpage}" end="${endpage lt 0 ? 0 : endpage}">
+		        <!-- 현재 페이지에 active 클래스 추가 -->
+		        <a href="/notice?page=${i}&artistNo=0" class="page-link 
+		           <c:if test="${i == nowpage-1}">active</c:if>">
+		            ${i+1}
+		        </a>
+		    </c:forEach>
+		
+		    <!-- 다음 페이지 버튼 -->
+		    <c:if test="${nowpage <= endpage}">
+		        <a href="/notice?page=${nowpage}&artistNo=0" class="page-link">
+		            <i class="fa-solid fa-angle-right"></i>
+		        </a>
+		    </c:if>
+		    <c:if test="${nowpage > endpage}">
+		        <span class="page-link">
+		            <i class="fa-solid fa-angle-right"></i>
+		        </span>
+		    </c:if>
 		</div>
     </section>
     
@@ -224,50 +310,11 @@ window.addEventListener("click", function(event) {
 	<div id="noticeModal" class="modal" style="display: none;">
 	    <div class="notice-content">
 	        <span class="close-btn">&times;</span>
-	        <h3 id="notice-title">[이벤트] 위버스 앱 아이콘 투표 이벤트 진행 안내 (2025.02.27)</h3>
-	        <span id="notice-date">2025.02.27</span>
+	        <h3 id="notice-title"></h3>
+	        <span id="notice-date"></span>
 	        <hr>
-	        <p id="notice-description">
-	        안녕하세요. 위버스입니다.<br/>
-디지털 멤버십의 새로운 혜택으로 ‘위버스 앱 아이콘 변경’기능이 오픈되었습니다!<br/><br/>
-
-신규 기능 혜택 오픈을 기념하며 ‘내가 가장 좋아하는 위버스 앱 아이콘 투표 이벤트’를 진행합니다.<br/>
-이벤트 상세 내용은 아래를 확인 부탁드리며 많은 참여 부탁드립니다.<br/><br/>
-
-
-📌이벤트 일정<br/>
-- 투표 기간 : 2025.02.18(화) 오후 1시 ~ 2025.03.04(화) 오후 11시 59분 (KST)<br/>
-- 당첨자 혜택 지급 : 2025.03.07(금)<br/><br/>
-
-📌당첨자 혜택<br/>
-WEB 전용 9젤리 지급 (1,000명)<br/>
-당첨자에게 젤리 지급 시 개별 알림 발송 예정<br/><br/>
-
-📌이벤트 참여 방법<br/>
-해당 링크를 눌러 내가 가장 좋아하는 위버스 앱 아이콘을 골라 투표해 주세요!<br/>
-투표 1회 참여시 앱 아이콘 후보는 1개만 선택할 수 있으며, 위버스 계정 당 1일 2회까지 투표 가능합니다.<br/><br/>
-
-📌이벤트 유의사항<br/>
-- 해당 투표 이벤트는 모든 위버스 회원이 참여 가능하지만 앱 아이콘 변경 기능은 디지털 멤버십 구독자 대상 혜택으로 구독 시 변경 가능합니다.<br/>
-- 당첨자는 실제 투표 결과로 선정된 앱 아이콘과 참여자가 투표한 앱 아이콘의 순위와 상관없이 선발됩니다.<br/>
-- 이벤트 당첨자 발표 기간까지 디지털 멤버십 구독을 유지하고, 매일 투표에 참여하실 수록 당첨 확률이 더 높아집니다.<br/>
-- 투표 완료 후 수정 및 취소는 불가합니다.<br/><br/>
-
-앞으로 더 다양해질 디지털 멤버십의 혜택에 많은 기대 부탁드립니다.<br/>
-
-감사합니다.<br/>
-
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-아리가또 고자이마스<br/>
-</p>
-
-	        
+	        <p id="notice-description"></p>
+	        <div id="notice-file"></div>
 	    </div>
 	</div>
 
@@ -307,6 +354,7 @@ WEB 전용 9젤리 지급 (1,000명)<br/>
 	        </div>
 	    </div>
 	</div>
+	<div id="google_translate_element"></div>
     </main>
     
     <!-- 푸터 -->
