@@ -121,6 +121,8 @@
     font-weight: bold;
 }
 
+
+
 .nav-menu {
     display: flex;
     justify-content: center;
@@ -187,14 +189,16 @@
         display: inline-block;
     }
     .image-text {
+    	width: 300px;
         position: absolute;
         top: 80%;
         left: 50%;
         transform: translate(-50%, -50%);
         color: white;
-        font-size: 46px;
+        font-size: 30px;
         font-weight: bold;
         padding: 5px 10px;
+        text-align: center;
     }
     .img-fluid {
         width: 360px;
@@ -383,7 +387,7 @@
 .comment-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    
 }
 
 .comment-username {
@@ -399,21 +403,25 @@
     height: 24px;  /* 원하는 높이 */
     cursor: pointer;  /* 클릭 가능하게 보이도록 포인터 커서 추가 (선택 사항) */
 }
+#commentListContainer {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd; /* 선택사항: 테두리 추가 */
+    padding: 10px;          /* 선택사항: 내부 여백 */
+}
 </style>
 </head>
 <body>
-
-    
 <nav class="nav-bar">
     <ul class="nav-menu">
         <li class="nav-item">
-            <a class="nav-link active-link" href="#">Fan</a>
+            <a class="nav-link active-link" href="/fancommunity?artist_no=${adto.artist_no }">Fan</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Artist</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Media</a>
+            <a class="nav-link" href="/media?artist_no=${adto.artist_no }">Media</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#" target="_blank">Shop <i class="bi bi-box-arrow-up-right"></i></a>
@@ -441,18 +449,17 @@
 		    <div class="post-box" onclick="openModal()">
 		        <img src="images/profile.png" alt="프로필 이미지">
 		        <input type="text" placeholder="위버스에 포스트를 남겨보세요.">
-		        
 		    </div>
 		    
 		    
 		    <!-- 2번: 모달 창 -->
 		    <div id="postModal" class="modal">
 		        <div class="modal-content">
-		            <h3>포스트 쓰기</h3>
-		            <p>그룹명</p>
+		            <h2>포스트 쓰기</h2>
+		            <p>${adto.artist_group_name}</p>
 		            <!-- <form action="/fcwrite" method="post" enctype="multipart/form-data"> -->
 		            <form action="/fcwrite" method="post"  enctype="multipart/form-data">
-			            <textarea placeholder="위버스에 남겨보세요..."name="f_community_content"></textarea>
+			            <textarea placeholder="위버스에 남겨보세요..."name="f_community_content" rows=17;></textarea>
 			            <input type="hidden" name="artist_no" value="${param.artist_no}">
 			            <input type="hidden" name="nicknameDto.nickname_name" value="${sessionScope.nickname}">
            			    <div class="file-buttons">
@@ -481,11 +488,11 @@
 	    	<!-- 수정용 모달 -->
 			<div id="postModal3" class="modal" >
 			    <div class="modal-content" >
-			        <h3 id="modalTitle">포스트 수정</h3>
-			        <p>그룹명</p>
+			        <h2 id="modalTitle">포스트 수정</h2>
+		            <p>${adto.artist_group_name}</p>
 			        <form id="postForm" action="/fcupdate" method="post" enctype="multipart/form-data">
 			            <!-- 게시글 내용: 수정 시 기존 내용 채워 넣을 예정 -->
-			            <textarea id="f_community_content" placeholder="위버스에 남겨보세요..." name="f_community_content"></textarea>
+			            <textarea id="f_community_content" placeholder="위버스에 남겨보세요..." name="f_community_content" rows=17;></textarea>
 			            <input type="hidden" name="artist_no" value="${param.artist_no}">
 			            <input type="hidden" name="nicknameDto.nickname_name" value="${sessionScope.nickname}">
 			            <!-- 수정 시 communityNo 필요 -->
@@ -512,7 +519,7 @@
 			    </div>
 			</div>
 	    	
-			<!-- 전체 리스트 -->
+		<!-- 전체 리스트 -->
 		<div class="post-list">
     	<c:forEach var="post" items="${list}">
         <!-- .post-item에 position: relative;를 적용 -->
@@ -559,7 +566,7 @@
                 ${post.f_community_content}
             </div>
             
-            <!-- 댓글/좋아요 아이콘 
+            <!-- 댓글/좋아요 아이콘
             <div class="like-container">
 			    <img src="images/빈하트.png" alt="좋아요" 
 			         class="like-icon" 
@@ -569,11 +576,12 @@
 			        
 			    </span>
 			</div>
-            -->
+             -->
+            <hr>
 			<!-- 댓글 개수 표시 -->
 			<!-- 예: 기본값은 서버에서 넘긴 commentList의 길이 -->
-			<div class="comment-header" id="commentCount" onclick="updateCommentCount(${post.f_community_no}); event.stopPropagation();">
-			    
+			<div class="comment-header" id="commentCount_${post.f_community_no}" onclick="event.stopPropagation()">
+			    <!-- 초기값은 빈 문자열이나 기본값(예: "0개의 댓글") -->
 			</div>
         </div>
     </c:forEach>
@@ -602,12 +610,12 @@
 			        <!-- 댓글 영역 시작, 우끼끼~! -->
 			        <div class="comment-section">
 			            
-			            
-			            <!-- 실제 댓글 리스트 -->
-			            <div id="commentList">
-			            
-			            </div>
-			            
+			            <div id="commentListContainer" style="height: 300px; overflow-y: auto;">
+				            <!-- 실제 댓글 리스트 -->
+				            <div id="commentList">
+				            
+				            </div>
+			             </div>
 			            <!-- 구분선 -->
 				        <br>
 	       				<hr class="section-divider" />
@@ -714,6 +722,7 @@
 	                success: function(detailData) {
 	                    console.log(detailData);
 	                    var htmlData = "";
+	                    
 	                    for (let i = 0; i < detailData.length; i++) {
 	                    	htmlData += '<div class="comment-item">';
 	                    	htmlData += '  <img src="images/profile.png" alt="프로필" class="comment-profile">';
@@ -947,6 +956,34 @@
 	                dd.style.display = "none";
 	            });
 	        });
+	        
+	        
+	        $(document).ready(function(){
+	            $('.post-item').each(function(){
+	                let communityNo = $(this).data('community-no');  // 각 게시글의 data-community-no 값
+	                updateCommentCount(communityNo);
+	            });
+	        });
+	        function updateCommentCount(communityNo) {
+	        	$.ajax({
+	        	    url: "/comments/count",
+	        	    type: "get",
+	        	    data: { communityNo: communityNo },
+	        	    dataType: "json",
+	        	    success: function(count) {
+	        	        console.log("댓글 수 for communityNo " + communityNo + ": ", count);
+	        	        var commentCountElement = document.getElementById("commentCount_" + communityNo);
+	        	        // 이미지 태그와 댓글 수 텍스트를 함께 삽입
+	        	        commentCountElement.innerHTML = '<img src="images/메세지.png" alt="메세지" style="width:20px; height:20px; vertical-align:middle; margin-right: 5px;"> '  + count + "개의 댓글";
+	        	        commentCountElement.style.fontSize = "12px"; // 원하는 폰트 크기로 설정
+	        	    },
+	        	    error: function() {
+	        	        console.error("댓글 수 로드 실패");
+	        	    }
+	        	});
+	        }
+	        
+	        
 	     
 		
 	    </script>
@@ -958,8 +995,8 @@
 	    <div class="sidebar">
 	    <!-- ONF 이미지 + 그룹 텍스트 -->
 	    <div class="image-container">
-	        <img src="images/onf.jpeg" class="img-fluid" alt="ONF 이미지">
-	        <a href="/artist?~~~}"><div class="image-text">그룹명</div></a>
+	        <img src="images/${adto.artist_group_image}" class="img-fluid" alt="ONF 이미지">
+	        <a href="/artist?~~~}"><div class="image-text">${adto.artist_group_name}</div></a>
 	    </div>
 	
 	    <!-- 멤버쉽 가입하기 (맵 영역) -->

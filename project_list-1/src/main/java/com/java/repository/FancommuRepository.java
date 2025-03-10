@@ -11,7 +11,7 @@ import com.java.dto.FanCommunityDto;
 import jakarta.transaction.Transactional;
 
 public interface FancommuRepository extends JpaRepository<FanCommunityDto, Integer> {
-
+	@Query(value="select * from fancommunitydto order by f_community_no desc", nativeQuery = true)
 	ArrayList<FanCommunityDto> findAll();
 	
 	@Query(value="select * from fancommunitydto where f_community_no=?",nativeQuery = true)
@@ -23,5 +23,5 @@ public interface FancommuRepository extends JpaRepository<FanCommunityDto, Integ
     void deleteByCommunityNo(int communityNo);
 	
 	
-	
+		
 }

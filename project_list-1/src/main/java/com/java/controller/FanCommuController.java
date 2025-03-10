@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.java.dto.ArtistDto;
+import com.java.dto.ArtistMemberDto;
 import com.java.dto.BoardDto;
 import com.java.dto.CommentDto;
 import com.java.dto.FanCommunityDto;
 import com.java.dto.LikeDto;
 import com.java.dto.MemberDto;
 import com.java.dto.NicknameDto;
+import com.java.service.ArtistService;
 import com.java.service.CommentService;
 import com.java.service.FanCommuService;
 import com.java.service.MemberService;
@@ -39,13 +41,23 @@ public class FanCommuController {
 	@Autowired MemberService memberService;
 	@Autowired NicknameService nicknameService;
 	@Autowired HttpSession session;
+	@Autowired ArtistService artistService;
 	
 	@GetMapping("/fancommunity")
 	public String fancommunity(@RequestParam("artist_no") int artist_no, Model model) {
 		
 		ArrayList<FanCommunityDto> list = fanCommuService.findAll(); // List인데...흠..
+		ArtistDto artistDto = artistService.findByArtistNo(artist_no);
 		model.addAttribute("list",list);
+		model.addAttribute("adto", artistDto);
 		return "fancommunity";
+	}
+	
+	@GetMapping("/media")
+	public String media(@RequestParam("artist_no") int artist_no, Model model) {
+		ArtistDto artistDto = artistService.findByArtistNo(artist_no);
+		model.addAttribute("adto", artistDto);
+		return "media";
 	}
 	
 	@GetMapping("/fancommunity/detail")
@@ -55,6 +67,7 @@ public class FanCommuController {
 		
 		return clist;
 	}
+	
 	
 	
 
@@ -193,6 +206,6 @@ public class FanCommuController {
 	    return "1";
 	}
 	
-	
+
 }
 

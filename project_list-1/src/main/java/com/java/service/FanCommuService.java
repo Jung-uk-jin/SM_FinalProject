@@ -20,6 +20,4 @@ public interface FanCommuService {
 	//게시글 수정
 	void updateCommunity(FanCommunityDto existingPost);
 
-
-
 }
