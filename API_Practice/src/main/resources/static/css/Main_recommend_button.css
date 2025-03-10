@@ -1,0 +1,98 @@
+/* 버튼 스타일 */
+.circle-button {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* 우측 하단 위치 */
+}
+
+/* 모달 배경 */
+.modal {
+    display: none;  /* 기본적으로 숨겨짐 */
+    position: fixed;
+    right: 20px;  /* 우측 하단 */
+    bottom:30px;
+    width: 350px; /* 고정 너비 */
+    height: 600px; /* 고정 높이 */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    opacity: 0; /* 초기 상태에서는 보이지 않음 */
+    transform: translateY(100%); /* 처음에는 화면 아래로 내려가도록 설정 */
+    animation: slideUp 0.5s forwards; /* 위로 올라가는 애니메이션 */
+}
+
+/* 모달 헤더 */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* 모달 내용 */
+.modal-content {
+    padding: 10px;
+    height: calc(100% - 50px); /* 헤더를 제외한 나머지 영역에 맞게 설정 */
+    overflow-y: auto; /* 내용이 많아지면 스크롤이 생김 */
+}
+
+/* 닫기 버튼 */
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+}
+
+/* 모달 애니메이션: 아래에서 위로 */
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100%); /* 시작 위치: 화면 밖 아래 */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* 끝 위치: 원래 위치로 */
+    }
+}
+/* 모달 내용 */
+.modal-content ul {
+    padding-left: 0;  /* 기본 여백 제거 */
+    list-style-type: none;  /* 불릿 포인트 제거 */
+}
+
+/* 각 항목(li) 스타일 */
+.modal-content li {
+    display: flex;
+    flex-direction: column; /* 텍스트와 이미지를 세로로 배치 */
+    padding: 10px 0;
+    margin-top: 10px; /* 첫 번째 이미지와 두 번째 텍스트 사이의 간격을 늘림 */
+}
+
+/* 이미지 스타일 */
+.modal-content img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px; /* 이미지 모서리를 둥글게 */
+    margin-top: 5px; /* 텍스트와 이미지 사이의 여백 */
+}
+
+/* 텍스트 스타일 */
+.modal-content li span {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 3px; /* 텍스트와 이미지 사이 간격을 줄임 */
+}
