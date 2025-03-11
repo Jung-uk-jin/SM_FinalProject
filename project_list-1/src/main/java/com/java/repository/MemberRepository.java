@@ -10,4 +10,8 @@ public interface MemberRepository extends JpaRepository<MemberDto, String>{
 	@Query(value="select * from memberdto where member_nickname=?",nativeQuery = true)
 	MemberDto findByNickName(String memberNickname);
 
+	// 
+	@Query(value="select * from memberdto where member_phone=?",nativeQuery = true)
+	MemberDto findByPhone(String phone);
+
 }

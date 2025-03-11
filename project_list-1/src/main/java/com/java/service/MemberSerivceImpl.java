@@ -18,4 +18,11 @@ public class MemberSerivceImpl implements MemberService {
 		return mdto;
 	}
 
+	// WebSocket OTP 인증
+	@Override
+	public MemberDto findByPhone(String phone) {
+		MemberDto mdto = memberRepository.findByPhone(phone);
+		return mdto;
+	}
+
 }

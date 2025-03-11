@@ -825,22 +825,6 @@
 		}
 	     
 	     //댓글 수
-	     function updateCommentCount(communityNo) {
-			    $.ajax({
-			        url: "/comments/count",
-			        type: "get",
-			        data: { communityNo: communityNo },
-			        dataType: "json",
-			        success: function(count) {
-			        	console.log("댓글 수 :",count);
-			            // count가 숫자로 반환됨
-			            document.getElementById("commentCount").textContent = count + "개의 댓글";
-			        },
-			        error: function() {
-			            console.error("댓글 수 로드 실패");
-			        }
-			    });
-			}
 	     
 	        function toggleMenu(event) {
 	            // 이벤트 전파 막아서 바깥 클릭 시 닫힐 수 있도록

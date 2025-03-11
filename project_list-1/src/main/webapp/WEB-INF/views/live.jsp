@@ -358,8 +358,15 @@
 			 	 <p class="media-title">[이세계아이돌3]</p>
 		   	  </div>
 		    </div>
+	 	    <button onclick="showQRCode()">구매</button>
 		</div>
+		
 <script>
+
+function showQRCode() {
+    window.location.href = '/OTP';
+}
+
 var swiper = new Swiper('.swiper-container', {
     loop: true,
     slidesPerView: 5,   // 한 화면에 6개의 슬라이드 표시

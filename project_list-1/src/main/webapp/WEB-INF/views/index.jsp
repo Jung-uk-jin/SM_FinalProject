@@ -185,7 +185,7 @@
     <div class="navbar">
         <div class="logo" style="font-size: 1.5rem; font-weight: bold; color: #00aaff; background: none; border: none; cursor: pointer; font-family: inherit;"><a href="/">A&F</a></div>
         <div class="menu">
-            <button onclick="location.href='#'" style="font-size: 1.5rem; font-weight: bold; color: #00aaff; background: none; border: none; cursor: pointer; font-family: inherit;">sign</button>
+            <button onclick="location.href='/mobile'" style="font-size: 1.5rem; font-weight: bold; color: #00aaff; background: none; border: none; cursor: pointer; font-family: inherit;">sign</button>
             <div class="divider"></div>
             <button onclick="location.href='#'" style="font-size: 1.5rem; font-weight: bold; color: #00aaff; background: none; border: none; cursor: pointer; font-family: inherit;">알림</button>
             <button onclick="location.href='#'" style="font-size: 1.5rem; font-weight: bold; color: #00aaff; background: none; border: none; cursor: pointer; font-family: inherit;">스토어</button>
