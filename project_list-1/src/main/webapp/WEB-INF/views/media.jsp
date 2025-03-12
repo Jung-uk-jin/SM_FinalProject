@@ -10,6 +10,7 @@
   <title>Media & Membership</title>
   <link rel="stylesheet" href="styles.css"> <!-- 별도 CSS 파일 사용 시 -->
   <style>
+    /* 페이지 전체 스타일 */
       body { font-family: Arial, sans-serif; }
   
   /* 네비게이션 스타일 */
@@ -83,20 +84,6 @@
     transition: color 0.2s;   /* 호버 시 부드러운 색상 변화 */
 }
 
-.nav-link:hover { color: lightgray !important; }
-    .active-link {
-        font-weight: bold;
-    }
-    .active-link::after {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 2px;
-        background-color: white;
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-    }
     /* 페이지 전체 스타일 */
     body {
       margin: 0;
@@ -252,26 +239,37 @@
     padding: 0 20px;     /* 좌우 20px씩 내부 여백 */
 }
 
-
-
-
-
-.swiper-container {
-  width: 100%;
-  margin: auto;
-}
-.swiper-slide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.media-title {
-  margin-top: 10px;
-  font-size: 1.2em;
+/* 
+  영상 영역 (.media-videos)의 outer 컨테이너에 flex-wrap을 적용하고,
+  내부 반복되는 각 아이템(내부 .media-videos)을 5열로 배치 
+*/
+.media-videos {
+  display: flex !important; /* inline style를 덮어쓰도록 */
+  flex-wrap: wrap;
+  gap: 15px; /* 기존 gap 유지 */
 }
 
+/* outer .media-videos 내부에 있는 각 영상 아이템에 너비 20% 부여 */
+.media-videos > .media-videos {
+  width: calc(20% - 15px); /* 5열로 배치 (간격을 고려하여 조정) */
+  box-sizing: border-box;
+}
 
+/* 
+  텍스트 영역 (.media-texts)의 outer 컨테이너에도 flex-wrap을 적용하고,
+  내부 반복되는 각 아이템에 너비 20% 부여
+*/
+.media-texts {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* outer .media-texts 내부의 반복되는 container 안의 각 텍스트 아이템에 20% 부여 */
+.media-texts > .media-texts > .media-text {
+  width: calc(20% - 15px);
+  box-sizing: border-box;
+}
 
 
 
@@ -313,52 +311,42 @@
 
 
 
-<div class="container">
-	<!-- Swiper CSS (CDN 링크 사용) -->
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-	<div class="swiper-container">
-	  <div class="swiper-wrapper media-video">
-	    <c:forEach var="media" items="${mediaList}">
-	      <div class="swiper-slide" style="text-align: center;">
-	        <img src="/images/${media.media_image}" alt="${media.media_title}" style="max-width:100%;">
-	        <p class="media-title">${media.media_title}</p>
-	      </div>
-	    </c:forEach>
-	  </div>
-	  <!-- 네비게이션 버튼 -->
-	  <div class="swiper-button-next"></div>
-	  <div class="swiper-button-prev"></div>
-	</div>
-</div>
-<!-- Swiper JS (CDN 링크 사용) -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
+	<div class="container">
 		<div class="media-section">
+		    <h2 style="text-align: left;">최신 미디어</h2>
+		    <br>
+		    <div class="media-videos" style="display:flex;">
+		        <c:forEach var="media" items="${mediaList}">
+	                <div class="media-videos" style="display:flex;">
+	                    <div class="media-video">
+						  <img src="/images/${media.media_image}" alt="미디어1">
+						</div>
+						<div class="media-text" style="text-align: center;">
+						 	<p class="media-title">${media.media_title}</p>
+					   	</div>
+	                </div>
+            	</c:forEach>
+		    </div>
+		</div>
+	
+	
+				<div class="media-section">
 		    <h2 style="text-align: left;">Live</h2>
 		    <br>
 		    <div class="media-videos" style="display:flex;">
-		        <div class="media-video">
-				  <img src="/images/isedol.png" alt="미디어1">
-				</div>
-		        <div class="media-video">
-				  <img src="/images/isedol.png" alt="미디어2">
-				</div>
-		        <div class="media-video">
-				  <img src="/images/isedol.png" alt="미디어3">
-				</div>
-		    </div>
-		    <div class="media-texts" style="display:flex;" >
-		   	  <div class="media-text" style="text-align: center;">
-			 	 <p class="media-title">[이세계아이돌] UNRELEASED PROFILE PHOTO</p>
-		   	  </div>
-		   	  <div class="media-text" style="text-align: center;">
-			 	 <p class="media-title">[이세계아이돌2]2</p>
-		      </div>
-		   	  <div class="media-text" style="text-align: center;">
-			 	 <p class="media-title">[이세계아이돌3]</p>
-		   	  </div>
+		        <c:forEach var="media" items="${liveList}">
+	                <div class="media-videos" style="display:flex;">
+	                    <div class="media-video">
+						  <img src="/images/${media.media_image}" alt="미디어1">
+						</div>
+						<div class="media-text" style="text-align: center;">
+						 	<p class="media-title">${media.media_title}</p>
+					   	</div>
+	                </div>
+            	</c:forEach>
 		    </div>
 		</div>
+	</div>
 <script>
 var swiper = new Swiper('.swiper-container', {
     loop: true,

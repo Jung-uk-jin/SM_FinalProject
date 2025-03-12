@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java.dto.ArtistDto;
+import com.java.dto.LiveDto;
 import com.java.dto.MediaDto;
 import com.java.service.ArtistService;
+import com.java.service.LiveService;
 import com.java.service.MediaService;
 
 @Controller
@@ -18,15 +20,19 @@ public class MediaController {
 	
 	@Autowired MediaService mediaService;
 	@Autowired ArtistService artistService;
+	@Autowired LiveService liveService;
 	
 	@GetMapping("/media")
 	public String media(@RequestParam("artist_no") int artistNo,Model model) {
 		List<MediaDto> mediaList = mediaService.findByArtistNo(artistNo);
+		List<LiveDto> liveList = liveService.findByArtistNo(artistNo);
 		ArtistDto artistDto = artistService.findByArtistNo(artistNo);
 		
 		model.addAttribute("mediaList", mediaList);
 		model.addAttribute("adto", artistDto);
+		model.addAttribute("liveList", liveList);
 		System.out.println(mediaList);
+		System.out.println(liveList);
 		return "media";
 	}
 	

@@ -71,6 +71,7 @@
         overflow-y: auto;
         max-height: 80vh;
     }
+    
     .modal-content textarea {
         display: block;
         width: 90%;
@@ -452,9 +453,8 @@
 		        <div class="modal-content">
 		            <h2>포스트 쓰기</h2>
 		            <p>${adto.artist_group_name}</p>
-		            <!-- <form action="/fcwrite" method="post" enctype="multipart/form-data"> -->
-		            <form action="/fcwrite" method="post"  enctype="multipart/form-data">
-			            <textarea placeholder="위버스에 남겨보세요..."name="f_community_content" rows=17;></textarea>
+		            <form action="/acwrite" method="post"  enctype="multipart/form-data">
+			            <textarea placeholder="위버스에 남겨보세요..."name="a_community_content" rows=17;></textarea>
 			            <input type="hidden" name="artist_no" value="${param.artist_no}">
 			            <input type="hidden" name="nicknameDto.nickname_name" value="${sessionScope.nickname}">
            			    <div class="file-buttons">
@@ -487,11 +487,11 @@
 		            <p>${adto.artist_group_name}</p>
 			        <form id="postForm" action="/fcupdate" method="post" enctype="multipart/form-data">
 			            <!-- 게시글 내용: 수정 시 기존 내용 채워 넣을 예정 -->
-			            <textarea id="f_community_content" placeholder="위버스에 남겨보세요..." name="f_community_content" rows=17;></textarea>
+			            <textarea id="a_community_content" placeholder="위버스에 남겨보세요..." name="a_community_content" rows=17;></textarea>
 			            <input type="hidden" name="artist_no" value="${param.artist_no}">
 			            <input type="hidden" name="nicknameDto.nickname_name" value="${sessionScope.nickname}">
 			            <!-- 수정 시 communityNo 필요 -->
-			            <input type="hidden" id="communityNoInput2" name="f_community_no" value="">
+			            <input type="hidden" id="communityNoInput2" name="a_community_no" value="">
 			            <div class="file-buttons">
 			                <!-- 이미지 파일 업로드 -->
 			                <label for="image-upload1">
@@ -518,8 +518,8 @@
 		<div class="post-list">
     	<c:forEach var="post" items="${list}">
         <!-- .post-item에 position: relative;를 적용 -->
-        <div class="post-item" data-community-no="${post.f_community_no}" style="position: relative;"
-             onclick="openModal2('${post.nicknameDto.nickname_name}', '${post.f_community_content}', '${post.f_community_date}', '${post.f_community_image}', this.dataset.communityNo)">
+        <div class="post-item" data-community-no="${post.a_community_no}" style="position: relative;"
+             onclick="openModal2('${post.nicknameDto.nickname_name}', '${post.a_community_content}', '${post.a_community_date}', '${post.a_community_image}', this.dataset.communityNo)">
              
             <!-- 수정/삭제 드롭다운 (작성자일 때만 노출) -->
             <c:choose>
@@ -529,8 +529,8 @@
                         <button class="menu-btn" onclick="toggleMenu(event)">...</button>
                         <!-- 드롭다운 내용 -->
                         <div class="dropdown-content" style="display: none; position: absolute; top: 30px; right: 0;">
-                            <div class="menu-item" onclick="updatePost(${post.f_community_no}, ${post.artistDto.artist_no}); event.stopPropagation();" style="font-size:15px;">수정하기</div>
-                            <div class="menu-item" onclick="deletePost(${post.f_community_no}, ${post.artistDto.artist_no}); event.stopPropagation();" style="font-size:15px;">삭제하기</div>
+                            <div class="menu-item" onclick="updatePost(${post.a_community_no}, ${post.artistDto.artist_no}); event.stopPropagation();" style="font-size:15px;">수정하기</div>
+                            <div class="menu-item" onclick="deletePost(${post.a_community_no}, ${post.artistDto.artist_no}); event.stopPropagation();" style="font-size:15px;">삭제하기</div>
                         </div>
                     </div>
                 </c:when>
@@ -544,21 +544,21 @@
                 <img src="images/profile.png" alt="프로필 이미지">
                 <span class="username">${post.nicknameDto.nickname_name}</span>
                 <span class="timestamp">
-                    <fmt:formatDate value="${post.f_community_date}" pattern="MM.dd HH:mm" />
+                    <fmt:formatDate value="${post.a_community_date}" pattern="MM.dd HH:mm" />
                 </span>
             </div>
             
             <!-- 이미지 영역 -->
-            <c:if test="${not empty post.f_community_image}">
-                <img src="/upload/artist/${post.f_community_image}" alt="게시글 이미지" style="max-width:100%;">
+            <c:if test="${not empty post.a_community_image}">
+                <img src="/upload/artist/${post.a_community_image}" alt="게시글 이미지" style="max-width:100%;">
             </c:if>
-            <c:if test="${empty post.f_community_image}">
+            <c:if test="${empty post.a_community_image}">
                 <!-- 이미지 없을 때 -->
             </c:if>
             
             <!-- 게시글 내용 -->
             <div class="post-content">
-                ${post.f_community_content}
+                ${post.a_community_content}
             </div>
             
             <!-- 댓글/좋아요 아이콘
@@ -566,8 +566,8 @@
 			    <img src="images/빈하트.png" alt="좋아요" 
 			         class="like-icon" 
 			         data-liked="false" 
-			         onclick="toggleLike(this, 'images/빈하트.png', 'images/가득찬하트.png', ${post.f_community_no}, '${sessionScope.nickname}'), event.stopPropagation()">
-			    <span class="like-count" id="likeCount_${post.f_community_no}">
+			         onclick="toggleLike(this, 'images/빈하트.png', 'images/가득찬하트.png', ${post.a_community_no}, '${sessionScope.nickname}'), event.stopPropagation()">
+			    <span class="like-count" id="likeCount_${post.a_community_no}">
 			        
 			    </span>
 			</div>
@@ -575,7 +575,7 @@
             <hr>
 			<!-- 댓글 개수 표시 -->
 			<!-- 예: 기본값은 서버에서 넘긴 commentList의 길이 -->
-			<div class="comment-header" id="commentCount_${post.f_community_no}" onclick="event.stopPropagation()">
+			<div class="comment-header" id="commentCount_${post.a_community_no}" onclick="event.stopPropagation()">
 			    <!-- 초기값은 빈 문자열이나 기본값(예: "0개의 댓글") -->
 			</div>
         </div>
@@ -616,13 +616,13 @@
 	       				<hr class="section-divider" />
 			            
 			            <!-- 댓글 입력 -->
-		         		<form action="/comments/add" method="post" id="commentForm">
+		         		<form action="/acomments/add" method="post" id="commentForm">
 				            <div class="comment-input-box">
 							    <!-- 게시글 번호(community_no)를 숨겨서 전송 -->
 							    <input type="hidden" id="communityNoInput" name="communityNo" value="">
 							    <!-- 로그인한 사용자의 닉네임 -->
 							    <input type="hidden" name="memberNickname" value="${sessionScope.nickname}">
-				                <input type="text" id="commentInput" placeholder="댓글을 입력하세요." class="comment-input" name="comment_content">
+				                <input type="text" id="commentInput" placeholder="댓글을 입력하세요." class="comment-input" name="a_comment_content">
 				                <button type="button" class="comment-submit" onclick="addComment()">등록</button>
 			            </div>
 		         		</form>
@@ -689,7 +689,7 @@
 	            // 삭제 기능 구현 예시
 	            if (confirm(commentNo+"번 댓글을 삭제하시겠습니까?")) {
 	            	$.ajax({
-			            url: "/fancomment/delete", // 삭제를 처리할 컨트롤러 URL
+			            url: "/artistcomment/delete", // 삭제를 처리할 컨트롤러 URL
 			            type: "post",
 			            data: { commentNo: commentNo},
 			            dataType: "text", // 또는 JSON, 서버에서 어떻게 반환하는지에 따라
@@ -710,7 +710,7 @@
 	       
 	        function loadComments(communityNo) {
 	            $.ajax({
-	                url: "/fancommunity/detail",
+	                url: "/artistcommunity/detail",
 	                type: "get",
 	                data: { communityNo: communityNo },
 	                dataType: "json",
@@ -729,13 +729,13 @@
 	                    	    htmlData += '          <div class="comment-options">';
 	                    	    htmlData += '              <button class="comment-options-btn menu-btn" onclick="toggleOptionsMenu(this)">...</button>';
 	                    	    htmlData += '              <div class="comment-options-menu" style="display: none;">';
-	                    	    htmlData += '                  <button class="delete-comment" onclick="deleteComment(' + detailData[i].comment_no + ', ' + detailData[i].communityDto.f_community_no + '); event.stopPropagation();">삭제하기</button>';
+	                    	    htmlData += '                  <button class="delete-comment" onclick="deleteComment(' + detailData[i].a_comment_no + ', ' + detailData[i].communityDto.a_community_no + '); event.stopPropagation();">삭제하기</button>';
 	                    	    htmlData += '              </div>';
 	                    	    htmlData += '          </div>';
 	                    	}
 	                    	htmlData += '      </div>'; // end .comment-header
-	                    	htmlData += '      <div class="comment-timestamp">' + new Date(detailData[i].comment_date).toLocaleString() + '</div>';
-	                    	htmlData += '      <div class="comment-text">' + detailData[i].comment_content + '</div>';
+	                    	htmlData += '      <div class="comment-timestamp">' + new Date(detailData[i].a_comment_date).toLocaleString() + '</div>';
+	                    	htmlData += '      <div class="comment-text">' + detailData[i].a_comment_content + '</div>';
 	                    	htmlData += '  </div>'; // end .content
 	                    	htmlData += '</div>'; // end .comment-item
 	                    }
@@ -786,7 +786,7 @@
 		    //ajax
 		    let htmlData = "";
 		    $.ajax({
-		    	url:"/comments/add",
+		    	url:"/acomments/add",
 		    	type:"post",
 		    	data:$("#commentForm").serialize(), //form의 모든 데이터를 서버전송 
 		    	dataType:'json',
@@ -796,8 +796,8 @@
 		    		htmlData += ' <img src="images/profile.png" alt="프로필" class="comment-profile">';
 		    		htmlData += ' <div class="comment-content">';
 		    		htmlData += ' <div class="comment-username">'+data.nicknameDto.nickname_name+'</div>';
-		    		htmlData += ' <div class="comment-timestamp">'+data.comment_date+'</div>';
-		    		htmlData += ' <div class="comment-text">'+data.comment_content+'</div>';
+		    		htmlData += ' <div class="comment-timestamp">'+data.a_comment_date+'</div>';
+		    		htmlData += ' <div class="comment-text">'+data.a_comment_content+'</div>';
 		    		htmlData += ' </div>';
 		    		htmlData += ' </div>';
 		                    
@@ -844,30 +844,30 @@
 	        function updatePost(communityNo, artistNo) {
 	        	// AJAX를 통해 해당 게시글의 데이터를 가져옴 (수정용 엔드포인트)
 	            $.ajax({
-	                url: "/fancommunity/getPost", // 게시글 상세 정보를 JSON으로 반환하는 엔드포인트
+	                url: "/artistcommunity/getPost", // 게시글 상세 정보를 JSON으로 반환하는 엔드포인트
 	                type: "GET",
 	                data: { communityNo: communityNo },
 	                dataType: "json",
 	                success: function(postData) {
 	                	console.log("수정창을 엽니다.")
 	                	console.log("postData : ",postData)
-	                	console.log("이미지 : ",postData.f_community_image)
+	                	console.log("이미지 : ",postData.a_community_image)
 	                    // postData는 FanCommunityDto 객체 (JSON)라고 가정
 	                    // 모달 타이틀을 "포스트 수정"으로 변경
 	                    document.getElementById("modalTitle").textContent = "포스트 수정";
 	                	
 	                	
 	                    // 기존 내용 채워넣기
-	                    document.getElementById("f_community_content").value = postData.f_community_content;
+	                    document.getElementById("a_community_content").value = postData.a_community_content;
 	                    // 만약 이미지가 있다면 미리보기 세팅
-	                    if (postData.f_community_image && postData.f_community_image.trim() !== "") {
-	                        document.getElementById("previewImage2").src = "/upload/artist/" + postData.f_community_image;
+	                    if (postData.a_community_image && postData.a_community_image.trim() !== "") {
+	                        document.getElementById("previewImage2").src = "/upload/artist/" + postData.a_community_image;
 	                        document.getElementById("imagePreviewContainer2").style.display = "block";
 	                    } else {
 	                        document.getElementById("imagePreviewContainer2").style.display = "none";
 	                    }
 	                    // 수정 시 필요한 communityNo 값을 hidden input에 세팅
-	                    document.getElementById("communityNoInput2").value = postData.f_community_no;
+	                    document.getElementById("communityNoInput2").value = postData.a_community_no;
 	                    // 폼 action을 수정 전용 URL로 변경 (예: "/fancommunity/update")
 	                    document.getElementById("postForm").action = "/fcupdate";
 	                    // 모달 열기
@@ -900,14 +900,14 @@
 	       function deletePost(communityNo, artistNo) {
 			    if (confirm(communityNo+"번 게시글을 삭제하시겠습니까?")) {
 			        $.ajax({
-			            url: "/fancommunity/delete", // 삭제를 처리할 컨트롤러 URL
+			            url: "/artistcommunity/delete", // 삭제를 처리할 컨트롤러 URL
 			            type: "post",
 			            data: { communityNo: communityNo},
 			            dataType: "text", // 또는 JSON, 서버에서 어떻게 반환하는지에 따라
 			            success: function(response) {
 			                alert("게시글이 삭제되었습니다.");
 			                // 삭제 후 페이지 새로고침 또는 목록 업데이트
-			                 window.location.replace("/fancommunity?artist_no=" + artistNo);
+			                 window.location.replace("/artistcommunity?artist_no=" + artistNo);
 			                //location.href="/fancommunity?artist_no="+artistNo
 			            },
 			            error: function() {
@@ -945,7 +945,7 @@
 	        });
 	        function updateCommentCount(communityNo) {
 	        	$.ajax({
-	        	    url: "/comments/count",
+	        	    url: "/acomments/count",
 	        	    type: "get",
 	        	    data: { communityNo: communityNo },
 	        	    dataType: "json",

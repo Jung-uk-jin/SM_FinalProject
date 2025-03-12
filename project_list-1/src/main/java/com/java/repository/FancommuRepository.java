@@ -19,7 +19,7 @@ public interface FancommuRepository extends JpaRepository<FanCommunityDto, Integ
 	
 	@Modifying
     @Transactional
-    @Query(value = "DELETE FROM facommunitydto WHERE f_community_no=?", nativeQuery = true)
+    @Query(value = "DELETE FROM fancommunitydto WHERE f_community_no=?", nativeQuery = true)
     void deleteByCommunityNo(int communityNo);
 	
 	

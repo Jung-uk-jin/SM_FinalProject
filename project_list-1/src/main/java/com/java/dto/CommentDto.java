@@ -43,6 +43,10 @@ public class CommentDto {
 	    private FanCommunityDto communityDto;
 	    
 	    @ManyToOne
+	    @JoinColumn(name = "a_community_no")  // 외래키로 community와 연결
+	    private ArtistCommunityDto artistcommunityDto;
+	    	    
+	    @ManyToOne
 	    @JoinColumn(name = "nickname_name")  // 외래키로 Member와 연결
 	    private NicknameDto nicknameDto;
 }

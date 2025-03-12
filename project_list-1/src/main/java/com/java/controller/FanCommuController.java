@@ -193,7 +193,7 @@ public class FanCommuController {
 		return "redirect:/fancommunity?artist_no="+artistNo;
 	}
 	
-	//삭제하기
+	// 댓글 삭제하기
 	@ResponseBody
 	@PostMapping("/fancomment/delete")
 	public String deleteComment(@RequestParam("commentNo") int commentNo) {
