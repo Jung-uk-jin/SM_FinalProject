@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class FController {
 	
-	//daddadfa
+	//daddadfa1111111
 //		@Autowired MemberService memberService;
 		@Autowired HttpSession session;
 	
