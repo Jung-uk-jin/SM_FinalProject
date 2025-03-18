@@ -10,4 +10,10 @@ public interface AService {
 
 	ArtistDto findById(int artistNo);
 
+	// 아티스트 등록
+	void awrite(ArtistDto adto);
+
+	// 아티스트 등록 토글
+	void updateDisplayStatus(int artistNo, boolean display);
+
 }

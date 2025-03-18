@@ -48,5 +48,9 @@ public class CommentDto {
 	    @JoinColumn(name = "nickname_name")  // 외래키로 Member와 연결
 	    private NicknameDto nicknameDto;
 	    
+	    @ManyToOne
+	    @JoinColumn(name = "artistmember_nickname")  // 외래키로 Member와 연결
+	    private ArtistMemberDto artistMemberDto;
+	    
 
 }

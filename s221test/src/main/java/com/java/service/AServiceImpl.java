@@ -28,4 +28,21 @@ public class AServiceImpl implements AService {
 		return aRepository.findById(artistNo).orElse(null);
 	}
 
+	// 아티스트 등록
+	@Override
+	public void awrite(ArtistDto adto) {
+		aRepository.save(adto);
+		
+	}
+
+	// 아티스트 등록 토글
+	@Override
+	public void updateDisplayStatus(int artistNo, boolean display) {
+		  ArtistDto artist = aRepository.findById(artistNo)
+		            .orElseThrow(() -> new RuntimeException("Artist not found with id: " + artistNo));
+          artist.setDisplay(display);
+          aRepository.save(artist);  // 변경된 내용 저장
+		
+	}
+
 }

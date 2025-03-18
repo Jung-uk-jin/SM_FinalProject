@@ -307,7 +307,7 @@ body {
     <div class="profile-images" style="display:flex;">  
     	<c:forEach items="${list}" var="amdto">
 	        <div class="profile-item" style="width : 100px; overflow:hidden; margin-right: 10px;">
-	            <a href="#"><img src="images/${amdto.artistmember_image}" alt="멤버1" style="width : 100px; border-radius: 30px; "></a>
+	            <a href="#"><img src="/upload/test/${amdto.artistmember_image}" alt="멤버1" style="width : 100px; border-radius: 30px; "></a>
 	            <p>${amdto.artistmember_name}</p>
 	        </div>
     	</c:forEach>  
@@ -446,7 +446,9 @@ body {
 		                        }
 		                    },
 		                    error: function () {
-		                        alert("서버 오류 발생. 다시 시도해주세요.");
+		                    	if (confirm("로그인을 하셔야 합니다. 로그인 페이지로 이동하시겠습니까?")) {
+		                    	    location.href = "/login";
+		                    	}
 		                    }
 		                });
 		            });

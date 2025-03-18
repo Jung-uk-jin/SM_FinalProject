@@ -606,16 +606,16 @@
 			                <c:if test="${status.index % 5 == 0}">
 			                    <tr>
 			                </c:if>
-			
+							<c:if test="${adto.display}">
 			                <td>
 			                	<a href="/artist?artist_no=${adto.artist_no}">
 			                    <div class="artist-card">
-			                       <img src="images/${adto.artist_group_image }" alt="Artist"> 
+			                       <img src="/upload/test/${adto.artist_group_image }" alt="Artist"> 
 			                        <div class="artist-name">${adto.artist_group_name}</div>
 			                    </div>
 			                    </a>
 			                </td>
-			
+							</c:if>
 			                <!-- 5개마다 행(tr) 닫기 -->
 			                <c:if test="${status.index % 5 == 4 or status.last}">
 			                    </tr>

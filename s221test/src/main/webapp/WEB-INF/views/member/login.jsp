@@ -22,6 +22,9 @@
 	}else if("${param.chkLogin}"=="2"){
 		alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 	}
+    if("${param.chkInput}"=="1"){
+		alert("회원가입이 완료되었습니다.");
+    }
    
  // 6. 번역
     function googleTranslateElementInit() {

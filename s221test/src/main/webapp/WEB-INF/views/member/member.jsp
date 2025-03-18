@@ -6,6 +6,7 @@
   <meta charset="UTF-8" />
   <title>회원가입</title>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <style>
     /* 전체 레이아웃 */
     body {
@@ -76,15 +77,17 @@
     .btn-dup-check {
       height: 36px;
       padding: 0 12px;
-      background-color: #03c75a;
+      background-color: #F5C3B2;
       color: #fff;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 600;
     }
     .btn-dup-check:hover {
-      background-color: #02a74a;
+ 	  color: #F5C3B2;
+      background-color: #f5f5f5;
     }
     .btn-search {
       height: 36px;
@@ -160,6 +163,7 @@
       <!-- 닉네임 -->
       <label for="member_nickname">닉네임</label>
       <input type="text" id="member_nickname" name="member_nickname" placeholder="닉네임 입력" required />
+      <span class="error-msg" id="nickname-error-msg" style="display: none;">이미 사용 중인 닉네임입니다.</span>
       
       <!-- 이메일 (아이디 + 도메인) -->
       <label for="member_email">이메일</label>
@@ -174,32 +178,36 @@
         </select>
       </div>
       <!-- 실제 서버로 전송할 hidden input -->
-      <input type="hidden" id="member_email" name="member_email" />
+      <input type="hidden" id="member_email" name="member_email" required />
       
       <!-- 생년월일 -->
       <label for="member_birth">생년월일</label>
-      <input type="text" id="member_birth" name="member_birth" placeholder="YYYY-MM-DD" oninput="formatBirthDate(this)" />
+      <input type="text" id="member_birth" name="member_birth" placeholder="YYYY-MM-DD" oninput="formatBirthDate(this)" required />
       
       <!-- 전화번호 -->
       <label for="member_phone">전화번호</label>
-      <input type="text" id="member_phone" name="member_phone" placeholder="010-1234-5678" oninput="formatPhone(this)" />
+      <input type="text" id="member_phone" name="member_phone" placeholder="010-1234-5678" oninput="formatPhone(this)" required />
       
       <!-- 성별 -->
       <label for="member_gender">성별</label>
-        <select id="member_gender" name="member_gender">
+        <select id="member_gender" name="member_gender" required>
           <option value="남자">남자</option>
           <option value="여자">여자</option>
         </select>
-        
-      <!-- 주소 (우편번호 검색 + 상세주소) -->
-      <label for="member_address">주소</label>
+              
+      <!-- 주소 -->
+	  <label for="member_address">주소</label>
       <div class="row-inline">
-        <input type="text" id="postcode" placeholder="우편번호" style="flex:1" />
-        <button type="button" class="btn-search" onclick="searchPostcode()">검색</button>
-      </div>
-      <input type="text" id="member_address" name="member_address" placeholder="주소 (검색 후 자동입력)" required />
-      <input type="text" id="detailAddress" placeholder="상세주소" />
-      
+				<input type="text" id="member_postalCode" class="addressInput" name="member_postalCode"
+					placeholder="우편번호" style="width: 100px;" required /> 
+				<input type="button" id="addAddressBtn"	class="btn-dup-check" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" required />
+	  </div><br>
+	  <br> <input type="text" id="member_address" placeholder="주소" required /><br>
+      <input type="text" id="detailAddress" placeholder="상세주소" required />
+	  <input type="text" id="sample6_extraAddress" placeholder="참고항목" />
+	  
+	  <input type="hidden" id="full_address" name="member_address"/>
+
       <!-- 국가/지역 (번호 표시) -->
       <label for="member_country">국가/지역</label>
       <select id="member_country" name="member_country" class="country-select" required>
@@ -213,11 +221,7 @@
       <input type="hidden" name="member_membership" value="0" />
       
       <!-- usertype (fan / artist) -->
-      <label>사용자 유형</label>
-      <div class="radio-group">
-        <label><input type="radio" name="member_usertype" value="fan" checked /> Fan</label>
-        <label><input type="radio" name="member_usertype" value="artist" /> Artist</label>
-      </div>
+	  <input type="hidden" name="member_usertype" value="Fan" />
       
       
       <button type="submit" class="btn-submit">가입하기</button>
@@ -225,7 +229,9 @@
   </div>
 
   <script>
-    // 아이디 중복확인 (예시)
+  
+  	let Duplicatecheck = false;
+  
     function checkDuplicate() {
       const memberId = document.getElementById('member_id').value.trim();
       if(!memberId) {
@@ -241,9 +247,11 @@
           success: function(data) {
             if (data.exists) {
               $('#id-error-msg').show();
+              Duplicatecheck = false;
             } else {
               $('#id-error-msg').hide();
               alert("사용 가능한 아이디입니다.");
+              Duplicatecheck = true;
             }
           },
           error: function(xhr, status, error) {
@@ -267,6 +275,35 @@
         pwMsg.classList.remove('valid');
       }
     });
+    
+    // 닉네임 중복확인
+    let DuplicatecheckNickname = false;
+	const nicknameInput = document.getElementById('member_nickname');
+	const nicknameErrorMsg = document.getElementById('nickname-error-msg');
+	
+	nicknameInput.addEventListener('blur', function() {
+	    const memberNickname = nicknameInput.value.trim();
+	    if (memberNickname !== '') {
+	        $.ajax({
+	            url: '/checkMemberNickname',
+	            type: 'POST',
+	            data: { memberNickname: memberNickname },
+	            dataType: 'json',
+	            success: function(data) {
+	                if (data.exists) {
+	                    nicknameErrorMsg.style.display = 'block';
+	                    DuplicatecheckNickname = false;
+	                } else {
+	                    nicknameErrorMsg.style.display = 'none';
+	                    DuplicatecheckNickname = true;
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error:", error);
+	            }
+	        });
+	    }
+	});
 
     // 이메일 domain과 local 합쳐서 hidden input으로 전달
     const emailLocal = document.getElementById('email_local');
@@ -323,16 +360,57 @@
       obj.value = result;
     }
     
-    // 우편번호 검색 (실제 Daum 주소 API 연동 시 여기에 추가)
-    function searchPostcode() {
-      alert("우편번호 검색 창 오픈 (Daum 우편번호 서비스 등 연동)");
-      // 예시로 임의 값 대입
-      document.getElementById('postcode').value = "12345";
-      document.getElementById('member_address').value = "서울시 강남구 테헤란로 123";
-    }
-
+     function sample6_execDaumPostcode() {
+         new daum.Postcode({
+             oncomplete: function(data) {
+                 var addr = '';
+                 var extraAddr = '';
+                 if (data.userSelectedType === 'R') {
+                     addr = data.roadAddress;
+                 } else {
+                     addr = data.jibunAddress;
+                 }
+                 if(data.userSelectedType === 'R'){
+                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                         extraAddr += data.bname;
+                     }
+                     if(data.buildingName !== '' && data.apartment === 'Y'){
+                         extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                     }
+                     if(extraAddr !== ''){
+                         extraAddr = ' (' + extraAddr + ')';
+                     }
+                     document.getElementById("sample6_extraAddress").value = extraAddr;
+                 } else {
+                     document.getElementById("sample6_extraAddress").value = '';
+                 }
+                 document.getElementById('member_postalCode').value = data.zonecode;
+                 document.getElementById("member_address").value = addr;
+                 document.getElementById("detailAddress").focus();
+             }
+         }).open();
+     }
+     
+     function updateAddress() {
+    	  const mainAddress = document.getElementById("member_address").value;
+    	  const detailAddress = document.getElementById("detailAddress").value;
+    	  
+    	  let fullAddress = mainAddress;
+    	  if(detailAddress){
+    		  fullAddress += " " + detailAddress;
+    	  }
+    	  
+    	  document.getElementById("full_address").value = fullAddress;
+	 }
+     
     // 폼 최종 검증
     function validateForm() {
+      // 중복확인
+      if(!Duplicatecheck){
+    	  alert("아이디 중복확인을 해주세요.");
+    	  return false;
+      }
+      
       // 비밀번호 유효성
       const pwVal = pwInput.value;
       if(pwVal.length < 8 || pwVal.length > 32) {
@@ -340,9 +418,18 @@
         pwInput.focus();
         return false;
       }
+      
+      // 닉네임 중복확인
+      if(!DuplicatecheckNickname){
+    	  alert("닉네임이 중복됩니다. 다시 입력해주세요.");
+    	  return false;
+      }
+      
       // 이메일 값 업데이트
       updateEmail();
-      // 기타 필요한 검증 로직 추가
+      
+      // 주소 값 업데이트
+      updateAddress();
       
       return true; // 통과 시 폼 전송
     }

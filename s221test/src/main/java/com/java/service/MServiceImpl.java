@@ -80,10 +80,7 @@ public class MServiceImpl implements MService{
 	@Override
 	public MemberDto findByIdAndPw(String id, String pw) {
 		
-		MemberDto mdto = mRepository.findByIdAndPw(id,pw)
-				.orElseThrow(() -> {
-					return new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."); 
-				});
+		MemberDto mdto = mRepository.findByIdAndPw(id,pw);
 		return mdto;
 	}
 
@@ -102,6 +99,12 @@ public class MServiceImpl implements MService{
 	public boolean existsMemberId(String memberId) {
 		
 		return mRepository.existsByMemberId(memberId);
+	}
+
+	@Override
+	public boolean existsMemberNickname(String memberNickname) {
+		
+		return mRepository.existsByMemberNickname(memberNickname);
 	}
 
 }

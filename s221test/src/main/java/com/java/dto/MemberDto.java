@@ -46,11 +46,13 @@ public class MemberDto {
 	@Column(nullable = false,length=50)  
 	private String member_address;		// 주소
 	@Column(nullable = false,length=20)
+	private String member_postalCode;     // 우편번호
+	@Column(nullable = false,length=20)
 	private String member_country;     // 국가/지역
 	@Column(nullable = false,length=20)
 	private String member_membership;  // 멤버십 등급
 	@Column(nullable = false,length=20)
-	private String member_usertype;
+	private String member_usertype;		// 회원, 관리자
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime member_date;	// 가입일;

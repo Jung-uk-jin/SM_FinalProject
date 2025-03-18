@@ -21,4 +21,7 @@ public interface MService {
 	// 아이디 중복확인
 	boolean existsMemberId(String memberId);
 
+	// 닉네임 중복확인
+	boolean existsMemberNickname(String memberNickname);
+
 }

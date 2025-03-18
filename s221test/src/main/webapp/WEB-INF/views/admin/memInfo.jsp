@@ -194,6 +194,24 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/aartistlist"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-view-dashboard"></i
+                  ><span class="hide-menu">리스트 관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="/aartist"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-view-dashboard"></i
+                  ><span class="hide-menu">아티스트 관리</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="/admin"
                   aria-expanded="false"
                   ><i class="mdi mdi-view-dashboard"></i
@@ -324,6 +342,10 @@
 							<td>${mdto.member_phone}</td>
 						</tr>
 						<tr>
+							<th>성별</th>
+							<td><input type="text" name="member_gender" value="${mdto.member_gender}"></td>
+						</tr>
+						<tr>
 							<th>주소</th>
 							<td><input type="text" name="member_address" value="${mdto.member_address}"></td>
 						</tr>
@@ -332,7 +354,7 @@
 							<td><input type="text" name="member_country" value="${mdto.member_country}"></td>
 						</tr>
 						<tr>
-							<th>멤버십 등급</th>
+							<th>멤버십</th>
 							<td><input type="text" name="member_membership" value="${mdto.member_membership}"></td>
 						</tr>
 						<tr>

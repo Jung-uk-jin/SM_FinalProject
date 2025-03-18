@@ -24,11 +24,16 @@ public interface MRepository extends JpaRepository<MemberDto, String>{
 	
 	// 로그인
 	@Query(value = "select * from memberdto where member_id=? and member_pw=?", nativeQuery = true)
-	Optional<MemberDto> findByIdAndPw(String id, String pw);
+	MemberDto findByIdAndPw(String id, String pw);
 
 	@Query(value = "select * from memberdto where member_id=?", nativeQuery = true)
 	Optional<MemberDto> findById(String sessionId);
 
+	// 아이디 중복확인
 	@Query("select case when count(m) > 0 then true else false end from MemberDto m where m.member_id = :memberId")
 	boolean existsByMemberId(@Param("memberId") String memberId);
+
+	// 닉네임 중복확인
+	@Query("select case when count(m) > 0 then true else false end from MemberDto m where m.member_nickname = :memberNickname")
+	boolean existsByMemberNickname(@Param("memberNickname") String memberNickname);
 }
