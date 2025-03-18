@@ -27,4 +27,8 @@ public class NicknameDto {
 	@JoinColumn(name = "artist_no")
 	private ArtistDto artistDto;
 	
+	@ManyToOne
+	@JoinColumn(name = "artistmember_nickname")
+	private ArtistMemberDto artistMemberDto;
+	
 }

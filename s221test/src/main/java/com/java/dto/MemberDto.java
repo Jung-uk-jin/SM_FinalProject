@@ -1,18 +1,17 @@
 package com.java.dto;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,10 +25,10 @@ import lombok.NoArgsConstructor;
 @Entity // jpa 자동생성(table명:MemberDto,column명:변수명)
 public class MemberDto {
 	
-	@Column(length=30)
+	@Column(length=30, unique = true)
 	private String member_id;			// 아이디
 	@Column(nullable = false,length=30)
-	private String member_pw;			// 패스워드
+	private String member_pw;			// 패스워드;
 	@Column(nullable = false,length=20)
 	private String member_name;		// 실명
 	@Id // primary key
@@ -38,8 +37,8 @@ public class MemberDto {
 	@Column(nullable = false,length=30)
 	private String member_email;       // 이메일
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(nullable = false,length=20)
-	private Date member_birth;         // 생년월일 (DATE 타입)
+	@Column(nullable = false, length = 20)
+	private LocalDate member_birth;        // 생년월일 (DATE 타입)
 	@Column(nullable = false,length=20)
 	private String member_phone;       // 전화번호
 	@ColumnDefault("'남자'")
@@ -47,22 +46,21 @@ public class MemberDto {
 	@Column(nullable = false,length=50)  
 	private String member_address;		// 주소
 	@Column(nullable = false,length=20)
+	private String member_postalCode;     // 우편번호
+	@Column(nullable = false,length=20)
 	private String member_country;     // 국가/지역
 	@Column(nullable = false,length=20)
 	private String member_membership;  // 멤버십 등급
 	@Column(nullable = false,length=20)
-	private String member_usertype;
-	@CreationTimestamp // 시간자동입력(sysdate)
-	private Timestamp member_date;	// 가입일
+	private String member_usertype;		// 회원, 관리자
+	@CreationTimestamp
+	@Column(updatable = false)
+	private LocalDateTime member_date;	// 가입일;
 	private String member_notification_enabled;
 	
 	@Column(length=10)
-	private int boardCnt;
+	private int communityCnt;
 	@Column(length=10)
 	private int commentCnt;
-	
-	// community의 작성자와 연결
-	@OneToMany(mappedBy = "community_name")  
-	private List<CommunityDto> community;  
 	
 }

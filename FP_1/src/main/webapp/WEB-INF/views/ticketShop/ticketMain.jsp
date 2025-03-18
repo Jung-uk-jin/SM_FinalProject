@@ -139,7 +139,7 @@
 	<%-- 	        <div class="product-item sold-out-item" data-category="Category1" data-id="${saleConcertDto.concertDto.concertNo}"> --%>
 		            
 		            <div class="product-image-container">
-		                <img class="product-image" src="/images/ticket/item01.jpg" alt="Product Image" />
+		                <img class="product-image" src="/images/ticket/${saleConcertDto.saleConcertImage}" alt="Product Image" />
 		                <c:if test="${saleConcertDto.isSoldOut(bookedTickets)}">
 			                <span class="sold-out-label">Sold Out</span>
 			            </c:if>

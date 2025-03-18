@@ -20,6 +20,19 @@ public interface ConcertService {
 	// 해당 콘서트의 일정 리스트 조회
 	List<ConcertScheduleDto> getConcertSchedulesBySaleConcertNo(Integer saleConcertNo);
 
+	// 관리자페이지 콘서트리스트
+	List<ConcertDto> findAll();
 
+	// 관리자페이지 콘서트등록
+	void cwrite(ConcertDto cdto);
+
+	// 관리자페이지 콘서트 상세보기
+	ConcertDto findByconcertNo(int concert_no);
+
+	// 관리자페이지 콘서트 삭제
+	void deleteByConcertNo(int concert_no);
+
+
+	ConcertDto findByConcertNo(int concertNo);
 
 }

@@ -1,6 +1,7 @@
 package com.java.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,5 +31,8 @@ public interface NicknameRepository extends JpaRepository<NicknameDto, String>{
 	// 바로가기
  	@Query("SELECT n FROM NicknameDto n WHERE n.memberDto.member_id = :id")
 	NicknameDto findByMemberId(@Param("id") String id);
+
+ 	@Query("SELECT n FROM NicknameDto n WHERE n.memberDto.member_nickname = :memberNickname")
+ 	Optional<NicknameDto> findByMemberDtoMemberNickname(@Param("memberNickname") String memberNickname);
 
 }

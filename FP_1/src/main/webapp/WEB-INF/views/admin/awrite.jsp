@@ -90,6 +90,32 @@
 	  				document.getElementById("preview").src = "";
 	  		}
 	  	}
+
+	 	// 로고 이미지 미리보기 함수
+	  	const readLogoUrl = (input) => {
+	  	    if (input.files && input.files[0]) {
+	  	        var reader = new FileReader();
+	  	        reader.onload = function(e) {
+	  	            document.getElementById("logoPreview").src = e.target.result;
+	  	        }
+	  	        reader.readAsDataURL(input.files[0]);
+	  	    } else {
+	  	        document.getElementById("logoPreview").src = "";
+	  	    }
+	  	}
+	  	
+	 	// 커버 이미지 미리보기 함수
+	  	const readCoverUrl = (input) => {
+	  	    if (input.files && input.files[0]) {
+	  	        var reader = new FileReader();
+	  	        reader.onload = function(e) {
+	  	            document.getElementById("coverpreview").src = e.target.result;
+	  	        }
+	  	        reader.readAsDataURL(input.files[0]);
+	  	    } else {
+	  	        document.getElementById("coverpreview").src = "";
+	  	    }
+	  	}
 	 </script>
   </head>
 
@@ -234,10 +260,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
+                  href="/concert"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                  ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -324,6 +350,22 @@
 							</td>
 						</tr>
 						<tr>
+							<th>아티스트 정보</th>
+							<td><textarea name="artist_desc" rows="20" cols="100"></textarea></td>
+						</tr>
+						<tr>
+							<th>아티스트 로고</th>
+							<td>
+								<input type="file" name="files2" id="logoFile" onchange="readLogoUrl(this);">
+							</td>
+						</tr>
+			   	        <tr>
+				  	        <th>로고 보기</th>
+				            <td>
+				            <img id="logoPreview" style="width:200px">
+				            </td>
+				        </tr>
+						<tr>
 							<th>아티스트 이미지</th>
 							<td>
 								<input type="file" name="files" id="file" onchange="readUrl(this);">
@@ -332,7 +374,20 @@
 			   	        <tr>
 				  	        <th>이미지 보기</th>
 				            <td>
-				            <img id="preview" style="width:1000px">
+				            <img id="preview" style="width:500px">
+				            </td>
+				        </tr>
+   						<tr>
+							<th>아티스트 커버 이미지</th>
+							<td>
+								<input type="file" name="files3" id="file" onchange="readCoverUrl(this);">
+							</td>
+						</tr>
+			   	        <tr>
+				  	        <th>이미지 보기</th>
+				            <td>
+				            <img id="coverpreview" style="width:500px">
+>>>>>>> refs/remotes/origin/Branch_LMY
 				            </td>
 				        </tr>
                       </tbody>

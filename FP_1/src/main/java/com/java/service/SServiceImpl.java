@@ -34,22 +34,24 @@ public class SServiceImpl implements SService{
 		Optional<ShopDto> list = sRepository.findById(shop_no);
 		return list;
 	}
-	
+
 	// 관리자페이지 상품등록
-		@Override
-		public void shopwrite(ShopDto sdto) {
-			sRepository.save(sdto);
-			
-		}
+	@Override
+	public void shopwrite(ShopDto sdto) {
+		sRepository.save(sdto);
+		
+	}
+
 	// 관리자페이지 상품수정
-		@Override
-		public ShopDto findByshopNo(int shop_no) {
-			ShopDto sdto = sRepository.findByshopNo(shop_no);
-			return sdto;
-		}
-		@Override
-		public void deleteByShopNo(int shop_no) {
-			sRepository.deleteById(shop_no);
-			
-		}
+	@Override
+	public ShopDto findByshopNo(int shop_no) {
+		ShopDto sdto = sRepository.findByshopNo(shop_no);
+		return sdto;
+	}
+
+	@Override
+	public void deleteByShopNo(int shop_no) {
+		sRepository.deleteById(shop_no);
+		
+	}
 }

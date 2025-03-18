@@ -699,6 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				    </div>
 				    <div class="dm-list" id="dmList">
 				    	<c:forEach items="${randomList}" var="adto" varStatus="status">
+								<c:if test="${adto.display}">
 				    		<c:set var="hasNickname" value="false" />
 								<c:forEach var="item" items="${nlist}">
 								    <c:if test="${item.artistDto.artist_no == adto.artist_no}">
@@ -713,6 +714,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					    		<a href="/artist?artist_no=${adto.artist_no}"><div class="dm-item"><img src="/images/${adto.artist_logo_image}" alt="artist"><span class="art_name">${adto.artist_group_name}</span></div></a>
 					    		</c:otherwise>
 							</c:choose>
+							</c:if>
 				    	</c:forEach>
 				        <a><div class="dm-item refresh" onclick="refreshRandomList()">
 				        	<img src="/images/index_login/refresh.png" alt="새로고침">

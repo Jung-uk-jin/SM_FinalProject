@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.dto.ArtistMemberDto;
+
+import com.java.dto.NicknameDto;
 import com.java.repository.ArtistMemberRepository;
 import com.java.repository.MRepository;
+import com.java.repository.NicknameRepository;
 
 @Service
 public class ArtistMemberServiceimpl implements ArtistMemberService {
 	
 	@Autowired MRepository mRepository;
 	@Autowired ArtistMemberRepository artistMemberRepository;
+	@Autowired NicknameRepository nicknameRepository;
 	
 	@Override
 	public List<ArtistMemberDto> findByArtistNo(int artist_no) {
@@ -32,7 +36,17 @@ public class ArtistMemberServiceimpl implements ArtistMemberService {
 	public void amwrite(ArtistMemberDto amdto) {
 		artistMemberRepository.save(amdto);
 		
+	    // NicknameDto 생성 및 저장
+        NicknameDto nicknameDto = NicknameDto.builder()
+            .nickname_name(amdto.getArtistmember_nickname())
+            .artistMemberDto(amdto)
+            .artistDto(amdto.getArtistDto())
+            .memberDto(null)  // 필요 없으면 null 처리
+            .build();
+
+        nicknameRepository.save(nicknameDto);
 	}
+	
 	// 아티스트 아이디 중복확인
 	@Override
 	public boolean existsArtistMemberId(String artistmemberId) {
@@ -51,4 +65,5 @@ public class ArtistMemberServiceimpl implements ArtistMemberService {
 		ArtistMemberDto artistmemberdto = artistMemberRepository.findByNickname(nickname);
 		return artistmemberdto;
 	}
+
 }

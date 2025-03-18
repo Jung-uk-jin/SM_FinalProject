@@ -210,10 +210,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                href="/concert"
+                aria-expanded="false"
+                ><i class="mdi mdi-chart-bar"></i
+                ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -303,8 +303,8 @@
 					         <td>${ndto.notice_no}</td>
 					         <td><a href="/noticeInfo?notice_no=${ndto.notice_no}">${ndto.notice_title}</a></td>
 					         <td>${ndto.notice_content }</td>
-					         <td>${ndto.notice_date}</a></td>
-					         <td>${ndto.artistDto.artist_group_name}</a></td>
+					         <td>${ndto.notice_date}</td>
+					         <td>${ndto.artistDto.artist_group_name}</td>
 					       </tr>
 					     </c:forEach>
                          </c:if>

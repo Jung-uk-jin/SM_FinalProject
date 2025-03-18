@@ -1,3 +1,4 @@
+
 package com.java.dto;
 
 import java.util.List;
@@ -40,9 +41,9 @@ public class ArtistDto {
 	private String artist_desc;
 	
 	private boolean display; // 관리자페이지 토글
-
+	
 	@OneToMany(mappedBy = "artistDto", fetch = FetchType.EAGER)
 	@ToString.Exclude
 	private List<ShopDto> shopList;
-	
+		
 }

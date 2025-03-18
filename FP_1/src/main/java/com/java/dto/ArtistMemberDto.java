@@ -54,7 +54,8 @@ public class ArtistMemberDto {
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime artistmember_date;	// 가입일;
-	@Column(length = 100)
+
+	@Column(length = 300)
 	private String artistmember_image;			// 아티스트 이미지
 	private String artistmember_notification_enabled;
 		

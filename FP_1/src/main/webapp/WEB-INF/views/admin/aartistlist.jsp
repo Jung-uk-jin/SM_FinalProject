@@ -282,126 +282,130 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
-                >
+            href="/concert"
+            aria-expanded="false"
+            ><i class="mdi mdi-chart-bar"></i
+            ><span class="hide-menu">콘서트관리</span></a
+          >
+        </li>
+        <li class="sidebar-item">
+          <a
+            class="sidebar-link waves-effect waves-dark sidebar-link"
+            href="/notice"
+            aria-expanded="false"
+            ><i class="mdi mdi-chart-bar"></i
+            ><span class="hide-menu">공지관리</span></a
+          >
+        </li>
+        <li class="sidebar-item">
+          <a
+            class="sidebar-link waves-effect waves-dark sidebar-link"
+            href="/event"
+            aria-expanded="false"
+            ><i class="mdi mdi-chart-bar"></i
+            ><span class="hide-menu">이벤트관리</span></a
+          >
+        </li>
+      </ul>
+    </nav>
+    <!-- End Sidebar navigation -->
+  </div>
+  <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Page wrapper  -->
+<!-- ============================================================== -->
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->
+  <div class="page-breadcrumb">
+    <div class="row">
+      <div class="col-12 d-flex no-block align-items-center">
+        <h4 class="page-title">회원관리</h4>
+        <div class="ms-auto text-end">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">메인페이지</a></li>
+              <li class="breadcrumb-item active" aria-current="/aartistlist">
+                리스트관리
               </li>
-              <li class="sidebar-item">
-                <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/notice"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">공지관리</span></a
-                >
-              </li>
-              <li class="sidebar-item">
-                <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/event"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">이벤트관리</span></a
-                >
-              </li>
-            </ul>
+            </ol>
           </nav>
-          <!-- End Sidebar navigation -->
         </div>
-        <!-- End Sidebar scroll-->
-      </aside>
-      <!-- ============================================================== -->
-      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-      <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- Page wrapper  -->
-      <!-- ============================================================== -->
-      <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <div class="page-breadcrumb">
-          <div class="row">
-            <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">회원관리</h4>
-              <div class="ms-auto text-end">
-                <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">메인페이지</a></li>
-                    <li class="breadcrumb-item active" aria-current="/aartistlist">
-                      리스트관리
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
-        <div class="container-fluid">
-          <!-- ============================================================== -->
-          <!-- Start Page Content -->
-          <!-- ============================================================== -->
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">아티스트 전체리스트</h5>
-                  <div class="table-responsive">
-                    <table
-                      id="zero_config"
-                      class="table table-striped table-bordered"
-                    >
-                      <thead>
-                        <tr>
-                          <th>번호</th>
-                          <th>아티스트 명</th>
-                          <th>게시할까말까</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <c:if test="${not empty list}">
-						 <c:forEach items="${list}" var="adto">
-					       <tr>
-					         <td>${adto.artist_no}</td>
-					         <td>${adto.artist_group_name }</td>
-					         <td>         
-								<label class="switch">
-								    <!-- 체크박스: 기존에 쓰던 클래스와 data-artistno 그대로 유지 -->
-								    <input 
-								        type="checkbox"
-								        class="toggle-display" 
-								        data-artistno="${adto.artist_no}"
-								        ${adto.display ? 'checked' : ''}
-								    />
-								    <!-- 토글 스위치 UI (슬라이더) -->
-								    <span class="slider">
-								        <span class="on">ON</span>
-								        <span class="off">OFF</span>
-								    </span>
-								</label>
-                    		 </td>
-					       </tr>
-					     </c:forEach>
-                         </c:if>
-                         <c:if test="${empty list }">
-                           <tr>
-                      	     <td colspan="5" style="text-align: center;">아티스트 정보가 없습니다.</td>
-                           </tr>
-                         </c:if>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>번호</th>
-                          <th>아티스트 명</th>
-                          <th>게시할까말까</th>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">아티스트 전체리스트</h5>
+            <div class="table-responsive">
+              <table
+                id="zero_config"
+                class="table table-striped table-bordered"
+              >
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>아티스트 명</th>
+                    <th>게시 여부</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <c:if test="${not empty list}">
+				 <c:forEach items="${list}" var="adto">
+			       <tr>
+			         <td>${adto.artist_no}</td>
+		             <td>
+				         	<img src="images/${adto.artist_group_image}"
+			         	alt="아티스트 이미지" style="width:60px; height:60px; object-fit:cover; margin-right:10px;">
+			         	${adto.artist_group_name}</td>
+			         </td>
+			         <td>         
+						<label class="switch">
+						    <!-- 체크박스: 기존에 쓰던 클래스와 data-artistno 그대로 유지 -->
+						    <input 
+						        type="checkbox"
+						        class="toggle-display" 
+						        data-artistno="${adto.artist_no}"
+						        ${adto.display ? 'checked' : ''}
+						    />
+						    <!-- 토글 스위치 UI (슬라이더) -->
+						    <span class="slider">
+						        <span class="on">ON</span>
+						        <span class="off">OFF</span>
+						    </span>
+						</label>
+              		 </td>
+			       </tr>
+			     </c:forEach>
+                   </c:if>
+                   <c:if test="${empty list }">
+                     <tr>
+                	     <td colspan="5" style="text-align: center;">아티스트 정보가 없습니다.</td>
+                     </tr>
+                   </c:if>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>번호</th>
+                    <th>아티스트 명</th>
+                    <th>게시 여부</th>
                         </tr>
                       </tfoot>
                     </table>

@@ -16,10 +16,13 @@ public interface SService {
 	//상품 하나 상세
 	Optional<ShopDto> findById(int shop_no);
 
+	// 관리자페이지 상품등록
+	void shopwrite(ShopDto sdto);
+
+	// 관리자페이지 상품수정
 	ShopDto findByshopNo(int shop_no);
 
+	// 관리자페이지 상품삭제
 	void deleteByShopNo(int shop_no);
-
-	void shopwrite(ShopDto sdto);
 
 }

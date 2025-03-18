@@ -27,8 +27,7 @@ import lombok.NoArgsConstructor;
 public class CommentDto {
 		
 		@Id
-	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
-	    @SequenceGenerator(name = "comment_seq", sequenceName = "comment_seq", allocationSize = 1)
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private int comment_no;
 		@Column(length=1000)
 		private String comment_content;
@@ -38,6 +37,20 @@ public class CommentDto {
 		private String comment_file; 			// 이미지		
 		
 	    @ManyToOne
-	    @JoinColumn(name = "community_no")  // 외래키로 community와 연결
-	    private CommunityDto community_no;
+	    @JoinColumn(name = "member_nickname")  // 외래키로 Member와 연결
+	    private MemberDto memberDto;
+		
+	    @ManyToOne
+	    @JoinColumn(name = "f_community_no")  // 외래키로 community와 연결
+	    private FanCommunityDto communityDto;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "nickname_name")  // 외래키로 Member와 연결
+	    private NicknameDto nicknameDto;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "artistmember_nickname")  // 외래키로 Member와 연결
+	    private ArtistMemberDto artistMemberDto;
+	    
+
 }

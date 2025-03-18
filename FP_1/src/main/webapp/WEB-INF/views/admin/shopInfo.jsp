@@ -19,7 +19,6 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>아티스트 리스트</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
     <!-- Favicon icon 
     <link
       rel="icon"
@@ -301,10 +300,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
+                  href="/concert"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                  ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">

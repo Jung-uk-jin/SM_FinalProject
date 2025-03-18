@@ -23,6 +23,9 @@ public interface SaleConcertRepository extends JpaRepository<SaleConcertDto, Int
 	// 특정 concertNo에 해당하는 콘서트 판매 정보 중 하나 조회 - 온라인용
 	SaleConcertDto findBySaleConcertNo(Integer saleConcertNo);
 
+	// 관리자페이지 콘서트 티켓 상세보기
+	@Query(value="select * from saleconcertdto where sale_concert_no=?", nativeQuery=true)
+	SaleConcertDto findBysaleconcertNo(int saleconcert_no);
 
 
 }
