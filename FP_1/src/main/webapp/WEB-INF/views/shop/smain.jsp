@@ -356,7 +356,7 @@ body {
 	<div class="container">
 		<div class="slider-container">
 			<img src="https://lh3.googleusercontent.com/d/1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" class="slide active">
-			<img src="https://lh3.googleusercontent.com/d/19tqq59jtCkFDRsv1JjA0TIiDXRgfBvoa" class="slide">
+			<img src="https://lh3.googleusercontent.com/d/1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" class="slide">
 			<img src="https://lh3.googleusercontent.com/d/1xW8V8nTCRiTlJtIww12rWqC7uw2O-4tJ" class="slide">
 			<button class="slider-btn" onclick="nextSlide()">다음</button>
 		</div>
@@ -473,7 +473,9 @@ body {
               <div class="card">
                 <a href="/sprodview?shopNo=${sdto.shop_no}">
                   <div class="image-section">
-                    <img src='https://picsum.photos/238/238' alt="test이미지" />
+                    <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                    onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                    />
                   </div>
                   <div class="text-section">
                     <p>${sdto.shop_title}</p>
@@ -508,7 +510,9 @@ body {
                 <div class="card">
                   <a href="/sprodview?shopNo=${sdto.shop_no}">
                     <div class="image-section">
-                      <img src='https://picsum.photos/238/238' alt="test이미지" />
+                      <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                      onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                      />
                     </div>
                     <div class="text-section">
                       <p>${sdto.shop_title}</p>
@@ -538,7 +542,9 @@ body {
               <div class="card">
                 <a href="/sprodview?shopNo=${sdto.shop_no}">
                   <div class="image-section">
-                    <img src='https://picsum.photos/238/238' alt="test이미지" />
+                      <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                      onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                    />
                   </div>
                   <div class="text-section">
                     <p>${sdto.shop_title}</p>

@@ -213,8 +213,44 @@ a {
     </nav>
 </header>
 
+
 	<!-- 이미지 고유 ID앞 링크 -->
 	<c:set var="baseurl" value="https://lh3.googleusercontent.com/d/" />
+	
+<style>
+.datenone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 100%;
+}
+
+.datenone img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.datenone h1 {
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+  text-align: center;
+}
+</style>
+
+<!-- 등록된 상품이 없다면 -->
+<c:choose>
+  <c:when test="${empty slist}">
+<div class="datenone">
+  <img src="${baseurl}1hfPz4n-ntfZ_JfeIW4_fFqDZTbHUWDqU">
+  <h1>등록된 상품이 없습니다.</h1>
+</div>
+</c:when>
+  <c:otherwise>
+	
 	
 	<!-- Banner -->
 	<div class="slider-container">
@@ -227,7 +263,8 @@ a {
 
 	<!-- container -->
 	<div class="container">
-	
+		
+
 		<!-- 카테고리, 품절제외 -->
 		<div class="filters">
 			<a href="#" class="filter active"
@@ -242,6 +279,7 @@ a {
 		</div>
 
 		<!-- 제품 목록 -->
+		
 		<div class="product-list">
 			<c:forEach items="${slist}" var="sdto">
 				<div
@@ -265,13 +303,11 @@ a {
 				</a>
 				</div>
 			</c:forEach>
-			<c:if test="${empty slist}">
-				<h1>해당 아티스트의 상품이 없습니다.</h1>
-			</c:if>
 		</div>
 		<!-- 제품 목록 -->
-				
 	</div>
+	</c:otherwise>
+</c:choose>
 	<!-- container -->
 <footer class="WeverseYb78_footer">
     <div class="WeverseYb78_footer_links">
@@ -309,7 +345,7 @@ a {
         <p>© <strong>FANZY COMPANY Inc.</strong> Ver 2.32.6</p>
     </div>
 </footer>
-
+</body>
 
 	<script>
     let currentCategory = 'All';
@@ -339,6 +375,6 @@ a {
       });
     }
   </script>
-</body>
+
 </html>
 
