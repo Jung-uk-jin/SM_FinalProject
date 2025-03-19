@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class NoticeDto {
 	@Id // primary key
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int notice_no;						// 공지사항 번호
 	@Column(nullable = false, length=100)
 	private String notice_title;				// 제목
@@ -36,6 +37,8 @@ public class NoticeDto {
 	private Timestamp notice_date;				// 등록일
 	@Column(nullable = true, length = 100)
 	private String notice_file;					// 파일
+	@Column(nullable = false, length=20)
+	private String notice_type;					// 기본, 굿즈, 티켓
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER) 

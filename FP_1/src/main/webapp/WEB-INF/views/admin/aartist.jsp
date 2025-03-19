@@ -210,10 +210,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
+                  href="/concert"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                  ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -300,8 +300,14 @@
 						 <c:forEach items="${list}" var="adto">
 					       <tr>
 					         <td>${adto.artistmember_id}</td>
-					         <td>${adto.artistDto.artist_group_name}</td>
-					         <td><a href="/artistmemberInfo?nickname=${adto.artistmember_nickname}">${adto.artistmember_nickname}</a></td>
+					         <td>
+   					         	<img src="images/${adto.artistDto.artist_group_image}"
+					         	alt="아티스트 이미지" style="width:60px; height:60px; object-fit:cover; margin-right:10px;">
+					         	${adto.artistDto.artist_group_name}</td>
+					         <td>
+					        	 <img src="images/${adto.artistmember_image}"
+					         	alt="아티스트 이미지" style="width:60px; height:60px; object-fit:cover; margin-right:10px;">
+					         <a href="/artistmemberInfo?nickname=${adto.artistmember_nickname}">${adto.artistmember_nickname}</a></td>
 					         <td>${adto.artistmember_date }</td>
 					       </tr>
 					     </c:forEach>

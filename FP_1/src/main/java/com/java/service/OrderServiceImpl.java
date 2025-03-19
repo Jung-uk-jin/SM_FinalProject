@@ -119,4 +119,11 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
     }
+    
+    // 적립금 업데이트 메서드 구현
+    @Override
+    public void updateOrderSaveReward(String orderNumber, int rewardPoints) {
+        // 주문 번호로 주문을 찾아 적립금 업데이트
+        orderRepository.updateSaveReward(orderNumber, rewardPoints);
+    }
 }

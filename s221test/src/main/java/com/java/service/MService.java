@@ -18,4 +18,10 @@ public interface MService {
 
 	MemberDto findByMemberId(String sessionId);
 
+	// 아이디 중복확인
+	boolean existsMemberId(String memberId);
+
+	// 닉네임 중복확인
+	boolean existsMemberNickname(String memberNickname);
+
 }

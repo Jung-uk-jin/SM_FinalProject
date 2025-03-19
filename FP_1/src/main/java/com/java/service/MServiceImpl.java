@@ -1,6 +1,7 @@
 package com.java.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -176,5 +177,20 @@ public class MServiceImpl implements MService{
 	public void updateByUser(String id, String name, String address, String phone) {
 		mRepository.updateByUser(id,name,address,phone);
 	}
+
+    // 적립금 추가 메서드 구현
+	@Override
+	public void addMemberPoints(String memberId, int pointsToAdd) {
+	    Optional<MemberDto> member = mRepository.findById(memberId);
+	    if (member.isPresent()) { 
+	        MemberDto memberDto = member.get();
+	        int currentPoints = memberDto.getMember_mileage(); 
+	        int newPoints = currentPoints + pointsToAdd;
+	        mRepository.updatePoints(memberId, newPoints);
+	    }
+	}
+	
+	
+	
 
 }

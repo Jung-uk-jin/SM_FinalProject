@@ -9,6 +9,9 @@
 <title>아티스트 물건 전체</title>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="stylesheet" href="/css/updownstyle.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
 <style>
 /* 기본 스타일 초기화 */
 * {
@@ -178,8 +181,76 @@ a {
 </head>
 
 <body>
+ <header class="WeverseXk21_header">
+    <div class="WeverseXk21_logo" id="logo">
+        <a href="/"><img src="/images/index_login/logo.png" alt="Logo"></a>
+    </div>
+    <!-- nav_bar -->
+    <nav class="WeverseXk21_nav">
+        <ul>
+            <c:if test="${session_id==null}">
+                <li><button type="button" class="WeverseXk21_sign_in">Sign in</button></li>
+            </c:if>
+            <c:if test="${session_id!=null}">
+                <li><a onclick="searchBtn()">
+                    <i class="fa-solid fa-magnifying-glass WeverseXk21_icon_solid"></i>
+                    <div id="searchBox" class="WeverseXk21_search_wrapper" style="display: none;">
+                        <input style="position: absolute; top:-15px; right:20px;" type="text" id="searchInput" class="WeverseXk21_search_input" placeholder="아티스트 검색" />
+                        <div id="searchResults" style="display: none; position: absolute; top: 40px; left: -200px; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); width: 200px; padding: 8px 15px;"></div>
+                    </div>
+                </a></li>
+                <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/mypage"><i class="fa-regular fa-user WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/user_setting"><i class="fa-solid fa-gear WeverseXk21_icon_solid"></i></a></li>
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:-1px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+            <c:if test="${session_id==null}">
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+        </ul>
+    </nav>
+</header>
+
+
 	<!-- 이미지 고유 ID앞 링크 -->
 	<c:set var="baseurl" value="https://lh3.googleusercontent.com/d/" />
+	
+<style>
+.datenone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 100%;
+}
+
+.datenone img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.datenone h1 {
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+  text-align: center;
+}
+</style>
+
+<!-- 등록된 상품이 없다면 -->
+<c:choose>
+  <c:when test="${empty slist}">
+<div class="datenone">
+  <img src="${baseurl}1hfPz4n-ntfZ_JfeIW4_fFqDZTbHUWDqU">
+  <h1>등록된 상품이 없습니다.</h1>
+</div>
+</c:when>
+  <c:otherwise>
+	
 	
 	<!-- Banner -->
 	<div class="slider-container">
@@ -192,7 +263,8 @@ a {
 
 	<!-- container -->
 	<div class="container">
-	
+		
+
 		<!-- 카테고리, 품절제외 -->
 		<div class="filters">
 			<a href="#" class="filter active"
@@ -207,6 +279,7 @@ a {
 		</div>
 
 		<!-- 제품 목록 -->
+		
 		<div class="product-list">
 			<c:forEach items="${slist}" var="sdto">
 				<div
@@ -230,14 +303,49 @@ a {
 				</a>
 				</div>
 			</c:forEach>
-			<c:if test="${empty slist}">
-				<h1>해당 아티스트의 상품이 없습니다.</h1>
-			</c:if>
 		</div>
 		<!-- 제품 목록 -->
-		
 	</div>
+	</c:otherwise>
+</c:choose>
 	<!-- container -->
+<footer class="WeverseYb78_footer">
+    <div class="WeverseYb78_footer_links">
+        <a href="#">이용약관</a>
+        <a href="#">서비스운영정책</a>
+        <a href="#">유료서비스 이용약관</a>
+        <a href="#">청소년 보호 정책</a>
+        <a href="#"><strong>개인정보처리방침</strong></a>
+        <a href="#">쿠키정책</a>
+        <a href="#">쿠키 설정</a>
+        <a href="#">입점 신청</a>
+        <a href="#">고객센터</a>
+    </div>
+    <div class="WeverseYb78_footer_info">
+        <p>
+            상호 &nbsp;<strong>Fanzy Company Inc.</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            대표자 &nbsp;<strong>임민영</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            전화번호 &nbsp;<strong>1544-0790</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            FAX &nbsp;<strong>+82)-2-2144-9399</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            주소 &nbsp;<strong> 서울 금천구 동작대로 132, 한라원앤원타워 3층</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            사업자등록번호 &nbsp;<strong>119-86-20319</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            <a href="#">사업자 정보 확인</a>
+        </p>
+        <p>
+            통신판매업 신고번호 &nbsp;<strong>2022-금천가산P-0557호</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            호스팅 서비스 사업자 &nbsp;<strong>Amazon Web Services, Inc., Naver Cloud</strong>
+        </p>
+        <p>© <strong>FANZY COMPANY Inc.</strong> Ver 2.32.6</p>
+    </div>
+</footer>
+</body>
 
 	<script>
     let currentCategory = 'All';
@@ -267,6 +375,6 @@ a {
       });
     }
   </script>
-</body>
+
 </html>
 

@@ -20,14 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.java.dto.ArtistDto;
 import com.java.dto.ArtistMemberDto;
 import com.java.dto.CommentDto;
+import com.java.dto.ConcertDto;
+import com.java.dto.ConcertScheduleDto;
 import com.java.dto.FanCommunityDto;
 import com.java.dto.MemberDto;
 import com.java.dto.NoticeDto;
+import com.java.dto.SaleConcertDto;
+import com.java.dto.ShopDto;
 import com.java.service.AService;
 import com.java.service.ArtistMemberService;
 import com.java.service.CMService;
 import com.java.service.CService;
+import com.java.service.ConcertScheduleService;
+import com.java.service.ConcertService;
 import com.java.service.MService;
+import com.java.service.SaleConcertService;
 
 @Controller
 public class AController {
@@ -37,6 +44,9 @@ public class AController {
 	@Autowired CMService cmService;
 	@Autowired AService aService;
 	@Autowired ArtistMemberService artistMemberService;
+	@Autowired ConcertService concertService;
+	@Autowired SaleConcertService saleConcertService;
+	@Autowired ConcertScheduleService concertScheduleService;
 	
 	// 회원 관리
 	@GetMapping("/admin")
@@ -148,7 +158,9 @@ public class AController {
 	// 아티스트 등록
 	@PostMapping("/awrite")
 	public String awrite(ArtistDto adto, 
-			@RequestPart("files") MultipartFile files) throws Exception {
+			@RequestPart("files") MultipartFile files,
+			@RequestPart("files2") MultipartFile files2,
+			@RequestPart("files3") MultipartFile files3) throws Exception {
 		
 		System.out.println("notice_file: " + files); // ✅ 파일 값 확인
 		
@@ -165,6 +177,38 @@ public class AController {
 			
 			adto.setArtist_group_image(realName);
 		}
+		
+		// 로고 이미지
+	    String realName2 = "";
+	    adto.setArtist_logo_image("");
+	    if(files2 != null && !files2.isEmpty()) {
+	        String origin2 = files2.getOriginalFilename();
+	        long time2 = System.currentTimeMillis();
+	        realName2 = String.format("%d_%s", time2, origin2);
+	        
+	        String url = "c:/upload/test/";
+	        File f2 = new File(url + realName2);
+	        files2.transferTo(f2);
+	        
+	        // DTO의 두 번째 파일 관련 필드에 저장
+	        adto.setArtist_logo_image(realName2);
+	    }
+	    
+		// 커버 이미지
+	    String realName3 = "";
+	    adto.setArtist_cover_image("");
+	    if(files3 != null && !files3.isEmpty()) {
+	        String origin3 = files3.getOriginalFilename();
+	        long time3 = System.currentTimeMillis();
+	        realName3 = String.format("%d_%s", time3, origin3);
+	        
+	        String url = "c:/upload/test/";
+	        File f3 = new File(url + realName3);
+	        files3.transferTo(f3);
+	        
+	        // DTO의 두 번째 파일 관련 필드에 저장
+	        adto.setArtist_cover_image(realName3);
+	    }
 		
 		aService.awrite(adto);
 		
@@ -255,4 +299,165 @@ public class AController {
 		model.addAttribute("amdto",artistmemberDto);
 		return "/admin/artistmemberInfo";
 	}
+	
+	// 콘서트 관리
+	@GetMapping("/concert")
+	public String concert(Model model) {
+		
+		List<ConcertDto> list = concertService.findAll();
+		model.addAttribute("list",list);
+		return "/admin/concert";
+	}
+
+	// 콘서트 등록
+	@GetMapping("/concertwrite")
+	public String concertwrite(Model model) {
+		List<ArtistDto> list = aService.findAll(); // ArtistDto 목록 조회
+	    model.addAttribute("list", list);
+		return "/admin/concertwrite";
+	}
+	
+	// 콘서트 등록
+	@PostMapping("/concertwrite")
+	public String concertwrite(ConcertDto cdto) throws Exception {
+		concertService.cwrite(cdto);
+		return "redirect:/concert";
+	}
+	
+	// 콘서트 상세보기
+	@GetMapping("/concertInfo")
+	public String concertInfo(@RequestParam("concert_no") int concert_no,Model model) {
+		
+		List<ArtistDto> list = aService.findAll(); // ArtistDto 목록 조회
+		ConcertDto concertDto = concertService.findByconcertNo(concert_no);
+		model.addAttribute("alist", list);
+		model.addAttribute("cdto",concertDto);
+		return "/admin/concertInfo";
+	}
+	
+	// 콘서트정보 삭제
+	@ResponseBody
+	@PostMapping("/concertdelete")
+	public String concertdelete(@RequestParam("concert_no") int concert_no) {
+		concertService.deleteByConcertNo(concert_no);
+		return "1";
+	}
+	
+	// 콘서트 티켓관리
+	@GetMapping("/saleconcert")
+	public String saleconcert(Model model) {
+		
+		List<SaleConcertDto> list = saleConcertService.findAll();
+		model.addAttribute("list",list);
+		return "/admin/saleconcert";
+	}
+	
+	// 콘서트 티켓등록
+	@GetMapping("/saleconcertwrite")
+	public String saleconcertwrite(Model model) {
+		List<ConcertDto> list = concertService.findAll(); // ArtistDto 목록 조회
+	    model.addAttribute("list", list);
+		return "/admin/saleconcertwrite";
+	}
+	
+	// 콘서트 티켓등록
+	@PostMapping("/saleconcertwrite")
+	public String saleconcertwrite(SaleConcertDto scdto, 
+			@RequestPart("files") MultipartFile files,
+			@RequestPart("files2") MultipartFile files2) throws Exception {
+		
+		String realName = ""; 
+		scdto.setSaleConcertImage(""); // 파일첨부가 되지 않았을 경우
+		if(files != null && !files.isEmpty()) {
+			String origin = files.getOriginalFilename();
+			long time = System.currentTimeMillis();
+			realName = String.format("%d_%s", time, origin);
+			
+			String url = "c:/upload/test/";
+			File f = new File(url+realName);
+			files.transferTo(f);
+			
+			scdto.setSaleConcertImage(realName);
+		}
+		
+		String realName2 = ""; 
+		scdto.setSaleConcertDescImage(""); // 파일첨부가 되지 않았을 경우
+		if(files2 != null && !files2.isEmpty()) {
+			String origin2 = files2.getOriginalFilename();
+			long time2 = System.currentTimeMillis();
+			realName2 = String.format("%d_%s", time2, origin2);
+			
+			String url2 = "c:/upload/test/";
+			File f2 = new File(url2+realName2);
+			files2.transferTo(f2);
+			
+			scdto.setSaleConcertDescImage(realName2);
+		}
+		saleConcertService.scwrite(scdto);
+		
+		return "redirect:/saleconcert";
+	}
+	
+	// 콘서트 티켓상세보기
+	@GetMapping("/saleconcertInfo")
+	public String saleconcertInfo(@RequestParam("saleconcert_no") int saleconcert_no,Model model) {
+		
+		List<ConcertDto> list = concertService.findAll();
+		SaleConcertDto saleConcertDto = saleConcertService.findBysaleconcertNo(saleconcert_no);
+		model.addAttribute("list", list);
+		model.addAttribute("scdto",saleConcertDto);
+		return "/admin/saleconcertInfo";
+	}
+	
+	// 콘서트정보 삭제
+	@ResponseBody
+	@PostMapping("/saleconcertdelete")
+	public String saleconcertdelete(@RequestParam("saleconcert_no") int saleconcert_no) {
+		saleConcertService.deleteByConcertNo(saleconcert_no);
+		return "1";
+	}
+	
+	// 스케줄 관리
+	@GetMapping("/concertschedule")
+	public String concertschedule(Model model) {
+		
+		List<ConcertScheduleDto> list = concertScheduleService.findAll();
+		model.addAttribute("list",list);
+		return "/admin/concertschedule";
+	}
+	
+	// 콘서트 스케줄 등록
+	@GetMapping("/concertschedulewrite")
+	public String concertschedulewrite(Model model) {
+		List<SaleConcertDto> list = saleConcertService.findAll();
+	    model.addAttribute("list", list);
+		return "/admin/concertschedulewrite";
+	}
+	
+	// 콘서트 스케줄 등록
+	@PostMapping("/concertschedulewrite")
+	public String concertschedulewrite(ConcertScheduleDto csdto) {
+		concertScheduleService.cswrite(csdto);
+		return "redirect:/concertschedule";
+	}
+	
+	// 콘서트 티켓상세보기
+	@GetMapping("/concertscheduleInfo")
+	public String concertscheduleInfo(@RequestParam("schedule_no") int concertschedule_no,Model model) {
+		
+		List<SaleConcertDto> list = saleConcertService.findAll();
+		ConcertScheduleDto concertScheduleDto = concertScheduleService.findByconcertscheduleNo(concertschedule_no);
+		model.addAttribute("list", list);
+		model.addAttribute("csdto",concertScheduleDto);
+		return "/admin/concertscheduleInfo";
+	}
+	
+	// 콘서트 스케줄 삭제
+	@ResponseBody
+	@PostMapping("/concertscheduledelete")
+	public String concertscheduledelete(@RequestParam("schedule_no") int schedule_no) {
+		concertScheduleService.deleteByScheduleNo(schedule_no);
+		return "1";
+	}
+	
 }

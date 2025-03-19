@@ -10,7 +10,11 @@
 <title>Title</title>
 <link rel="stylesheet" as="style" crossorigin
   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="stylesheet" href="/css/updownstyle.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
 <style>
+
 /* 전체 기본 스타일 */
 * {
 	margin: 0;
@@ -43,9 +47,10 @@ body {
 .slider-container {
 	position: relative;
 	width: 100%;
-	height: 500px;
+	height: 430px;
 	overflow: hidden;
 	border-radius: 10px;
+	margin-top: 20px;
 }
 
 .slide {
@@ -310,21 +315,57 @@ body {
 </head>
 
 <body>
+ <header class="WeverseXk21_header">
+    <div class="WeverseXk21_logo" id="logo">
+        <a href="/"><img src="/images/index_login/logo.png" alt="Logo"></a>
+    </div>
+    <!-- nav_bar -->
+    <nav class="WeverseXk21_nav">
+        <ul>
+            <c:if test="${session_id==null}">
+                <li><button type="button" class="WeverseXk21_sign_in">Sign in</button></li>
+            </c:if>
+            <c:if test="${session_id!=null}">
+                <li><a onclick="searchBtn()">
+                    <i class="fa-solid fa-magnifying-glass WeverseXk21_icon_solid"></i>
+                    <div id="searchBox" class="WeverseXk21_search_wrapper" style="display: none;">
+                        <input style="position: absolute; top:-15px; right:20px;" type="text" id="searchInput" class="WeverseXk21_search_input" placeholder="아티스트 검색" />
+                        <div id="searchResults" style="display: none; position: absolute; top: 40px; left: -200px; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); width: 200px; padding: 8px 15px;"></div>
+                    </div>
+                </a></li>
+                <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/mypage"><i class="fa-regular fa-user WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/user_setting"><i class="fa-solid fa-gear WeverseXk21_icon_solid"></i></a></li>
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:-1px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+            <c:if test="${session_id==null}">
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+        </ul>
+    </nav>
+</header>
+
+
+
 	<!-- 이미지 고유 ID앞 링크 -->
 	<c:set var="baseurl" value="https://lh3.googleusercontent.com/d/" />
 	
 	<!-- 메인배너 -->
 	<div class="container">
 		<div class="slider-container">
-			<img src="/images/stelLive/groupimg02.png" class="slide active">
-			<img src="/images/stelLive/groupimg03.jpg" class="slide">
-			<img src="/images/stelLive/groupimg04.png" class="slide">
+			<img src="https://lh3.googleusercontent.com/d/1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" class="slide active">
+			<img src="https://lh3.googleusercontent.com/d/1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" class="slide">
+			<img src="https://lh3.googleusercontent.com/d/1xW8V8nTCRiTlJtIww12rWqC7uw2O-4tJ" class="slide">
 			<button class="slider-btn" onclick="nextSlide()">다음</button>
 		</div>
 	</div>
 	<!-- 메인배너 -->
 
 	<!-- Recommended Artist 섹션 -->
+	<!-- 
+
 	<div class="recommended-artist-container">
 	  <h2>Today's Recomend Artist</h2>
 	  <div class="artist-scroll-wrapper">
@@ -343,15 +384,53 @@ body {
 	</div>
 	<!-- Recommended Artist 섹션 -->
 
+
+<!-- Recommended Artist 섹션 -->
+<div class="recommended-artist-container">
+  <h2>Recomend Artist</h2>
+  <div class="artist-scroll-wrapper">
+    <c:choose>
+      <%-- nlist가 있을 경우 해당 목록 사용 --%>
+      <c:when test="${not empty nlist}">
+        <c:forEach var="n" items="${nlist}">
+          <a href="/sprods?artistNo=${n.artistDto.artist_no}">
+            <div class="artist-item-circle">
+              <img src="/images/${n.artistDto.artist_group_image}"
+                   onerror="this.src='https://picsum.photos/73/73';"
+                   alt="${n.artistDto.artist_group_name}" />
+              <p>${n.artistDto.artist_group_name}</p>
+            </div>
+          </a>
+        </c:forEach>
+      </c:when>
+      <%-- nlist가 없거나 로그인하지 않은 경우 전체 목록 사용 --%>
+      <c:otherwise>
+        <c:forEach var="adto" items="${list}">
+          <a href="/sprods?artistNo=${adto.artist_no}">
+            <div class="artist-item-circle">
+              <img src="/images/${adto.artist_group_image}"
+                   onerror="this.src='https://picsum.photos/73/73';"
+                   alt="${adto.artist_group_name}" />
+              <p>${adto.artist_group_name}</p>
+            </div>
+          </a>
+        </c:forEach>
+      </c:otherwise>
+    </c:choose>
+  </div>
+  <button class="more-button" id="openSearchBtn">아티스트 검색</button>
+</div>
+
+
 	<!-- 아티스트 검색 버튼 + 모달 -->
 	<div class="container">
-
+	
 		<!-- 검색 모달 -->
 		<div id="artistSearchModal" class="modal-backdrop">
 			<div class="modal-content">
 				<button class="modal-close-btn" id="closeSearchBtn">&times;</button>
 				<h2 style="margin-bottom: 10px;">아티스트 검색</h2>
-
+		
 				<!-- 알파벳 버튼들 -->
 				<c:set var="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 				<div class="alphabet-buttons">
@@ -361,7 +440,7 @@ body {
 							${fn:substring(alphabet, i, i+1)}</button>
 					</c:forEach>
 				</div>
-
+		
 				<!-- 아티스트 목록 -->
 				<div class="artist-list" id="artistList">
 					<c:forEach var="adto" items="${list}">
@@ -373,13 +452,121 @@ body {
 						</div>
 					</c:forEach>
 				</div>
+				
 			</div>
 		</div>
 	</div>
 	<!-- 아티스트 검색 버튼 + 모달 -->
 
 
+<!-- container(아티스트 상품출력) -->
+<c:choose>
+  <%-- nlist가 있을 경우 해당 목록 사용 --%>
+  <c:when test="${not empty nlist}">
+    <c:forEach items="${nlist}" var="n">
+      <%-- 상품이 없는 경우 표시하지 않음 --%>
+      <div class="container ${ empty n.artistDto.shopList ? 'hidediv' : ''}">
+        <div class="title-and-cards">
+          <div class="title-bar">${n.artistDto.artist_group_name}</div>
+          <div class="cards">
+            <c:forEach items="${n.artistDto.shopList}" begin="0" end="3" step="1" var="sdto">
+              <div class="card">
+                <a href="/sprodview?shopNo=${sdto.shop_no}">
+                  <div class="image-section">
+                    <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                    onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                    />
+                  </div>
+                  <div class="text-section">
+                    <p>${sdto.shop_title}</p>
+                    <p><fm:formatNumber value="${sdto.shop_price}" pattern="#,###" /> ₩</p>
+                  </div>
+                </a>
+              </div>
+            </c:forEach>
+          </div>
+          <a href="/sprods?artistNo=${n.artistDto.artist_no}">
+            <button class="more-button">see All</button>
+          </a>
+        </div>
+      </div>
+    </c:forEach>
+    
+    <%-- nlist에 상품이 있는 아티스트가 없는 경우 전체 목록 표시 --%>
+    <c:set var="hasShopItems" value="false" />
+    <c:forEach items="${nlist}" var="n">
+      <c:if test="${not empty n.artistDto.shopList}">
+        <c:set var="hasShopItems" value="true" />
+      </c:if>
+    </c:forEach>
+    
+    <c:if test="${not hasShopItems}">
+      <c:forEach items="${list}" var="adto">
+        <div class="container ${empty adto.shopList ? 'hidediv' : ''}">
+          <div class="title-and-cards">
+            <div class="title-bar">${adto.artist_group_name}</div>
+            <div class="cards">
+              <c:forEach items="${adto.shopList}" begin="0" end="3" step="1" var="sdto">
+                <div class="card">
+                  <a href="/sprodview?shopNo=${sdto.shop_no}">
+                    <div class="image-section">
+                      <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                      onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                      />
+                    </div>
+                    <div class="text-section">
+                      <p>${sdto.shop_title}</p>
+                      <p><fm:formatNumber value="${sdto.shop_price}" pattern="#,###" /> ₩</p>
+                    </div>
+                  </a>
+                </div>
+              </c:forEach>
+            </div>
+            <a href="/sprods?artistNo=${adto.artist_no}">
+              <button class="more-button">see All</button>
+            </a>
+          </div>
+        </div>
+      </c:forEach>
+    </c:if>
+  </c:when>
+  
+  <%-- nlist가 없거나 로그인하지 않은 경우 전체 목록 사용 --%>
+  <c:otherwise>
+    <c:forEach items="${list}" var="adto">
+      <div class="container ${empty adto.shopList ? 'hidediv' : ''}">
+        <div class="title-and-cards">
+          <div class="title-bar">${adto.artist_group_name}</div>
+          <div class="cards">
+            <c:forEach items="${adto.shopList}" begin="0" end="3" step="1" var="sdto">
+              <div class="card">
+                <a href="/sprodview?shopNo=${sdto.shop_no}">
+                  <div class="image-section">
+                      <img src='${baseurl}${sdto.shop_image1}' alt="상품이미지" 
+                      onerror="this.onerror=null; this.src='https://picsum.photos/238/238';"
+                    />
+                  </div>
+                  <div class="text-section">
+                    <p>${sdto.shop_title}</p>
+                    <p><fm:formatNumber value="${sdto.shop_price}" pattern="#,###" /> ₩</p>
+                  </div>
+                </a>
+              </div>
+            </c:forEach>
+          </div>
+          <a href="/sprods?artistNo=${adto.artist_no}">
+            <button class="more-button">see All</button>
+          </a>
+        </div>
+      </div>
+    </c:forEach>
+  </c:otherwise>
+</c:choose>
+
+
+
 	<!-- container(아티스트 상품출력) -->
+	<!-- 
 	<c:forEach items="${list}" var="adto">
 		<div class="container ${ empty adto.shopList ? 'hidediv' : ''}">
 			<div class="title-and-cards">
@@ -408,6 +595,44 @@ body {
 	</c:forEach>
 	<!-- container(아티스트 상품출력) -->
 
+<footer class="WeverseYb78_footer">
+    <div class="WeverseYb78_footer_links">
+        <a href="#">이용약관</a>
+        <a href="#">서비스운영정책</a>
+        <a href="#">유료서비스 이용약관</a>
+        <a href="#">청소년 보호 정책</a>
+        <a href="#"><strong>개인정보처리방침</strong></a>
+        <a href="#">쿠키정책</a>
+        <a href="#">쿠키 설정</a>
+        <a href="#">입점 신청</a>
+        <a href="#">고객센터</a>
+    </div>
+    <div class="WeverseYb78_footer_info">
+        <p>
+            상호 &nbsp;<strong>Fanzy Company Inc.</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            대표자 &nbsp;<strong>임민영</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            전화번호 &nbsp;<strong>1544-0790</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            FAX &nbsp;<strong>+82)-2-2144-9399</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            주소 &nbsp;<strong> 서울 금천구 동작대로 132, 한라원앤원타워 3층</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            사업자등록번호 &nbsp;<strong>119-86-20319</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            <a href="#">사업자 정보 확인</a>
+        </p>
+        <p>
+            통신판매업 신고번호 &nbsp;<strong>2022-금천가산P-0557호</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            호스팅 서비스 사업자 &nbsp;<strong>Amazon Web Services, Inc., Naver Cloud</strong>
+        </p>
+        <p>© <strong>FANZY COMPANY Inc.</strong> Ver 2.32.6</p>
+    </div>
+</footer>
+
+
 	<script>
     // 메인배너 출력
     let slides = document.querySelectorAll(".slide");
@@ -418,7 +643,7 @@ body {
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add("active");
     }
-    setInterval(nextSlide, 3000);
+    setInterval(nextSlide, 5000);
 
     // 아티스트 검색 모달
     const openSearchBtn = document.getElementById("openSearchBtn");

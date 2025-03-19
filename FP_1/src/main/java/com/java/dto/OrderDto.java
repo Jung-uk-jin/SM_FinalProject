@@ -59,6 +59,9 @@ public class OrderDto {
     @Column
     private int order_used_reward; // 사용 적립금
     
+    @Column
+    private int order_save_reward; // 저장 적립금
+    
     @Column(length=500)
     private String order_address; // 배송지 주소
     

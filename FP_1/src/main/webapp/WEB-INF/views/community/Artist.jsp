@@ -470,11 +470,19 @@ body {
     </div>
 </div>
 
-
+<c:if test="${nicknameDto.artistDto.artist_no != adto.artist_no}"></c:if>
 
 <div class="community-button" onclick="openModal()">
   커뮤니티 바로가기
 </div>
+</c:if>
+<c:if test="${nicknameDto.artistDto.artist_no == adto.artist_no}">
+<a href="/fancommunity?artist_no=${adto.artist_no }">
+<div class="community-button">
+  커뮤니티 바로가기
+</div>
+</a>
+</c:if>
 
 
 

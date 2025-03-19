@@ -29,5 +29,8 @@ public interface ConcertRepository extends JpaRepository<ConcertDto, Integer>{
     @Query("SELECT cs FROM ConcertScheduleDto cs WHERE cs.saleConcertDto.saleConcertNo = :saleConcertNo ORDER BY cs.scheduleDate, cs.scheduleStartTime")
     List<ConcertScheduleDto> findSchedulesBySaleConcertNo(@Param("saleConcertNo") Integer saleConcertNo);
 
+    // 관리자페이지 콘서트 상세보기
+    @Query(value="select * from concertdto where concert_no=?", nativeQuery=true)
+	ConcertDto findByconcertNo(int concert_no);
 
 }

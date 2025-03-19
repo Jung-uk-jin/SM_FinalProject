@@ -9,6 +9,10 @@
 <title>물건 상세 뷰</title>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="stylesheet" href="/css/updownstyle.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
+	
 <style>
 /* 기본 초기화 */
 * {
@@ -26,60 +30,6 @@ body {
 	font-family: "Pretendard Variable", sans-serif;
 	background-color: #f5f5f5;
 	color: #333;
-}
-
-/* 헤더: 화면 최상단에 고정 (sticky) */
-header {
-	width: 100%;
-	background-color: #fafaf8;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 20px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	position: sticky; /* 상단 고정 */
-	top: 0;
-	z-index: 10;
-}
-
-.header-left h1 {
-	font-size: 1.5rem;
-	font-weight: bold;
-	cursor: pointer;
-}
-
-.header-right nav ul {
-	display: flex;
-	list-style: none;
-	gap: 20px;
-}
-
-.header-right nav ul li {
-	cursor: pointer;
-	font-size: 0.9rem;
-	color: #666;
-	transition: color 0.2s ease;
-}
-
-.header-right nav ul li:hover {
-	color: #000;
-}
-
-.icons {
-	display: flex;
-	gap: 15px;
-	margin-left: 20px;
-}
-
-.icons span {
-	cursor: pointer;
-	font-size: 0.9rem;
-	color: #666;
-	transition: color 0.2s ease;
-}
-
-.icons span:hover {
-	color: #000;
 }
 
 /* wrapper: 상단·하단 섹션 모두 폭 1200px로 고정 */
@@ -402,27 +352,40 @@ a {
 </style>
 </head>
 <body>
+ <header class="WeverseXk21_header">
+    <div class="WeverseXk21_logo" id="logo">
+        <a href="/"><img src="/images/index_login/logo.png" alt="Logo"></a>
+    </div>
+    <!-- nav_bar -->
+    <nav class="WeverseXk21_nav">
+        <ul>
+            <c:if test="${session_id==null}">
+                <li><button type="button" class="WeverseXk21_sign_in">Sign in</button></li>
+            </c:if>
+            <c:if test="${session_id!=null}">
+                <li><a onclick="searchBtn()">
+                    <i class="fa-solid fa-magnifying-glass WeverseXk21_icon_solid"></i>
+                    <div id="searchBox" class="WeverseXk21_search_wrapper" style="display: none;">
+                        <input style="position: absolute; top:-15px; right:20px;" type="text" id="searchInput" class="WeverseXk21_search_input" placeholder="아티스트 검색" />
+                        <div id="searchResults" style="display: none; position: absolute; top: 40px; left: -200px; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); width: 200px; padding: 8px 15px;"></div>
+                    </div>
+                </a></li>
+                <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/mypage"><i class="fa-regular fa-user WeverseXk21_icon_regular"></i></a></li>
+                <li><a href="/user_setting"><i class="fa-solid fa-gear WeverseXk21_icon_solid"></i></a></li>
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:-1px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+            <c:if test="${session_id==null}">
+                <li class="WeverseXk21_cart WeverseXk21_coin"><a href="/smain"><img src="/images/index_login/coin.png"></a></li>
+                <li class="WeverseXk21_cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping WeverseXk21_icon_cart"></i></a></li>
+            </c:if>
+        </ul>
+    </nav>
+</header>
+
 	<!-- 이미지 고유 ID앞 링크 -->
 	<c:set var="baseurl" value="https://lh3.googleusercontent.com/d/" />
-
-	<!-- 헤더: .wrapper 바깥에 두어야 sticky가 문제 없이 동작 -->
-	<header>
-		<div class="header-left">
-			<h1>FANZY</h1>
-		</div>
-		<div class="header-right">
-			<nav>
-				<ul>
-					<li>HOME</li>
-					<li>STYLE</li>
-					<li>SHOP</li>
-				</ul>
-			</nav>
-			<div class="icons">
-				<span>검색</span> <span>♥</span> <span>장바구니</span> <span>마이페이지</span>
-			</div>
-		</div>
-	</header>
 
 	<div class="wrapper">
 		<!-- 메인 컨테이너 -->
@@ -437,7 +400,7 @@ a {
 				<div class="thumbnail-list">
 					<img src="${baseurl}${prod.shop_image1}" alt="Product image1"
 						onerror="this.onerror=null; this.src='${baseurl}17z6AniRT9Im-Ouxy_7qgqTuJdcR37bhU';">
-					<img src="${baseurl}${prod.shop_image2}" alt="Product image2"
+					<!--  --><img src="${baseurl}${prod.shop_image2}" alt="Product image2"
 						onerror="this.onerror=null; this.src='${baseurl}17z6AniRT9Im-Ouxy_7qgqTuJdcR37bhU';">
 					<img src="${baseurl}${prod.shop_image3}" alt="Product image3"
 						onerror="this.onerror=null; this.src='${baseurl}17z6AniRT9Im-Ouxy_7qgqTuJdcR37bhU';">
@@ -529,12 +492,10 @@ a {
 		<!-- 상품설명 이미지와 평점 섹션 -->
 		<div class="product-description">
 			<div class="description-image">
-				<!-- 첫 번째 상품설명 이미지 -->
-				<img src="/images/stelLive/memAll.jpg"
-					alt="Product Description Image" />
 				<!-- prodlist.png는 접을 수 있는 영역으로 -->
 				<div class="collapsible-image">
-					<img src="/images/prodlist.png" alt="Long Product Description" />
+					<img src="이미지넣으삼" alt="Product image3"
+					onerror="this.onerror=null; this.src='${baseurl}1qdMN8w82vrY7dGlzmRXLRLUbh6vktmgS';">
 				</div>
 				<button class="toggle-btn">더보기</button>
 			</div>
@@ -543,7 +504,8 @@ a {
 		<!-- 상품 상세 정보 섹션 -->
 		<div class="product-details">
 			<h2>상품 상세 정보</h2>
-			<p>여기에 상품에 대한 상세한 정보를 입력하세요. 소재, 기능, 사용법 등 중요한 내용들을 기술하면 좋음.</p>
+			<img src="이미지집어넣으삼" alt="Product image3"
+			onerror="this.onerror=null; this.src='${baseurl}1hBeom3slZY8VhzPjBXL4PVrBCvo0ePeB';">
 		</div>
 
 		<!-- 추가 정보 상자 섹션 -->
@@ -616,7 +578,52 @@ a {
 
 	</div>
 	<!-- /.wrapper -->
+	
+	<footer class="WeverseYb78_footer">
+    <div class="WeverseYb78_footer_links">
+        <a href="#">이용약관</a>
+        <a href="#">서비스운영정책</a>
+        <a href="#">유료서비스 이용약관</a>
+        <a href="#">청소년 보호 정책</a>
+        <a href="#"><strong>개인정보처리방침</strong></a>
+        <a href="#">쿠키정책</a>
+        <a href="#">쿠키 설정</a>
+        <a href="#">입점 신청</a>
+        <a href="#">고객센터</a>
+    </div>
+    <div class="WeverseYb78_footer_info">
+        <p>
+            상호 &nbsp;<strong>Fanzy Company Inc.</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            대표자 &nbsp;<strong>임민영</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            전화번호 &nbsp;<strong>1544-0790</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            FAX &nbsp;<strong>+82)-2-2144-9399</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            주소 &nbsp;<strong> 서울 금천구 동작대로 132, 한라원앤원타워 3층</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            사업자등록번호 &nbsp;<strong>119-86-20319</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            <a href="#">사업자 정보 확인</a>
+        </p>
+        <p>
+            통신판매업 신고번호 &nbsp;<strong>2022-금천가산P-0557호</strong>
+            <span class="WeverseYb78_footer_gap">|</span>
+            호스팅 서비스 사업자 &nbsp;<strong>Amazon Web Services, Inc., Naver Cloud</strong>
+        </p>
+        <p>© <strong>FANZY COMPANY Inc.</strong> Ver 2.32.6</p>
+    </div>
+</footer>
+	
+	
+	
+	
 	<!-- 썸네일 클릭 시 메인 이미지 교체 & collapsible toggle 스크립트 -->
+	
+	
+	
+	
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
 		  // 썸네일 클릭 시 메인 이미지 교체

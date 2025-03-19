@@ -78,7 +78,7 @@ nav ul li {
   position: relative;
 }
 
-nav ul li:nth-last-child(2) {
+nav ul li:nth-last-child(3) {
   border-right: 1px solid #ccc; /* 회색 실선 */
   padding-right: 15px; /* 아이콘과 선 사이에 여백 추가 */
   margin-right: 15px; /* 아이콘들 간의 여백 */
@@ -186,13 +186,14 @@ nav ul li a:hover::before {
     background-color: #F8F9FA; /* 연한 회색 배경 */
 }
 
-.all_{
-	width: 60%;
+.all_ {
+    width: 60%;
     padding: 40px 20px;
-	display: flex;
-    margin: 0 auto;
-    justify-content: center;
+    display: block;  /* 세로로 쌓이도록 block으로 설정 */
+    margin: 0 auto;  /* 가운데 정렬 */
+    justify-content: center;  /* 가운데 정렬 (필요시) */
 }
+
 
 .wallet{
 	margin-bottom: 20px;	
@@ -200,7 +201,10 @@ nav ul li a:hover::before {
 
 /* 왼쪽 카테고리 영역 */
 .sidebar {
-    flex-shrink: 0;
+    /* flex-shrink: 0; 고정안할꺼면 쓸 것! */
+    position: fixed; /* 화면에 고정 */
+    top: 30%; /* 페이지 상단에 고정 */
+    left: 18%; /* 페이지 왼쪽에 고정 */
 }
 
 .sidebar .menu {
@@ -232,6 +236,7 @@ nav ul li a:hover::before {
     flex-grow: 1;
     display: flex;
     gap: 20px;
+    flex-direction: column; /* 세로로 정렬 */
 }
 
 .section {
@@ -267,8 +272,18 @@ footer {
     }
 }
 
+/* 버튼이 disabled일 때 */
+#find-address-btn:disabled {
+    cursor: not-allowed;  /* 비활성화된 버튼에 금지 커서 */
+}
 
-.user-details {
+/* 버튼이 활성화되었을 때 */
+#find-address-btn {
+    cursor: pointer;  /* 활성화된 버튼에 손 모양 커서 */
+}
+
+
+.user-details, .couponHere, .subscribe, .order-history, .return-exchange, .my-reviews, .recently-viewed{
     padding: 30px;
     background-color: #fff;
     border-radius: 10px;
@@ -276,21 +291,25 @@ footer {
     max-width: 700px; /* 최대 너비를 900px로 증가 */
     width: 70%; /* 전체 너비로 확장 */
     margin: 0;
-    overflow-y: auto; /* 스크롤 추가 */
-    max-height: 80vh; /* 최대 높이를 80vh로 설정해 스크롤 생성 */
-    margin-left: 40px;
+    margin-left: 220px;
+    margin-bottom: 50px;
 }
 
-.user-details h2 {
+h2{
     font-size: 24px;
     font-weight: bold;
+    margin: 0;
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#edit-btn {
+p{
+	margin: 0;
+}
+
+#edit-btn, #bye-btn {
     background-color: #ff9a9e;
     color: #fff;
     border: none;
@@ -298,9 +317,10 @@ footer {
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 5px;
 }
 
-#edit-btn:hover {
+#edit-btn:hover, #bye-btn:hover {
     background-color: #ff7f7f;
 }
 
@@ -433,11 +453,14 @@ form button[type="button"] {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     padding: 20px 20px;
     background: linear-gradient(134deg, #ff9a9e 54.07%, #fad0c4 99.24%);
     color: white;
     font-size: 20px;
-    text-align: center;
+    position: sticky; /* 스크롤 시 헤더 고정 */
+    top: 93px; /* 화면 상단에 고정 */
+    z-index: 900; /* 다른 요소들이 헤더 뒤로 가도록 설정 */
 }
 
 
@@ -452,7 +475,7 @@ form button[type="button"] {
 .myname{
 	text-align: left;
 	position: relative;
-	left: -450px;
+	left: -520px;
 }
 
 
@@ -481,6 +504,60 @@ button[type="submit"]:active {
     background-color: #ff7f7f; /* 클릭 시 배경색 */
     color: white;
     border-color: #ff4d4d; /* 클릭 시 테두리 색상 */
+}
+
+
+
+
+.recent-items-container{
+	display: flex; /* 가로 정렬 */
+    flex-wrap: wrap; /* 넘칠 경우 줄바꿈 */
+    gap: 15px; /* 아이템 간격 조정 */
+}
+
+/* 개별 상품 */
+.recentItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 내부 요소(이미지, 텍스트) 수직 중앙 정렬 */
+    justify-content: center; /* 필요 시 수직 가운데 정렬 */
+    text-align: center;
+    width: 120px;
+}
+
+/* 상품 이미지 */
+.recentItem img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #F5F5F5;
+    margin: 0;
+}
+
+.recentInfo{
+	display: flex !important;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 내부 요소들 중앙 정렬 */
+    width: 100%; /* 부모(.recentItem)의 가로 폭에 맞추기 */
+}
+
+.recentInfo p{
+	margin: 0;
+	margin-top: 10px;
+}
+
+/* 최근 본 상품이 없을 때 메시지 */
+.recent-message {
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+}
+
+.recent-items-container a{
+	width: 122px;
+	margin-right: 10px;
+	
 }
 
 
@@ -645,7 +722,18 @@ footer {
 
 .cart a::before {
     top: 30% !important; 
-    left: 31% !important;
+}
+
+.cart img{
+	position: relative;
+	right: 10px;
+	top: -5px;
+	width: 40px;
+}
+
+.coin a::before {
+    top: -60% !important; 
+    left: 26% !important;
 }
 
 /* 추천 아티스트 */
@@ -694,7 +782,7 @@ footer {
 }
 
 /*------------------------------------------------------------------------------------------------------------*/
-/* 모달창 기본 스타일 */
+/* 기본 모달창 스타일 */
 #messageModal {
     display: none;
     position: fixed;
@@ -761,7 +849,121 @@ footer {
 .message-body ul li a:hover {
     color: #ff9a9e;
 }
+/*------------------------------------------------------------------------------------------------------------*/
+/* 비밀번호 변경 모달 스타일 */
+.password-modal {
+    display: none;
+    position: fixed;
+    z-index: 1002; /* 가장 위로 배치 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+/* 모달 내용 */
+.password-modal-content {
+    background-color: #f9f9f9; /* 부드러운 배경 */
+    padding: 30px;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    position: relative;
+}
+
+/* 제목 스타일 */
+.password-modal-content h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* 입력창 스타일 */
+input {
+    width: 97%;
+    padding: 12px 0;
+    margin-top: 5px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+/* 포커스 시 밑줄 색상 */
+input:focus {
+    border-bottom: 2px solid #007bff;
+}
+
+/* 유효성 검사 실패 시 밑줄 색상 변경 */
+input.invalid {
+    border-bottom: 2px solid red;
+}
+
+/* 설명 텍스트 */
+#passwordConditions {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.condition {
+    color: grey;
+    font-size: 14px;
+}
+
+.condition.valid {
+    color: green;
+}
+
+.condition.invalid {
+    color: red;
+}
+
+/* 버튼 스타일 */
+.password-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modifypw {
+    padding: 12px;
+    background-color: #d3d3d3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 48%;
+    font-size: 16px;
+}
+
+.modifypw:disabled {
+    background-color: #ff9a9e;
+    cursor: not-allowed;
+}
+
+.password-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #333;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.condition.valid {
+    color: #007bff; /* 파란색 */
+}
+
+.condition.invalid {
+    color: red;
+}
+
+/*------------------------------------------------------------------------------------------------------------*/
 /* 알림 내용 스타일 */
 .notification-content {
     display: none;
@@ -793,3 +995,47 @@ footer {
     transition: left 0.3s ease, width 0.3s ease; /* 위치와 너비 변경 시 부드럽게 애니메이션 */
 }
 
+/* ----------------------------------------------------------- */
+/* 구글번역 */
+
+.goog-te-gadget-simple{
+	width: 96.3%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    font-size: 20px !important;
+}
+
+
+.goog-te-gadget-simple img{
+	display: none;
+}
+
+
+
+.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    width: 0px !important;
+    position: absolute !important;
+    top: -9999px !important;  /* 화면 밖으로 이동 */
+}
+
+.skiptranslate {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    position: absolute !important;
+    top: -9999px !important; /* 화면 밖으로 */
+}
+
+
+/* --------------------------------------------------------------------------------------------------------- */
+/* myCoupon */

@@ -10,6 +10,9 @@
 <link rel="stylesheet" as="style" crossorigin	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="/css/updownstyle.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
 /* 기본 스타일 리셋 */
 * {
@@ -127,6 +130,8 @@ input::-webkit-inner-spin-button {
 </head>
 <body>
 
+
+
 	<div class="wrapper">
 	
 		<!-- 왼쪽 컬럼 -->
@@ -138,7 +143,7 @@ input::-webkit-inner-spin-button {
 				<p>상품번호:&nbsp ${param.sprodId}</p>
 				<p>주문개수:&nbsp ${param.quantity}개</p>
 				<p>상품명:&nbsp&nbsp&nbsp&nbsp ${sdto.shop_title}</p>
-				<p>상품가격 : <fm:formatNumber value="${sdto.shop_price * param.quantity}" pattern="#,###" /> ₩</p>
+				<p>상품가격 : <fm:formatNumber value="${appliedPrice * param.quantity}" pattern="#,###" /> ₩</p>
 			</div>
 
 			<!-- 고객정보 노출 DIV -->
@@ -187,15 +192,15 @@ input::-webkit-inner-spin-button {
 			<div class="box">
 			  <h3>적립금 사용</h3>
 			  <label for="rewardInput" id="rewardLabel">
-			    적용할 금액 입력 (최대 <fm:formatNumber value="${sdto.shop_price * param.quantity}" pattern="#,###" />₩ 사용가능)
+				  적용할 금액 입력 (최대 <fm:formatNumber value="${appliedPrice * param.quantity}" pattern="#,###" />₩ 사용가능)
 			  </label>
 			  <p>보유 적립금: ${mdto.member_mileage}</p>
 			  <p id="errorMessage" style="color: red; display: none;">보유 적립금보다 많은 금액은 입력할 수 없습니다.</p>
-			  <input type="number"
-			         id="rewardInput"
-			         min="0"
-			         max="${Math.floor(sdto.shop_price * param.quantity * 0.01)}"
-			         placeholder="사용할 적립금 입력">
+				<input type="number"
+				       id="rewardInput"
+				       min="0"
+				       max="${Math.floor(appliedPrice * param.quantity * 0.01)}"
+				       placeholder="사용할 적립금 입력">
 			</div>
 
 			<!-- 결제수단 선택 DIV -->
@@ -227,7 +232,7 @@ input::-webkit-inner-spin-button {
 $(document).ready(function() {
     // 가격 및 국가 정보
     const country = "${mdto.member_country}";
-    const productPrice = ${sdto.shop_price * param.quantity};
+    const productPrice = ${appliedPrice * param.quantity};
     
     console.log("국가:", country, "상품가격:", productPrice);
     
@@ -270,9 +275,9 @@ $(document).ready(function() {
         const inputVal = Number($(this).val());
         const availableMileage = Number(${mdto.member_mileage});
         const maxUsableMileage = Math.min(
-            availableMileage, 
-            Math.floor(productPrice * 0.01)
-        );
+        	    availableMileage, 
+        	    Math.floor(productPrice * 0.01)
+        	);
         
         // 입력값 검증
         if (inputVal > availableMileage) {
@@ -350,7 +355,7 @@ function buyBtn() {
             name: "${sdto.shop_title}",
             totalPrice: window.calculatedTotalPrice || ${sdto.shop_price * param.quantity},
             order_total_amount: purchaseQuantity, // 여기에 수량 저장
-            order_product_price: ${sdto.shop_price}, // 단가 저장
+            order_product_price: ${appliedPrice}, // 단가 저장
             order_shipping_fee: window.selectedShippingFee || 0,
             order_used_reward: window.usedReward || 0,
             order_address: $("#src_address").val() + " " + $("#src_detailAddress").val(),

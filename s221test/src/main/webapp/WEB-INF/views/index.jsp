@@ -10,6 +10,174 @@
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <title>Weverse Clone</title>
     <link rel="stylesheet" href="/css/styles.css">
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        body {
+            background-color: #eef1f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            width: 100%;
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+        	margin-left: 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .navbar .logo a {
+            text-decoration: none;
+        }
+        .navbar .menu {
+        	margin-right:40px;
+            display: flex;
+            gap: 15px;
+        }
+        .menu a, .menu button {
+            text-decoration: none;
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        a {
+            all: unset;
+            cursor: pointer;
+        }
+        .artist-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .artist-section h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .artist-table {
+            border-collapse: separate;
+            border-spacing: 30px;
+            width: auto;
+            margin: auto;
+        }
+        .artist-table td {
+         	border-radius: 30px;
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 1px solid #aaa;
+        }
+        .artist-card {
+		    width: 100%;  
+		    height: 230px; /* 고정된 높이 설정 (줄어들지 않게) */
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    justify-content: space-between;
+		}	
+        .artist-card img {
+        	border-top-left-radius: 30px;
+			border-top-right-radius: 30px;
+		    width: 200px;
+		    height: 170px; /* 원하는 높이로 조정 */
+		    object-fit: cover; /* 비율을 유지하면서 잘라내기 */
+		}
+		.artist-name {
+			margin-bottom: 20px;
+			
+		    font-size: 1.5rem;
+		    font-weight: bold;
+		    text-align: center;
+		    padding-top: 5px;
+		}
+		
+		
+		
+						
+		.slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            overflow: hidden;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        
+        
+        
+        footer {
+        width: 100%;
+        background: #f8f9fa;
+        padding: 20px 0;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .footer-links {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #666;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-info p {
+        margin: 5px 0;
+    }
+
+    .footer-info a {
+        color: #007aff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .footer-info a:hover {
+        text-decoration: underline;
+    }
+        
+	</style>
     <script>
 	    $(document).ready(function () {
 	    	// 1. 이벤트 배너 슬라이드 기능(5초 자동 슬라이드, 클릭시 이동가능)
@@ -84,7 +252,10 @@
         		alert("로그아웃 되었습니다.")
         	}
         	
-        	
+        	// 회원탈퇴
+        	if("${param.deactivate}"=="1"){
+        		alert("회원탈퇴가 완료되었습니다.");
+        	}
 
 	    });
 	    
@@ -183,6 +354,51 @@
 	    }
 	}; // 5번 종료
 
+	// 6. 번역
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'ko',
+            includedLanguages: 'en,ko,zh,ja,fr,de,es,it,pt,ru',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+    // 쿠키에서 번역 언어 가져오는 함수
+    function getTranslateCookie() {
+        let matches = document.cookie.match(/(^| )googtrans=([^;]+)/);
+        return matches ? decodeURIComponent(matches[2]) : null;
+    }
+
+    // 저장된 번역 언어 강제 적용
+    function applySavedTranslation() {
+        let savedLang = getTranslateCookie();
+        if (!savedLang) return;
+
+        let langCode = savedLang.split('/')[2]; // "/auto/ko" → "ko"
+
+        let checkExist = setInterval(function () {
+            let selectBox = document.querySelector('.goog-te-combo');
+            if (selectBox) {
+                clearInterval(checkExist);
+                selectBox.value = langCode;
+                selectBox.dispatchEvent(new Event('change')); // 번역 실행
+                console.log("번역 적용됨:", langCode);
+            }
+        }, 500);
+    }
+
+    // 페이지 로드 시 번역 유지
+    window.addEventListener("load", function () {
+        googleTranslateElementInit(); // 구글 번역 위젯 초기화
+        setTimeout(function () {
+            let banner = document.querySelector(".goog-te-banner-frame");
+            if (banner) {
+                banner.style.display = "none";
+            }
+            document.body.style.top = "0px"; // 혹시 top margin이 생기면 제거
+        }, 800); // 번역 적용될 시간 고려
+    }); // 6번 끝
+    
     </script>
 	</head>
 	<body>
@@ -205,14 +421,19 @@
 					</a></li>
 	                <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope"></i></a></li>
 	                <li><a href="/mypage"><i class="fa-regular fa-user"></i></a></li>
-	                <c:if test="${mdto.member_usertype eq 'admin'}">
+	                <c:if test="${mdto.member_usertype eq 'Admin'}">
 	             	   <li><a href="/admin"><i class="fa-solid fa-gear"></i></a></li>
 	                </c:if>
-	                <c:if test="${mdto.member_usertype ne 'admin'}">
+	                <c:if test="${mdto.member_usertype ne 'Admin'}">
 	             	   <li><a href="/user_setting"><i class="fa-solid fa-gear"></i></a></li>
 	                </c:if>
+	                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+	                <li class="cart" style="position: relative; top:2px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
 	            </c:if>
-	                <li class="cart"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+   	            <c:if test="${session_id==null}">
+	                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+	                <li class="cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+	            </c:if>
 	            </ul>
 	        </nav>
 	    </header>
@@ -301,46 +522,60 @@
 		    </div>
 	        
 	        <!-- 공지사항(로그인 안하면 광고만 뜸) -->
-	        <section class="notice">
-				<c:if test="${session_id!=null}">
-		    	<a href="/noticelist">
-					<div>
-					    <h3>띵동! 첫 DM 메시지가 도착했어요!</h3>
-						<p>멤버십 구독하고, 프라이빗 메시지에서만 볼 수 있는 특별한 소식을 확인하세요!<p>
+					    <!-- 나의 커뮤니티 -->
+        	<c:if test="${session_id!=null}">
+		        <section class="myCommunity">
+		        	<div class="myC">
+					    <h2>나의 커뮤니티</h2>
+					    <div class="community-container">
+					        <a><div class="artist-card">
+					            <a href=""><img src="/images/index_login/test.jpg" alt="Artist"></a> 
+					            <div class="artist-name">아티스트명</div>
+					        </div></a>
+					        <a><div class="artist-card">
+					            <a href=""><img src="/images/index_login/test.jpg" alt="Artist"></a> 
+					            <div class="artist-name">아티스트명</div>
+					        </div></a>
+					    </div>
+				    </div>
+				    <!-- 공지사항 -->
+			        <div class="notice">
+				    	<a href="/noticelist?page=0&artistNo=0">
+							<div>
+							    <h3>딩동! 첫 DM 메시지가 도착했어요!</h3>
+								<p>멤버십 구독하고, 프라이빗 메시지에서만 볼 수 있는 특별한 소식을 확인하세요!<p>
+							</div>
+					    	<img alt="notice" src="/images/index_login/notice1.jpg">
+						</a>
 					</div>
-			    	<img alt="notice" src="/images/index_login/notice1.jpg">
-				</a>
-			    </c:if>
-				<c:if test="${session_id==null}">
-			    	<img alt="notice" src="/images/index_login/ad.png">
-			    </c:if>
-			</section>
+				</section>
 	
 	        <!-- 굿즈샵 -->
-	        <c:if test="${session_id!=null}">
 		        <section class="merch">
 				    <h2>Merch</h2>
+   				    <a><div class="idolMerch">PLAVE</div></a>
+				    <a><div class="idolMerch">RIIZE</div></a>
 				    <div class="merch-container">
-				        <div class="merch-item">
+				        <a><div class="merch-item">
 				            <div class="temBox"><img src="/images/index_login/goods1.png" alt="PLAVE OFFICIAL LIGHT STICK"></div>
 				            <p class="merch-title">PLAVE OFFICIAL LIGHT STICK</p>
 				            <p class="merch-price">₩49,000</p>
-				        </div>
-				        <div class="merch-item">
+				        </div></a>
+				        <a><div class="merch-item">
 				            <div class="temBox"><img src="/images/index_login/goods2.png" alt="Caligo Pt.1 (Fugitive Ver.)"></div>
 				            <p class="merch-title">3rd Mini Album 'Caligo Pt.1' (Fugitive Ver.)</p>
 				            <p class="merch-price">₩18,500</p>
-				        </div>
-				        <div class="merch-item">
+				        </div></a>
+				        <a><div class="merch-item">
 				            <div class="temBox"><img src="/images/index_login/goods3.png" alt="Caligo Pt.1 (Vanguard Ver.) Random"></div>
 				            <p class="merch-title">3rd Mini Album 'Caligo Pt.1' (Vanguard Ver.) Random</p>
 				            <p class="merch-price">₩17,000</p>
-				        </div>
-				        <div class="merch-item">
+				        </div></a>
+				        <a><div class="merch-item">
 				            <div class="temBox"><img src="/images/index_login/goods4.png" alt="Caligo Pt.1 (POCAALBUM Ver.)"></div>
 				            <p class="merch-title">3rd Mini Album 'Caligo Pt.1' (POCAALBUM Ver.)</p>
 				            <p class="merch-price">₩13,300</p>
-				        </div>
+				        </div></a>
 				    </div>
 				</section>
 			</c:if>
@@ -366,24 +601,26 @@
 			    <h2>새로운 아티스트를 만나보세요 !</h2>
 			    <table class="artist-table">
 			        <tbody>
-			        	<c:forEach var="i" begin="0" end="20" step="1" varStatus="status">
+			            <c:forEach items="${list}" var="adto" varStatus="status">
 			                <!-- 새로운 행(tr) 시작 (5개마다) -->
 			                <c:if test="${status.index % 5 == 0}">
 			                    <tr>
 			                </c:if>
-			
+							<c:if test="${adto.display}">
 			                <td>
+			                	<a href="/artist?artist_no=${adto.artist_no}">
 			                    <div class="artist-card">
-			                       <a href=""><img src="/images/index_login/test.jpg" alt="Artist"></a> 
-			                        <div class="artist-name">아티스트명</div>
+			                       <img src="/upload/test/${adto.artist_group_image }" alt="Artist"> 
+			                        <div class="artist-name">${adto.artist_group_name}</div>
 			                    </div>
-			                </td> 	              
-			
+			                    </a>
+			                </td>
+							</c:if>
 			                <!-- 5개마다 행(tr) 닫기 -->
 			                <c:if test="${status.index % 5 == 4 or status.last}">
 			                    </tr>
 			                </c:if>
-			        	</c:forEach>
+		         	    </c:forEach>
 			        </tbody>
 			    </table>
 				</div>

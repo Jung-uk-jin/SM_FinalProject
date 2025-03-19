@@ -37,4 +37,7 @@ public interface MService {
 	// 닉네임 중복확인
 	boolean existsMemberNickname(String memberNickname);
 
+    // 적립금 추가 메서드
+    void addMemberPoints(String memberId, int pointsToAdd);
+
 }

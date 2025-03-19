@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.dto.CommentDto;
-import com.java.dto.CommunityDto;
+import com.java.dto.FanCommunityDto;
 import com.java.dto.MemberDto;
 import com.java.repository.CMRepository;
 import com.java.repository.CRepository;
@@ -66,7 +66,7 @@ public class MServiceImpl implements MService{
 	        cmRepository.deleteAll(comments);
 
 	        // 2. 멤버가 작성한 커뮤니티 삭제
-	        List<CommunityDto> communities = cRepository.findByNickname(member_nickname);
+	        List<FanCommunityDto> communities = cRepository.findByNickname(member_nickname);
 	        cRepository.deleteAll(communities);
 
 	        // 3. 멤버 삭제
@@ -80,10 +80,7 @@ public class MServiceImpl implements MService{
 	@Override
 	public MemberDto findByIdAndPw(String id, String pw) {
 		
-		MemberDto mdto = mRepository.findByIdAndPw(id,pw)
-				.orElseThrow(() -> {
-					return new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."); 
-				});
+		MemberDto mdto = mRepository.findByIdAndPw(id,pw);
 		return mdto;
 	}
 
@@ -95,6 +92,19 @@ public class MServiceImpl implements MService{
 					return new IllegalArgumentException("아이디가 없습니다.");
 				});
 		return mdto;
+	}
+
+	// 아이디 중복 확인
+	@Override
+	public boolean existsMemberId(String memberId) {
+		
+		return mRepository.existsByMemberId(memberId);
+	}
+
+	@Override
+	public boolean existsMemberNickname(String memberNickname) {
+		
+		return mRepository.existsByMemberNickname(memberNickname);
 	}
 
 }

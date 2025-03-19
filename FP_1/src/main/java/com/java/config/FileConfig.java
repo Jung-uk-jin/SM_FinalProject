@@ -15,5 +15,11 @@ public class FileConfig implements WebMvcConfigurer{
 		
 		registry.addResourceHandler("/upload/test/**")
 		.addResourceLocations("file:///c:/upload/test/");
+
+		  // registry.addResourceHandler("/images/**")
+      //     .addResourceLocations(
+      //         "classpath:/static/images/", // 기존의 static/images 폴더
+      //         "file:///c:/upload/test/"      // 새로 업로드된 파일이 저장되는 폴더
+      //     );
 	}
 }

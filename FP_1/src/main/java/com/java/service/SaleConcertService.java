@@ -16,6 +16,18 @@ public interface SaleConcertService {
 //	SaleConcertDto getSingleSaleConcertBySaleConcertNo(Integer saleConcertNo);
 	SaleConcertDto getSaleConcertBySaleConcertNo(Integer saleConcertNo);
 
+	// 관리자페이지 콘서트 티켓관리
+	List<SaleConcertDto> findAll();
+
+	// 관리자페이지 콘서트 티켓등록
+	void scwrite(SaleConcertDto scdto);
+
+	// 관리자페이지 콘서트 티켓 상세보기
+	SaleConcertDto findBysaleconcertNo(int saleconcert_no);
+
+	// 관리자페이지 콘서트 티켓 삭제
+	void deleteByConcertNo(int saleconcert_no);
+
 	
 
 }

@@ -242,10 +242,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
+                  href="/concert"
                   aria-expanded="false"
                   ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                  ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -315,7 +315,7 @@
                 <div class="card-body">
                   <h5 class="card-title">공지수정</h5>
                   <div class="table-responsive">
-                  	<form action="/noticeupdate" method="post" enctype="multipart/form-data">
+                  	<form action="/noticeupdate" name="writeFrm" method="post" enctype="multipart/form-data">
                     <table
                       id="zero_config"
                       class="table table-striped table-bordered"

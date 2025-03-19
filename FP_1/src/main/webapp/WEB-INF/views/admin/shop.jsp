@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
   <head>
@@ -43,6 +44,30 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+	   	.register-button {
+	   		width: 150px;
+		    display: inline-block;
+		    color: #7460ee;
+		    text-decoration: none;
+		    background-color: #fff;
+		    border: 1px solid #dee2e6;
+		    padding: 8px 16px;
+		    font-size: 14px;
+		    font-weight: bold;
+		    border-radius: 4px;
+		    transition: color 0.15s ease-in-out, 
+		                background-color 0.15s ease-in-out, 
+		                border-color 0.15s ease-in-out, 
+		                box-shadow 0.15s ease-in-out;
+		    cursor: pointer;
+		}
+		
+		.register-button:hover {
+		    background-color: #7460ee;
+		    color: #fff;
+		}
+    </style>
   </head>
 
   <body>
@@ -186,10 +211,10 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/ticket"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-chart-bar"></i
-                  ><span class="hide-menu">티켓샵관리</span></a
+                href="/concert"
+                aria-expanded="false"
+                ><i class="mdi mdi-chart-bar"></i
+                ><span class="hide-menu">콘서트관리</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -286,17 +311,21 @@
                         </tr>
                       </thead>
                       <tbody>
+                    <!-- 이미지 고유 ID앞 링크 (구글 클라우드를 이용한 이미지 호스팅) -->
+					<c:set var="baseurl" value="https://lh3.googleusercontent.com/d/" />
                    	  <c:if test="${not empty list}">
                       	<c:forEach items="${list}" var="sdto">
 					        <tr>
 					          <td>${sdto.shop_no}</td>
 					          <td>${sdto.shop_category}</td>
-					          <td>${sdto.shop_image}</td>
-					          <td>${sdto.shop_title}</td>
+	                          <td><img src="${baseurl}${sdto.shop_image1}" 
+                 			    alt="상품 이미지" style="width:60px; height:60px; object-fit:cover;">
+                 			  </td>
+					          <td><a href="/shopInfo?shop_no=${sdto.shop_no}">${sdto.shop_title}</td>
 					          <td>${sdto.shop_price}</td>
 					          <td>${sdto.shop_discount_price}</td>
 					          <td>${sdto.shop_quantity}</td>
-					          <td>${sdto.shop_date}</td>
+					          <td><fmt:formatDate value="${sdto.shop_date}" pattern="yyyy-MM-dd"/></td>
 					        </tr>
                       	</c:forEach>
                       </c:if>
@@ -319,6 +348,7 @@
                         </tr>
                       </tfoot>
                     </table>
+                    <button type="button" class="register-button" onclick="location.href='/shopwrite'">등록</button>
                   </div>
                 </div>
               </div>

@@ -36,7 +36,38 @@ public class ConcertServiceImpl implements ConcertService {
 	public List<ConcertScheduleDto> getConcertSchedulesBySaleConcertNo(Integer saleConcertNo) {
 		return concertRepository.findSchedulesBySaleConcertNo(saleConcertNo);
 	}
-	
-	
+
+	// 관리자페이지 콘서트 리스트
+	@Override
+	public List<ConcertDto> findAll() {
+		List<ConcertDto> list = concertRepository.findAll();
+		return list;
+	}
+
+	// 콘서트 등록
+	@Override
+	public void cwrite(ConcertDto cdto) {
+		concertRepository.save(cdto);
+		
+	}
+
+	// 관리자페이지 콘서트 상세보기
+	@Override
+	public ConcertDto findByconcertNo(int concert_no) {
+		ConcertDto cdto = concertRepository.findByconcertNo(concert_no);
+		return cdto;
+	}
+
+	// 관리자페이지 콘서트 삭제
+	@Override
+	public void deleteByConcertNo(int concert_no) {
+		concertRepository.deleteById(concert_no);
+	}
+
+	// 관리자페이지 콘서트 티켓수정
+	@Override
+	public ConcertDto findByConcertNo(int concertNo) {
+		return concertRepository.findByConcertNo(concertNo);
+	}
 
 }

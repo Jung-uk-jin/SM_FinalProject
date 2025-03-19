@@ -26,5 +26,8 @@ public class ArtistDto {
 	private String artist_group_name;
 	@Column(length = 100)	
 	private String artist_group_image;
-		
+	@Column(length = 100)	
+	private String artist_group_logo; // 그룹 로고
+	
+	private boolean display; // 관리자페이지 토글
 }

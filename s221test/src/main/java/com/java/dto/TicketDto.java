@@ -30,8 +30,7 @@ import lombok.NoArgsConstructor;
 public class TicketDto {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_seq")
-    @SequenceGenerator(name = "ticket_seq", sequenceName = "ticket_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ticket_no; 					// 티켓고유번호
 	@Column(nullable = false, length=30)
 	private String ticket_title; 			// 티켓명

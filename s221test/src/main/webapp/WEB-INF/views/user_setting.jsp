@@ -111,7 +111,8 @@
 	        updateProgressBar(targetIndex);  // 클릭한 탭에 맞춰 업데이트
 	    });
 	}); // 4번 끝
-    </script>
+
+</script>
 </head>
 <body>
     <header>
@@ -124,7 +125,7 @@
             <c:if test="${session_id==null}">
                 <li><button type="button" class="sign_in">Sign in</button></li>
             </c:if>
-            <c:if test="${session_id!=null}">
+			<c:if test="${session_id!=null}">
                 <li><a onclick="searchBtn()">
 				    <i class="fa-solid fa-magnifying-glass"></i>
 				    <div id="searchBox" style="display: none;">
@@ -133,9 +134,14 @@
 				</a></li>
                 <li><a onclick="openAlert()"><i style="font-size: 35px; position: relative; top: -5px;" class="fa-regular fa-envelope"></i></a></li>
                 <li><a href="/mypage"><i class="fa-regular fa-user"></i></a></li>
-                <li><a><i class="fa-solid fa-gear"></i></a></li>
+                <li><a href="/user_setting"><i class="fa-solid fa-gear"></i></a></li>
+                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+                <li class="cart" style="position: relative; top:-1px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
             </c:if>
-                <li class="cart"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <c:if test="${session_id==null}">
+                <li class="cart coin"><a><img src="/images/index_login/coin.png"></a></li>
+                <li class="cart" style="position: relative; top:4px;"><a onclick="cartBtn()"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            </c:if>
             </ul>
         </nav>
     </header>
@@ -146,47 +152,300 @@
     </section>
         <section class="settings-container">
     <h2>설정</h2>
-    <div class="setting-group">
-        <h3>서비스 언어</h3>
-        <select>
-            <option>한국어</option>
-            <option>English</option>
-        </select>
-    </div>
+	<div class="setting-group">
+	    <h3>서비스 언어</h3>
+	    <select id="service-language">
+	        <option value="ko">한국어</option>
+	        <option value="en">English</option>
+	    </select>
+	</div>
+	
+	<div class="setting-group">
+	    <h3>번역 언어</h3>
+	    <!-- 구글 번역 위젯을 삽입할 위치 -->
+	    <div id="google_translate_element"></div>
+	    <select id="translate-language">
+	        <option value="ko">한국어</option>
+	        <option value="en">English</option>
+	        <option value="zh">中文</option>
+	        <option value="ja">日本語</option>
+	        <option value="fr">Français</option>
+	        <option value="de">Deutsch</option>
+	        <option value="es">Español</option>
+	        <option value="it">Italiano</option>
+	        <option value="pt">Português</option>
+	        <option value="ru">Русский</option>
+	    </select>
+	</div>
+	
+	
+	<div class="setting-group">
+	    <h3>자동 번역</h3>
+	    <label class="toggle-switch">
+	        <input type="checkbox" id="auto-translate">
+	        <span class="slider"></span>
+	    </label>
+	    <p>아티스트와 팬의 일부 콘텐츠가 선택한 번역 언어로 자동 번역되어 보입니다.</p>
+	</div>
+	    
+	    <h2>콘텐츠 설정</h2>
+	    <div class="setting-group">
+	        <h3>제한모드</h3>
+	        <label class="toggle-switch">
+	            <input type="checkbox" id="auto-filter">
+	            <span class="slider"></span>
+	        </label>
+	        <p>15세 이상부터 관람 가능한 유료 VOD를 숨김 처리합니다.</p>
+	    </div>
+	    
+		<h2>알림 및 서비스 설정</h2>
+		<ul>
+		    <li>
+		        <a>이벤트 · 혜택 알림 설정</a>
+		        <label class="toggle-switch">
+		            <input type="checkbox" id="auto-notification">
+		            <span class="slider"></span>
+		        </label>
+		    </li>
+		    <li>
+		        <a>맞춤형 광고 및 서비스 보기</a>
+		    </li>
+		</ul>
+		</section>
+	
+	
+	
+	<script>
+	
+	// 브라우저의 기본 언어 가져오기
+    const userLang = navigator.language || navigator.userLanguage; // ex) "ko-KR", "en-US"
+
+    // 언어 코드만 추출 (첫 2글자)
+    const langCode = userLang.substring(0, 2); 
+
+    // select 요소 가져오기
+    const languageSelect = document.getElementById("service-language");
+
+    // 언어 설정 (ko 또는 en만 지원)
+    if (langCode === "ko") {
+        languageSelect.value = "ko";
+    } else {
+        languageSelect.value = "en";
+    }
     
-    <div class="setting-group">
-        <h3>번역 언어</h3>
-        <select>
-            <option>한국어</option>
-            <option>English</option>
-        </select>
-    </div>
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            let banner = document.querySelector(".goog-te-banner-frame");
+            if (banner) {
+                banner.style.display = "none";
+            }
+            document.body.style.top = "0px"; // 혹시 top margin이 생기면 제거
+        }, 800); // 번역 적용될 시간 고려
+    });
     
-    <div class="setting-group">
-        <h3>자동 번역</h3>
-        <label class="toggle-switch">
-            <input type="checkbox">
-            <span class="slider"></span>
-        </label>
-        <p>아티스트와 팬의 일부 콘텐츠가 선택한 번역 언어로 자동 번역되어 보입니다.</p>
-    </div>
-    
-    <h2>콘텐츠 설정</h2>
-    <div class="setting-group">
-        <h3>제한모드</h3>
-        <label class="toggle-switch">
-            <input type="checkbox">
-            <span class="slider"></span>
-        </label>
-        <p>15세 이상부터 관람 가능한 유료 VOD를 숨김 처리합니다.</p>
-    </div>
-    
-    <h2>알림 및 서비스 설정</h2>
-    <ul>
-        <li><a href="#">이벤트·혜택 알림 설정</a></li>
-        <li><a href="#">맞춤형 광고 및 서비스 보기</a></li>
-    </ul>
-	</section>
+	// 1. 자동번역 토글 on/off
+	$(document).ready(function() {
+	    const autoTranslateToggle = $('#auto-translate'); // 토글 요소
+	    const savedAutoTranslate = localStorage.getItem('autoTranslate'); // 저장된 값 불러오기
+	
+	    if (savedAutoTranslate === 'true') {
+	        autoTranslateToggle.prop('checked', true);
+	        setTranslateCookie(localStorage.getItem('selectedTranslateLanguage') || languageSelect.value);
+	        autoTranslateToggle.closest('.toggle-switch').addClass('no-animation'); // 애니메이션 없이 적용
+	    } else {
+	        autoTranslateToggle.prop('checked', false);
+	        deleteTranslateCookie();
+	        autoTranslateToggle.closest('.toggle-switch').removeClass('no-animation');
+	    }
+	
+	    // 토글 변경 시 동작
+	    autoTranslateToggle.change(function() {
+	        const isChecked = autoTranslateToggle.prop('checked');
+	        localStorage.setItem('autoTranslate', isChecked.toString());
+	
+	        if (isChecked) {
+	            setTranslateCookie(localStorage.getItem('selectedTranslateLanguage') || languageSelect.value); 
+	        } else {
+	            deleteTranslateCookie();
+	        }
+	
+	        autoTranslateToggle.closest('.toggle-switch').removeClass('no-animation'); // 애니메이션 활성화
+	    });
+	
+	    // 페이지 로드 후 일정 시간 지나면 애니메이션 다시 활성화
+	    setTimeout(function() {
+	        autoTranslateToggle.closest('.toggle-switch').removeClass('no-animation');
+	    }, 500);
+	});
+	
+	// ✅ 쿠키 생성 함수
+	function setTranslateCookie(lang) {
+	    document.cookie = "googtrans=/auto/" + lang + "; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+	
+	    let select = document.querySelector('.goog-te-combo');
+	    if (select) {
+	        select.value = lang;
+	        select.dispatchEvent(new Event('change')); // 번역 실행
+	    }
+	
+	    localStorage.setItem('selectedTranslateLanguage', lang);
+	}
+	
+	// ✅ 쿠키 삭제 함수
+	function deleteTranslateCookie() {
+	    document.cookie = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+	} // 1번 끝
+
+    // 2. 구글 번역
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'ko',  // 기본 서비스 언어
+            includedLanguages: 'en,ko,zh,ja,fr,de,es,it,pt,ru',  // 지원되는 번역 언어
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+    $(document).ready(function() {
+        // 페이지 로드 시 저장된 언어 값을 가져와서 셀렉트 요소에 반영
+        var savedLang = localStorage.getItem('selectedTranslateLanguage');
+        if (savedLang) {
+            $('#translate-language').val(savedLang);
+        }
+
+        // 번역 언어 변경 시
+        $('#translate-language').change(function() {
+            var language = $(this).val();
+            setTranslateCookie(language); // 선택된 언어로 쿠키 설정
+            localStorage.setItem('selectedTranslateLanguage', language); // 선택된 언어 저장
+        });
+
+        // 서비스 언어 변경 시 번역 언어도 변경
+        $('#service-language').change(function() {
+            var selectedLang = $(this).val();
+            $('#translate-language').val(selectedLang).trigger('change'); // 번역 언어 select도 변경
+            localStorage.setItem('selectedTranslateLanguage', selectedLang); // 서비스 언어 변경 시 저장
+        });
+
+        // 자동 번역 토글 기능
+        const autoTranslateToggle = $('#auto-translate');
+        const savedAutoTranslate = localStorage.getItem('autoTranslate');
+
+        if (savedAutoTranslate === 'true') {
+            autoTranslateToggle.prop('checked', true);
+        } else {
+            autoTranslateToggle.prop('checked', false);
+        }
+
+        autoTranslateToggle.change(function() {
+            const isChecked = autoTranslateToggle.prop('checked');
+            localStorage.setItem('autoTranslate', isChecked.toString());
+        });
+    });
+
+    // 쿠키로 구글 번역 언어 설정
+	function setTranslateCookie(lang) {
+	    document.cookie = "googtrans=/auto/" + lang + "; path=/";
+	
+	    // 구글 번역 위젯을 강제로 언어 변경
+	    let select = document.querySelector('.goog-te-combo');
+	    if (select) {
+	        select.value = lang;
+	        select.dispatchEvent(new Event('change')); // 번역 실행
+	    }
+	
+	    localStorage.setItem('selectedTranslateLanguage', lang);
+	}
+
+	function getTranslateCookie() {
+	    let matches = document.cookie.match(/(^| )googtrans=([^;]+)/);
+	    return matches ? decodeURIComponent(matches[2]) : null;
+	}
+
+	$(document).ready(function() {
+	    let savedLang = getTranslateCookie();
+
+	    if (savedLang) {
+	        // `googtrans` 값이 있다면, 해당 언어로 번역 적용
+	        let langCode = savedLang.split('/')[2]; // "/auto/ko" → "ko" 추출
+	        if (langCode) {
+	            localStorage.setItem('selectedTranslateLanguage', langCode);
+	            let selectBox = $('#translate-language');
+	            if (selectBox.length) {
+	                selectBox.val(langCode).trigger('change'); // UI 업데이트
+	            }
+	        }
+	    }
+	}); // 2번 끝
+	
+	// 3. 콘텐츠 필터 적용
+	document.addEventListener("DOMContentLoaded", function () {
+	    const toggle = document.getElementById("auto-filter");
+	
+	    // 저장된 설정 불러오기
+	    const savedState = localStorage.getItem("autoFilter");
+	
+	    if (savedState === "on") {
+	        toggle.checked = true;
+	        toggle.closest('.toggle-switch').classList.add('no-animation'); // 애니메이션 없이 적용
+	    } else {
+	        toggle.checked = false;
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    }
+	
+	    // 토글 변경 시 상태 저장
+	    toggle.addEventListener("change", function () {
+	        if (toggle.checked) {
+	            localStorage.setItem("autoFilter", "on");
+	        } else {
+	            localStorage.setItem("autoFilter", "off");
+	        }
+	
+	        // 애니메이션 활성화
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    });
+	
+	    // 페이지 로드 후 0.5초 후 애니메이션 다시 활성화
+	    setTimeout(() => {
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    });
+	});
+ // 3번 끝
+ 
+	// 4. 알림 기능 적용
+	document.addEventListener("DOMContentLoaded", function () {
+	    const toggle = document.getElementById("auto-notification");
+	
+	    // 저장된 설정 불러오기
+	    const savedState = localStorage.getItem("autoNotification");
+	
+	    if (savedState === "on") {
+	        toggle.checked = true;
+	        toggle.closest('.toggle-switch').classList.add('no-animation'); // 애니메이션 없이 적용
+	    } else {
+	        toggle.checked = false;
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    }
+	
+	    // 토글 변경 시 상태 저장
+	    toggle.addEventListener("change", function () {
+	        if (toggle.checked) {
+	            localStorage.setItem("autoNotification", "on");  // ✅ 올바른 키 사용
+	        } else {
+	            localStorage.setItem("autoNotification", "off"); // ✅ 올바른 키 사용
+	        }
+	
+	        // 애니메이션 활성화
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    });
+	
+	    // 페이지 로드 후 0.5초 후 애니메이션 다시 활성화
+	    setTimeout(() => {
+	        toggle.closest('.toggle-switch').classList.remove('no-animation');
+	    }, 500);
+	}); // 4번 끝
+	</script>
+	<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	
     <!-- 추천 아티스트 -->
 	<a><div class="fixed-heart">
 		    <img src="/images/index_login/heart.png" alt="Heart" />

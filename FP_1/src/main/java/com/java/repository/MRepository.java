@@ -61,4 +61,11 @@ public interface MRepository extends JpaRepository<MemberDto, String>{
 	@Query(value = "select * from memberdto where member_id=?", nativeQuery = true)
 	Optional<MemberDto> findByMemberId(String memberId);
 	
+	//적립금저장
+	@Modifying
+	@Transactional
+	@Query("UPDATE MemberDto m SET m.member_mileage = :newPoints WHERE m.member_id = :memberId")
+	void updatePoints(@Param("memberId") String memberId, @Param("newPoints") int newPoints);
+
+	
 }
