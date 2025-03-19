@@ -355,9 +355,9 @@ body {
 	<!-- 메인배너 -->
 	<div class="container">
 		<div class="slider-container">
-			<img src="https://lh3.googleusercontent.com/d/1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" class="slide active">
-			<img src="https://lh3.googleusercontent.com/d/1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" class="slide">
-			<img src="https://lh3.googleusercontent.com/d/1xW8V8nTCRiTlJtIww12rWqC7uw2O-4tJ" class="slide">
+			<a href="/sprods?artistNo=1"><img src="https://lh3.googleusercontent.com/d/1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" width="1080px" height="430px" class="slide active"></a>
+			<a href="/sprods?artistNo=3"><img src="https://lh3.googleusercontent.com/d/1V6HZAiN15_X8y9nbMlRiaa-sK_WHxKWD" width="1080px" height="430px" class="slide "></a>
+			<a href="/sprods?artistNo=1"><img src="https://lh3.googleusercontent.com/d/1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" width="1080px" height="430px" class="slide"></a>
 			<button class="slider-btn" onclick="nextSlide()">다음</button>
 		</div>
 	</div>

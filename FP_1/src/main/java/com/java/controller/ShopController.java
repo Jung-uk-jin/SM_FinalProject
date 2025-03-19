@@ -103,6 +103,10 @@ public class ShopController {
 	    .collect(Collectors.toCollection(LinkedHashSet::new));
 	    model.addAttribute("categories", categories);
 		
+	    // artist_no에 해당하는 ArtistDTO 가져오기
+	    ArtistDto artist = artistService.findByArtistNo(artist_no);
+	    model.addAttribute("adto", artist);
+	    
 		System.out.println("artist_no : " + artist_no);
 		System.out.println("ShopDto : " + list);
 		System.out.println("category : " + categories);

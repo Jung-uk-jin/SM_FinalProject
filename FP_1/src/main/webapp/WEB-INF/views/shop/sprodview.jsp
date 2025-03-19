@@ -274,7 +274,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .interest {
-	color: #eb5757;
 	font-weight: bold;
 	cursor: pointer;
 	margin-left: 5px;
@@ -482,7 +481,7 @@ a {
 						<span>멤버쉽 혜택 안내</span> <span class="value">상품가 1% 포인트 적립</span>
 					</div>
 					<div>
-						브랜드: <span>Supreme</span> <span class="interest">관심상품</span>
+						그룹: <span>${artist.artist_group_name}</span> <span class="interest">.</span>
 					</div>
 				</div>
 			</div>
@@ -494,7 +493,7 @@ a {
 			<div class="description-image">
 				<!-- prodlist.png는 접을 수 있는 영역으로 -->
 				<div class="collapsible-image">
-					<img src="이미지넣으삼" alt="Product image3"
+					<img src="${baseurl}${prod.shop_content}" alt="prod content"
 					onerror="this.onerror=null; this.src='${baseurl}1qdMN8w82vrY7dGlzmRXLRLUbh6vktmgS';">
 				</div>
 				<button class="toggle-btn">더보기</button>
@@ -504,7 +503,7 @@ a {
 		<!-- 상품 상세 정보 섹션 -->
 		<div class="product-details">
 			<h2>상품 상세 정보</h2>
-			<img src="이미지집어넣으삼" alt="Product image3"
+			<img src="이미지집어넣으삼" alt="Product info"
 			onerror="this.onerror=null; this.src='${baseurl}1hBeom3slZY8VhzPjBXL4PVrBCvo0ePeB';">
 		</div>
 

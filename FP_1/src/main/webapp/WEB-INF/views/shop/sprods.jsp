@@ -164,18 +164,25 @@ a {
 
 /* 이미지 슬라이더 스타일 */
 .slider-container {
-	margin-top: 30px;
-	position: relative;
-	width: 1905px;
-	height: 400px;
-	overflow: hidden;
+    margin-top: 0px;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #E6E6E6; /* 이미지와 비슷한 파란-보라 계열 색상 */
+    overflow: hidden;
+}
+
+.slider-inner {
+    max-width: 1200px; /* 또는 원하는 최대 너비 */
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
 }
 
 .slide {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 </style>
 </head>
@@ -252,14 +259,16 @@ a {
   <c:otherwise>
 	
 	
-	<!-- Banner -->
-	<div class="slider-container">
-		<img class="slide" 
-			src="${baseurl}1iqnqezaYvtOsfl6ZcOOK3AnZ4B2ZgdiE"
-			alt="shopmainbanner"
-			onerror="this.onerror=null; this.src='https://picsum.photos/1980/400';" />
-	</div>
-	<!-- Banner -->
+<!-- Banner -->
+<div class="slider-container">
+    <div class="slider-inner">
+        <img class="slide" 
+            src="/images/${adto.artist_cover_image}"
+            alt="shopmainbanner"
+            onerror="this.onerror=null; this.src='https://picsum.photos/1980/400';" />
+    </div>
+</div>
+<!-- Banner -->
 
 	<!-- container -->
 	<div class="container">
