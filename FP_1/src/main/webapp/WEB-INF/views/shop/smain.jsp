@@ -395,7 +395,7 @@ body {
         <c:forEach var="n" items="${nlist}">
           <a href="/sprods?artistNo=${n.artistDto.artist_no}">
             <div class="artist-item-circle">
-              <img src="${baseurl}${n.artistDto.artist_group_image}"
+              <img src="/images/${n.artistDto.artist_group_image}"
                    onerror="this.src='https://picsum.photos/73/73';"
                    alt="${n.artistDto.artist_group_name}" />
               <p>${n.artistDto.artist_group_name}</p>
@@ -408,7 +408,7 @@ body {
         <c:forEach var="adto" items="${list}">
           <a href="/sprods?artistNo=${adto.artist_no}">
             <div class="artist-item-circle">
-              <img src="${baseurl}${adto.artist_group_image}"
+              <img src="/images/${adto.artist_group_image}"
                    onerror="this.src='https://picsum.photos/73/73';"
                    alt="${adto.artist_group_name}" />
               <p>${adto.artist_group_name}</p>
