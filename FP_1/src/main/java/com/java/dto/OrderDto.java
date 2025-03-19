@@ -40,7 +40,7 @@ public class OrderDto {
 
     
     @Column
-    private String Name; // 총 금액
+    private String Name; // 상품명
     @Column
     private int TotalPrice; // 총 금액
     

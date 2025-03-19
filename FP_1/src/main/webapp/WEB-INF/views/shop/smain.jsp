@@ -355,9 +355,9 @@ body {
 	<!-- 메인배너 -->
 	<div class="container">
 		<div class="slider-container">
-			<a href="/sprods?artistNo=1"><img src="https://lh3.googleusercontent.com/d/1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" width="1080px" height="430px" class="slide active"></a>
-			<a href="/sprods?artistNo=3"><img src="https://lh3.googleusercontent.com/d/1V6HZAiN15_X8y9nbMlRiaa-sK_WHxKWD" width="1080px" height="430px" class="slide "></a>
-			<a href="/sprods?artistNo=1"><img src="https://lh3.googleusercontent.com/d/1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" width="1080px" height="430px" class="slide"></a>
+			<a href="/sprods?artistNo=1"><img src="${baseurl}1CiQg8-kXxT6mILKe0YNZ4TnScb4SALHA" width="1080px" height="430px" class="slide active"></a>
+			<a href="/sprods?artistNo=3"><img src="${baseurl}1V6HZAiN15_X8y9nbMlRiaa-sK_WHxKWD" width="1080px" height="430px" class="slide "></a>
+			<a href="/sprods?artistNo=1"><img src="${baseurl}1dEFr88EJfLKmi4z83UiWPUJsxfp8GFmj" width="1080px" height="430px" class="slide"></a>
 			<button class="slider-btn" onclick="nextSlide()">다음</button>
 		</div>
 	</div>
