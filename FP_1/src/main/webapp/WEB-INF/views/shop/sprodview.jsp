@@ -457,14 +457,20 @@ a {
 						 
 					</script>
 					
-					<div
-						class="action-buttons ${prod.shop_quantity == 0 ? 'sold-out-item' : ''}">
-						<button class="cart-btn">장바구니</button>
-						<button class="buy-btn"
-							onclick=buyBtn()
-							${prod.shop_quantity == 0 ? "disabled" : ""}>
-							${prod.shop_quantity == 0 ? "품절" : "구매"}</button>
-					</div>
+<div class="action-buttons ${prod.shop_quantity == 0 ? 'sold-out-item' : ''}">
+  <button 
+    class="cart-btn"
+    ${prod.shop_quantity == 0 ? "disabled" : ""}
+    onclick="${prod.shop_quantity == 0 ? '' : 'cartBtn()'}">
+    ${prod.shop_quantity == 0 ? "판매완료된 상품입니다." : "장바구니"}
+  </button>
+  <button 
+    class="buy-btn"
+    onclick="${prod.shop_quantity == 0 ? '' : 'buyBtn()'}"
+    ${prod.shop_quantity == 0 ? "disabled" : ""}>
+    ${prod.shop_quantity == 0 ? "구매불가" : "구매"}
+  </button>
+</div>
 
 				</div>
 	
