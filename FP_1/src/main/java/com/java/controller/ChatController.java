@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,11 +23,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import com.java.dto.ChatMessage;
+import com.java.dto.NicknameDto;
 import com.java.service.ChatFilterService;
+import com.java.service.NicknameService;
 
 import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class ChatController {
@@ -58,12 +71,44 @@ public class ChatController {
         System.out.println("Received bad word: " + badWord);
 
         if (badWord != null && !badWord.trim().isEmpty()) {
-            chatFilterService.addBadWord(badWord); // 필터링 목록에 추가
-            return ResponseEntity.ok(Map.of("message", "단어가 신고되었습니다.")); // JSON 형식으로 응답
+            // Python 서버로 감정 분석 요청
+            String sentiment = getSentimentFromPython(badWord);
+
+            // 감정 분석 결과에 따른 처리
+            System.out.println("Sentiment from Python: " + sentiment);  // 디버깅: 감정 분석 결과 출력
+
+            if ("긍정적".equals(sentiment)) {
+                // 긍정적일 경우
+                return ResponseEntity.ok(Map.of("message", "긍정적인 단어는 신고되지 않았습니다."));
+            } else {
+                // 부정적이거나 중립적일 경우
+                chatFilterService.addBadWord(badWord); // 필터링 목록에 추가
+                return ResponseEntity.ok(Map.of("message", "단어가 신고되었습니다."));
+            }
         }
 
-        return ResponseEntity.badRequest().body(Map.of("message", "잘못된 요청입니다.")); // JSON 형식으로 잘못된 요청 응답
+        return ResponseEntity.badRequest().body(Map.of("message", "잘못된 요청입니다."));
     }
+    private String getSentimentFromPython(String text) {
+        String url = "http://localhost:5000/analyzeSentiment"; // Flask 서버 주소
+
+        // RestTemplate 사용하여 Python 서버로 요청 보내기
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(Map.of("text", text), headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+
+        // Python에서 받은 감정 분석 결과 반환
+        String sentiment = (String) response.getBody().get("sentiment");
+
+        // 감정 분석 결과 출력 (디버깅)
+        System.out.println("Sentiment from Python: " + sentiment);
+
+        return sentiment;
+    }
+    
     
     
 

@@ -97,4 +97,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // 닫기 버튼 클릭 이벤트
     closeButton.addEventListener("click", closeRecommendationModal);
 });
+document.querySelector('.modal-recommend-content').addEventListener('wheel', function(event) {
+    if (event.deltaY !== 0) {
+        // 모달 내에서만 스크롤이 발생하도록 설정
+        this.scrollTop += event.deltaY;
+        event.preventDefault();  // 페이지 스크롤 방지
+    }
+});
 

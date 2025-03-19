@@ -89,7 +89,7 @@
                     const chatDiv = document.getElementById('chat');
                     const newMessage = document.createElement('div');
                     newMessage.textContent = chatMessage.sender + ": " + chatMessage.content;
-                    const sessionId = '${session_id}'; // 실제 세션 ID
+                    const sessionId = '${session_nickname}'; // 실제 세션 ID
                     if (chatMessage.sender === sessionId) {
                         newMessage.classList.add("sent-message"); // 자신의 메시지 스타일 적용
                     } else {
@@ -150,7 +150,7 @@
             }
 
             const message = {
-                sender: '${session_id}', // 실제 사용자 이름을 여기 넣을 수 있음
+                sender: '${session_nickname}', // 실제 사용자 이름을 여기 넣을 수 있음
                 content: messageContent,
                 type: 'CHAT'
             };
@@ -184,7 +184,7 @@
 	        })
 	        .then(response => response.json())
 	        .then(data => {
-	            alert("욕설이 신고되었습니다.");
+	        	alert(data.message);  // 서버에서 전달한 메시지를 alert로 표시
 	        })
 	        .catch(error => {
 	            alert("신고 처리에 실패했습니다.");
