@@ -23,10 +23,12 @@ import com.java.dto.FanCommunityDto;
 import com.java.dto.LikeDto;
 import com.java.dto.MemberDto;
 import com.java.dto.NicknameDto;
+import com.java.dto.NoticeDto;
 import com.java.service.AService;
 import com.java.service.CMService;
 import com.java.service.CService;
 import com.java.service.MService;
+import com.java.service.NService;
 import com.java.service.NicknameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +40,7 @@ public class FanCommuController {
 	@Autowired CService cService;
 	@Autowired MService mService;
 	@Autowired AService aService;
+	@Autowired NService nService;
 	@Autowired NicknameService nicknameService;
 	@Autowired HttpSession session;
 	
@@ -45,8 +48,11 @@ public class FanCommuController {
 	public String fancommunity(@RequestParam("artist_no") int artist_no, Model model) {
 		System.out.println("🔍 findByArtistNo() 호출 - artist_no: " + artist_no);
 		
+		List<NoticeDto> noticeDto = nService.findbyArtistNo(artist_no);
+		
 		List<FanCommunityDto> list = cService.findAll(artist_no); // List인데...흠..
 		ArtistDto artistDto = aService.findByArtistNo(artist_no);
+		model.addAttribute("ndto",noticeDto);
 		model.addAttribute("list",list);
 		model.addAttribute("adto", artistDto);
 		return "/community/fancommunity";

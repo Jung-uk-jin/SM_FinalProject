@@ -41,7 +41,7 @@
             <!-- 실제 비디오를 넣을 수 있는 부분 -->
             <video controls>
 		    <source src="videos/이세돌비디오.mp4" type="video/mp4"></video>
-		    <h2 style="color: #fff;">콘서트 제목</h2>
+		    <h2 style="color: #fff;">Panorama(파노라마) - IZ*ONE(아이즈원) 이세계아이돌(ISEGYE IDOL) COVER｜왁타버스 뮤직 어워즈 2024</h2>
 		    <!-- 사용자 수 표시 -->
 		    <div id="userCount"><img src="images/사람.png" style="width: 25; height: 25; margin-right: 10px; filter: brightness(0) invert(1);">
 		    <span style="padding-top: 10px; font-size: 28px; color: #fff;">${userCount}</span></div>
@@ -49,8 +49,8 @@
         <!-- 채팅 영역 -->
         <div id="chat-section">
             <div id="chatHeader">채팅방
-            <span style="color: red; padding-left: 170px;">
-            	<img src="images/사이렌.png" style="width: 30px; height: 30px;"> <button onclick="reportBadWord()">신고하기</button></span></div>
+            <span style="color: red; padding-left: 200px;">
+            	<img src="images/사이렌.png" style="width: 30px; height: 30px; "> <button onclick="reportBadWord()">신고하기</button></span></div>
 	            <div id="chat">
 	                <!-- 채팅 메시지가 표시될 영역 -->
 	            </div>
@@ -79,8 +79,8 @@
                     let userCount = message.body;  // 서버에서 전달한 사용자 수
                     // 사용자 수 업데이트 (HTML에 표시)
                     document.getElementById("userCount").innerHTML = 
-                        '<img src="images/사람.png" style="width: 25px; height: 25px; margin-right: 10px;"> ' + 
-                        '<span style="font-size: 28px;">' + userCount + '</span>';
+                        '<img src="images/사람.png" style="width: 25px; height: 25px; margin-right: 10px; filter: brightness(0) invert(1);"> ' + 
+                        '<span style="font-size: 28px; color: #fff;">' + userCount + '</span>';
                 });
 
                 // 채팅 메시지 구독

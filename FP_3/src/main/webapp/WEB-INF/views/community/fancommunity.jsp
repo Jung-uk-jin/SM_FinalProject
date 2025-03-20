@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ include file="/WEB-INF/views/modal.jsp" %> <!-- 모달 HTML 코드 포함 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <link rel="stylesheet" href="/css/Main_recommend_button.css">
+    <script type="text/javascript" src="../js/Main_recommend_button.js"></script>   
     <title>슬라이드 게시글</title>
 <style>
     /* 기본 스타일 */
@@ -1574,7 +1577,7 @@ footer {
 
 .rounded-box {
   width: 360px; /* 상자 너비 설정 */
-  height: 110px; /* 상자 높이 설정 */
+  height: 140px; /* 상자 높이 설정 */
   background-color: #F7F7FA; /* 배경색 설정 */
   border-radius: 10px; /* 모서리 둥글기 설정 */
   padding: 20px; /* 내부 여백 설정 */
@@ -1587,7 +1590,7 @@ footer {
   margin-right: 4px; /* 이미지와 텍스트 사이 간격 */
 }
 .subscribe-button {
-	 margin-left: -24px; /* 원하는 만큼 음수 값 설정 */
+  margin-left: -24px; /* 원하는 만큼 음수 값 설정 */
   width: 300px; /* 버튼 너비 설정 */
   padding: 10px; /* 내부 여백 설정 */
   text-align: center; /* 텍스트 가운데 정렬 */
@@ -1596,7 +1599,15 @@ footer {
   margin-top: 10px; /* 위쪽 여백 설정 */
   cursor: pointer; /* 마우스 커서 설정 */
 }
-
+    .notice-title {
+        font-size: 10px; /* 글씨 크기 조정 */
+        white-space: nowrap; /* 줄 바꿈 방지 */
+        overflow: hidden; /* 넘치는 텍스트 숨김 */
+        text-overflow: ellipsis; /* 말줄임표 표시 */
+        text-align : left;
+        max-width: 100%; /* 최대 너비 설정 */
+        display: block; /* 블록 요소로 설정 */
+    }
 </style>
 
 </head>
@@ -1647,7 +1658,7 @@ footer {
             <a class="nav-link" href="/chatting">Live</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" target="_blank">Shop <i class="bi bi-box-arrow-up-right"></i></a>
+            <a class="nav-link" href="/smain" target="_blank">Shop <i class="bi bi-box-arrow-up-right"></i></a>
         </li>
     </ul>
 </nav>
@@ -1786,7 +1797,7 @@ footer {
             <br>
             <!-- 이미지 영역 -->
             <c:if test="${not empty post.f_community_image}">
-                <img src="/upload/test/${post.f_community_image}" alt="게시글 이미지" style="max-width:50%;">
+                <img src="/images/${post.f_community_image}" alt="게시글 이미지" style="max-width:50%;">
             </c:if>
             <c:if test="${empty post.f_community_image}">
                 <!-- 이미지 없을 때 -->
@@ -1900,7 +1911,7 @@ footer {
 	            document.getElementById("modalTimestamp").textContent = postDate;
 	            document.getElementById("modalContent").textContent = postContent;
 	            if (postImage && postImage.trim() !== "") {
-	                document.getElementById("modalImage").innerHTML = "<img src='/upload/test/" + postImage + "' alt='게시글 이미지'>";
+	                document.getElementById("modalImage").innerHTML = "<img src='images/" + postImage + "' alt='게시글 이미지'>";
 	            } else {
 	                document.getElementById("modalImage").innerHTML = "";
 	            }
@@ -2116,7 +2127,7 @@ function formatDate(date) {
 	                    document.getElementById("f_community_content").value = postData.f_community_content;
 	                    // 만약 이미지가 있다면 미리보기 세팅
 	                    if (postData.f_community_image && postData.f_community_image.trim() !== "") {
-	                        document.getElementById("previewImage2").src = "/upload/test/" + postData.f_community_image;
+	                        document.getElementById("previewImage2").src = "images/" + postData.f_community_image;
 	                        document.getElementById("imagePreviewContainer2").style.display = "block";
 	                    } else {
 	                        document.getElementById("imagePreviewContainer2").style.display = "none";
@@ -2255,7 +2266,25 @@ function formatDate(date) {
 		  <div class="notice-text">
 		    <b><strong>커뮤니티 공지사항</strong></b><br>
 		     <a href="/noticelist?page=0&artistNo=${adto.artist_no}">
-		     <div class="subscribe-button"><b>공지사항 〉</b><br></div></a>
+			     <div class="subscribe-button">
+			     <c:forEach var="notice" items="${ndto}" begin="0" end="1">
+					<div class="see" style="width:100%;">
+					    <a href="/noticelist?page=0&artistNo=${adto.artist_no}">
+					        <p class="notice-title">${notice.notice_title}</p>
+					    </a>
+					</div>
+			     </c:forEach>
+		     </div>
+		     </a>
+		  </div>
+		</div>
+ 
+ 		<div class="rounded-box">
+		  <img src="images/공지사항.png" alt="이벤트 이미지" class="notice-image">
+		  <div class="notice-text">
+		    <b><strong>이벤트</strong></b><br>
+		     <a href="/eventlist?page=0&artistNo=${adto.artist_no}">
+		     <div class="subscribe-button"><b>이벤트 〉</b><br></div></a>
 		  </div>
 		</div>
 	</div>

@@ -123,5 +123,13 @@ public class EController {
 		eService.deleteByEventNo(event_no);
 		return "1";
 	}
+	// 이벤트 관리
+	@GetMapping("/eventlist")
+	public String eventlist(Model model) {
+		
+		List<EventDto> list = eService.findAll();
+		model.addAttribute("list",list);
+		return "/Nav_Bar/eventlist";
+	}
 	
 }

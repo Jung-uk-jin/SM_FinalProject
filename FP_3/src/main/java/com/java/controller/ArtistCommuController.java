@@ -21,6 +21,7 @@ import com.java.dto.CommentDto;
 import com.java.dto.FanCommunityDto;
 import com.java.dto.MemberDto;
 import com.java.dto.NicknameDto;
+import com.java.dto.NoticeDto;
 import com.java.repository.ArtistMemberRepository;
 import com.java.repository.NicknameRepository;
 import com.java.service.AService;
@@ -28,6 +29,7 @@ import com.java.service.ArtistCommuService;
 import com.java.service.CService;
 import com.java.service.MService;
 import com.java.service.MediaService;
+import com.java.service.NService;
 import com.java.service.NicknameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +43,7 @@ public class ArtistCommuController {
 	@Autowired HttpSession session;
 	@Autowired AService artistService;
 	@Autowired MediaService mediaService;
+	@Autowired NService nService;
 	@Autowired NicknameRepository nicknameRepository;
 	@Autowired ArtistMemberRepository artistMemberRepository;
 	
@@ -54,12 +57,13 @@ public class ArtistCommuController {
 //	    if (sessionId != null) {
 //	        memberDto = memberService.findByMemberId(sessionId); // 세션 ID로 사용자 조회
 //	    }
-		
+		List<NoticeDto> noticeDto = nService.findbyArtistNo(artist_no);
 		
 		List<ArtistCommunityDto> list = artistCommuService.findAll(artist_no);
 		ArtistDto artistDto = artistService.findByArtistNo(artist_no);
 		//ArtistMemberDto artistMemberDto = artistMemberRepository.findByAr(artist_no);
 		model.addAttribute("list",list);
+		model.addAttribute("ndto",noticeDto);
 		model.addAttribute("adto", artistDto);
 		model.addAttribute("adto", artistDto);
 //		model.addAttribute("mdto", memberDto);

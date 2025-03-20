@@ -306,7 +306,64 @@
 	    document.addEventListener("DOMContentLoaded", function() {
             console.log("페이지 로드 완료!");
 
-        });
+        //     const points = [
+        //         { title: "출고지연으로 인한 적립금 보상", product: "[세트] 피그먼트 컷오프 후드 셋업 - 6COLOR", date: "2025.02.12", expire: "2025.03.13", amount: "+4,965원" },
+        //         { title: "주문 적립", product: "오드 시그니처 스몰 백팩 - GRAY", date: "2025.02.13", expire: "2030.02.12", amount: "+1,046원" },
+        //         { title: "주문 적립", product: "[세트] 피그먼트 컷오프 후드 셋업 - 6COLOR", date: "2025.02.20", expire: "2030.02.19", amount: "+2,085원" },
+        //         { title: "주문 적립", product: "STRAPPY SKIRT PANTS [BLACK]", date: "2025.02.19", expire: "2030.02.18", amount: "+2,503원" },
+        //         { title: "주문 적립", product: "베티봄 소프트 텍스처 크롭 블레로 가디건 (2 colors)", date: "2025.02.08", expire: "2030.02.07", amount: "+945원" },
+        //         { title: "유효기간 만료", product: "", date: "2024.11.01", expire: "", amount: "-1,820원" },
+        //         { title: "주문 적립", product: "Siberia Duck Stella Crop Padding WHITE", date: "2024.10.21", expire: "2029.10.20", amount: "+2,079원" }
+        //     ];
+
+        //     let currentIndex = 0;
+        //     const itemsPerLoad = 5;
+        //     const list = document.getElementById("point-list");
+        //     const loadMoreButton = document.getElementById("load-more");
+
+        //     function loadMorePoints() {
+        //         console.log("더보기 버튼 클릭됨!");
+                
+        //         for (let i = 0; i < itemsPerLoad; i++) {
+        //             if (currentIndex >= points.length) {
+        //                 loadMoreButton.style.display = "none"; // 더 이상 항목 없으면 버튼 숨김
+        //                 console.log("더 이상 불러올 항목 없음.");
+        //                 return;
+        //             }
+
+        //             const point = points[currentIndex];
+
+        //             // 데이터가 정상적으로 읽히는지 콘솔 확인
+        //             console.log(`데이터 로드: ${point.title}, ${point.product}, ${point.date}, ${point.expire}, ${point.amount}`);
+        //             console.log("points 배열:", points);
+        //             console.log(`🔹 loadMorePoints() 실행됨! currentIndex: ${currentIndex}, points.length: ${points.length}`);
+
+
+        //             const item = document.createElement("div");
+        //             item.classList.add("point-item");
+                    
+        //             // 소멸 기한이 있는 경우와 없는 경우 처리
+        //             let expireText = point.expire && point.expire.trim() !== "" 
+        //                 ? `${point.expire} 소멸 예정` 
+        //                 : "소멸 기한 없음";
+
+        //             item.innerHTML = `
+        //                 <div><strong>${point.title}</strong></div>
+        //                 <div>${point.product || "-"}</div>
+        //                 <div>적립: ${point.date} (${expireText})</div>
+        //                 <div class="amount">${point.amount}</div>
+        //             `;
+        //             list.appendChild(item);
+        //             currentIndex++;
+        //         }
+        //     }
+
+        //     // **초기 5개 미리 로드**
+        //     loadMorePoints();
+
+        //     // **버튼 클릭 시 리스트 추가**
+        //     loadMoreButton.addEventListener("click", loadMorePoints);
+         });
 	    </script>
 </body>
 </html>

@@ -195,7 +195,7 @@ body {
 .media-section {
     text-align: left;
     margin-top: 50px;
-    margin-bottom: 200px;
+    margin-bottom: 70px;
 }
 
 .media-videos {
@@ -470,7 +470,7 @@ body {
     </div>
 </div>
 
-<c:if test="${nicknameDto.artistDto.artist_no != adto.artist_no}"></c:if>
+<c:if test="${nicknameDto.artistDto.artist_no != adto.artist_no}">
 
 <div class="community-button" onclick="openModal()">
   커뮤니티 바로가기
@@ -520,58 +520,103 @@ body {
     </div>
     -->
 
+<script>
+    // 모달 열기
+    function openModal() {
+        var memberNickname = document.querySelector("input[name='memberDto.member_nickname']").value;
 
-	    <script>
-	    function openModal() {
-	        var memberNickname = document.querySelector("input[name='memberDto.member_nickname']").value;
+        if (!memberNickname || memberNickname.trim() === "") {
+            alert("로그인이 필요합니다.");
+            window.location.href = "/login"; // 로그인 페이지로 이동
+            return;
+        }
+        document.getElementById("postModal").style.display = "flex";
+    }
 
-	        if (!memberNickname || memberNickname.trim() === "") {
-	            alert("로그인이 필요합니다.");
-	            window.location.href = "/login"; // 로그인 페이지로 이동
-	            return;
-	        }
+    // 모달 닫기
+    function closeModal() {
+        document.getElementById("postModal").style.display = "none";
+    }
 
-	        document.getElementById("postModal").style.display = "flex";
-	    }
-	        function closeModal() {
-	            document.getElementById("postModal").style.display = "none";
-	        }
-	        
-	        $(document).ready(function () {
-	            $(".submit-btn").click(function (event) {
-	                event.preventDefault(); // 기본 제출 방지
+    // 문서가 준비되었을 때
+    $(document).ready(function () {
+        // submit 버튼 클릭 이벤트 처리
+        $(".submit-btn").click(function (event) {
+            event.preventDefault(); // 기본 제출 방지
 
-	                var nickname = $("textarea[name='nickname_name']").val().trim();
-	                var artistNo = $("input[name='artistDto.artist_no']").val();
-	                var memberNickname = $("input[name='memberDto.member_nickname']").val(); // ✅ 추가
+            var nickname = $("textarea[name='nickname_name']").val().trim();
+            var artistNo = $("input[name='artistDto.artist_no']").val();
+            var memberNickname = $("input[name='memberDto.member_nickname']").val();
 
-	                if (nickname === "") {
-	                    alert("닉네임을 입력하세요!");
-	                    return;
-	                }
+            // 아티스트 추천을 위한 /recommend 요청
+            $.ajax({
+                url: "http://localhost:5001/recommend",  // Python 서버 URL
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    artistDto: { artist_no: artistNo }  // artist_no를 JSON으로 전송
+                }),
+                success: function (response) {
+                    console.log("서버 응답:", response);
+                    if (response && response.recommendations && Array.isArray(response.recommendations)) {
+                        // 추천 아티스트 목록을 서버에 저장하기 위한 두 번째 AJAX 요청
+                        saveRecommendedArtists(response.recommendations);
 
-	                $.ajax({
-		                    url: "/nickname",
-		                    type: "POST",
-		                    contentType: "application/json",
-		                    data: JSON.stringify({
-		                        nickname_name: nickname,
-		                        artistDto: { artist_no: artistNo },
-		                        memberDto: { member_nickname: memberNickname } // ✅ 추가
-		                    }),
-		                    success: function (response) {
-		                        console.log("서버 응답:", response); // 디버깅용
+                        // 추천 아티스트 목록 저장 후, 닉네임을 서버로 보내는 AJAX 요청
+                        if (nickname === "") {
+                            alert("닉네임을 입력하세요!");
+                            return;
+                        }
 
-		                        if (response.success) {
-		                            console.log("리다이렉트 URL:", response.redirectUrl);
-		                            window.location.href = response.redirectUrl; // 팬 커뮤니티 이동
-		                        } else {
-		                            alert(response.message);
-		                        }
-		                    }
-		                });
-		            });
-		        });
-		</script>
+                        // /nickname 요청 처리
+                        $.ajax({
+                            url: "/nickname",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                nickname_name: nickname,
+                                artistDto: { artist_no: artistNo },
+                                memberDto: { member_nickname: memberNickname }
+                            }),
+                            success: function (response) {
+                                if (response.success) {
+                                    window.location.href = response.redirectUrl; // 팬 커뮤니티 이동
+                                } else {
+                                    alert(response.message);
+                                }
+                            },
+                            error: function () {
+                                alert("서버 오류 발생. 다시 시도해주세요.");
+                            }
+                        });
+                    } else {
+                        console.error("추천 아티스트 목록을 받지 못했습니다.");
+                        alert("추천 아티스트 목록을 불러오는 데 문제가 발생했습니다.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX 요청 실패:", textStatus, errorThrown);
+                    alert("추천 아티스트를 불러오는 데 실패했습니다.");
+                }
+            });
+        });
+
+        // 추천 아티스트 목록을 서버에 저장하는 AJAX 요청
+        function saveRecommendedArtists(recommendations) {
+            $.ajax({
+                url: "/save-recommendations",  // 서버의 저장 API URL
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(recommendations),  // 추천 아티스트 목록을 JSON 형식으로 전송
+                success: function(response) {
+                    console.log("추천 아티스트 목록 저장 성공:", response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("추천 아티스트 목록 저장 실패:", error);
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

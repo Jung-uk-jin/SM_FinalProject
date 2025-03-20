@@ -27,7 +27,7 @@ public interface ArtistCommuRepository extends JpaRepository<ArtistCommunityDto,
     @Query(value = "DELETE FROM artistcommunitydto WHERE a_community_no=?", nativeQuery = true)
     void deleteByCommunityNo(int communityNo);
 
-	@Query("SELECT a FROM ArtistCommunityDto a WHERE a.artistDto.artist_no = :artist_no")
+	@Query("SELECT a FROM ArtistCommunityDto a WHERE a.artistDto.artist_no = :artist_no order by a.a_community_date desc")
 	List<ArtistCommunityDto> findAll(@Param("artist_no") int artist_no);
 
 

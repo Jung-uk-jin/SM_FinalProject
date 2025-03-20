@@ -32,7 +32,7 @@ public interface CRepository extends JpaRepository<FanCommunityDto, Integer>{
 	@Query("SELECT c FROM FanCommunityDto c WHERE c.f_community_no = :community_no")
 	FanCommunityDto findByCommunityNo(@Param("community_no") int community_no);
 
-	@Query("SELECT a FROM FanCommunityDto a WHERE a.artistDto.artist_no = :artist_no")
+	@Query("SELECT a FROM FanCommunityDto a WHERE a.artistDto.artist_no = :artist_no order by a.f_community_date desc")
 	List<FanCommunityDto> findAll(@Param("artist_no") int artist_no);
 
 //	@Modifying

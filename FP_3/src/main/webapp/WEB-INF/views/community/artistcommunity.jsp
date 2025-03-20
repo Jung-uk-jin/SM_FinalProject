@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ include file="/WEB-INF/views/modal.jsp" %> <!-- 모달 HTML 코드 포함 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="/css/Main_recommend_button.css">
+    <script type="text/javascript" src="../js/Main_recommend_button.js"></script>    
     <title>슬라이드 게시글</title>
 <style>
     /* 기본 스타일 */
@@ -1640,7 +1643,7 @@ footer {
             <a class="nav-link" href="/chatting">Live</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" target="_blank">Shop <i class="bi bi-box-arrow-up-right"></i></a>
+            <a class="nav-link" href="/smain" target="_blank">Shop <i class="bi bi-box-arrow-up-right"></i></a>
         </li>
     </ul>
 </nav>
@@ -1773,7 +1776,7 @@ footer {
             
             <!-- 이미지 영역 -->
             <c:if test="${not empty post.a_community_image}">
-                <img src="/upload/test/${post.a_community_image}" alt="게시글 이미지" style="max-width:100%;">
+                <img src="/images/${post.a_community_image}" alt="게시글 이미지" style="max-width:50%;">
             </c:if>
             <c:if test="${empty post.a_community_image}">
                 <!-- 이미지 없을 때 -->
@@ -2226,12 +2229,29 @@ footer {
 	        </map>
 	    </div>
 	
-		<div class="rounded-box">
+<div class="rounded-box">
 		  <img src="images/공지사항.png" alt="공지사항 이미지" class="notice-image">
 		  <div class="notice-text">
 		    <b><strong>커뮤니티 공지사항</strong></b><br>
 		     <a href="/noticelist?page=0&artistNo=${adto.artist_no}">
-		     <div class="subscribe-button"><b>공지사항 〉</b><br></div></a>
+			     <div class="subscribe-button">
+			     <c:forEach var="notice" items="${ndto}" begin="0" end="1">
+					<div class="see" style="width:100%;">
+					    <a href="/noticelist?page=0&artistNo=${adto.artist_no}">
+					        <p class="notice-title">${notice.notice_title}</p>
+					    </a>
+					</div>
+			     </c:forEach>
+		     </div>
+		     </a>
+		  </div>
+		</div>
+ 		<div class="rounded-box">
+		  <img src="images/팡파레.png" alt="이벤트 이미지" class="notice-image">
+		  <div class="notice-text">
+		    <b><strong>이벤트</strong></b><br>
+		     <a href="/eventlist?page=0&artistNo=${adto.artist_no}">
+		     <div class="subscribe-button"><b>이벤트 〉</b><br></div></a>
 		  </div>
 		</div>
 	</div>

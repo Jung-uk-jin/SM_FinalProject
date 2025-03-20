@@ -26,8 +26,8 @@
         #video-section {
             width: 70%;
             height: 90%;
-            margin-left: 5%;
-            margin-right: 5%;
+            margin-left: 80px;
+            margin-right: 20px;
         }
         #video-section video {
 	    width: 100%;
@@ -89,7 +89,13 @@
         }
 
         button {
-            margin-top: 10px;
+            background-color: #5e5e5e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+         button {
             background-color: #5e5e5e;
             color: white;
             border: none;
